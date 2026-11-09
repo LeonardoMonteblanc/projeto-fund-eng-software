@@ -1,0 +1,23 @@
+node_modules/
+coverage/
+.DS_Store
+*.log
+
+# Artefatos de desenvolvimento/inspeção
+.tmp_*
+tmp_*
+_tmp*
+tmp_exports/
+docx_dump.txt
+extract.py
+analyze*.py
+analyze*.out
+parse*.py
+cat.py
+fixdates.py
+fixerro.py
+validate_exports.py
+checkpdf.py
+_*.json
+_*.txt
+screenshot*.png
