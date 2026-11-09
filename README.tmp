@@ -1,0 +1,152 @@
+# LabUcs — POC de Gestão de Equipamentos Laboratoriais
+
+**Prova de conceito 100% estática**, compatível com GitHub Pages, do sistema de gestão de equipamentos e processos dos laboratórios da UCS. Cobre **todos os RF01–RF17** e os **RNF01–RNF15** no escopo de uma demonstração local-first, com **1.911 equipamentos reais** de 10 laboratórios.
+
+> **Não é produção.** Não há servidor, banco remoto, autenticação central ou SLA. Os dados ficam no navegador. O aviso está na interface e na documentação.
+
+---
+
+## Início rápido
+
+Requisitos: Node.js 20+ apenas para servir/testar (o site não precisa de build).
+
+```bash
+npm test       # 56 testes
+npm run dev    # http://127.0.0.1:4173
+```
+
+Abra em uma janela anônima. A primeira carga importa a base real para o IndexedDB e cria as contas de demonstração.
+
+### Contas de demonstração
+
+Senha: `Senha@123`
+
+| Conta | Perfil |
+| --- | --- |
+| `admin@labucs.local` | Administrador |
+| `gestor.geral@labucs.local` | Gestor Geral |
+| `gestor.lasfi@labucs.local` | Gestor de Laboratório (LASFI) |
+| `tecnico.lasfi@labucs.local` | Técnico (LASFI) |
+
+Há um gestor e um técnico para cada uma das 10 siglas (`lasfi`, `lamec`, `lcmec`, `lmc`, `lamat`, `lapa`, `lcor`, `lapam`, `lbtec`, `lqfs`).
+
+## O que está implementado
+
+![Painel de controle](docs/assets/dashboard.png)
+
+*Painel com indicadores, alertas reais da base importada e situação por laboratório.*
+
+![Lista de equipamentos](docs/assets/equipamentos.png)
+
+*Inventário com filtros, sinalizações e status de calibração.*
+
+![Ficha do equipamento](docs/assets/ficha.png)
+
+*Ficha com CA herdado, prazos, pendências de cadastro e histórico de eventos.*
+
+- **Cadastros:** laboratórios, usuários/perfis, fornecedores, categorias/subcategorias, itens (modelos) e equipamentos.
+- **Metrologia:** calibração e verificação com `|erro| + U ≤ CA`, incerteza, certificado, fornecedor, custo e resultado; CA/periodicidade herdados do item ou especializados no equipamento.
+- **Prazos e RF17:** próxima calibração/verificação, dias corridos, status vencido/a vencer/em dia e sinalizações **sem bloqueio automático**.
+- **Manutenções:** preventiva com recorrência e corretiva com estado de retorno.
+- **Solicitações:** criação, aprovação/rejeição, segregação de funções e geração automática do evento agendado.
+- **Painel:** alertas de calibração, verificação, manutenção e solicitações pendentes.
+- **Relatórios:** inventário (RF05), situação, histórico, Anexos 1/2/4/5 e custos × receita (RF15), com exportação **PDF, XLSX e CSV**.
+- **Governança:** RBAC por laboratório, auditoria append-only (Gestor Geral), backup diário/manual, exportação/importação JSON e reinício da demonstração.
+- **LGPD:** aviso, acesso aos próprios dados, alteração de senha e anonimização.
+
+## Arquitetura
+
+```
+index.html, styles.css
+ui/       console funcional de referência (substituível pela camada visual)
+core/     regras de negócio, persistência, RBAC, relatórios e exportações
+data/     base real normalizada + relatório de importação
+docs/     visão, modelo, regras, contrato, testes, deploy e rastreabilidade
+contract/ tipagem TypeScript da fachada
+tests/    56 testes (Node test runner)
+```
+
+Sem backend: o “banco” é o **IndexedDB**; a “API” é a fachada `criarAplicacao()` em `core/index.js`. A interface não recalcula regra de negócio.
+
+## Base real
+
+| Indicador | Valor |
+| --- | ---: |
+| Laboratórios | 10 |
+| Equipamentos | 1.911 |
+| Itens (modelos) | 823 |
+| Com calibração registrada | 1.726 |
+| Sem calibração registrada | 185 |
+| Sem patrimônio | 1.860 |
+| Usuários | 22 |
+| Eventos importados | 1.735 |
+
+Fontes: `EQUIP.xlsx` (extração `ODS_CATEGORIAS.txt`), `FG 020` e `FG 006`. O importador é reprodutível:
+
+```bash
+npm run importar   # regenera data/base-real.json e data/RELATORIO-IMPORTACAO.md
+```
+
+**Lacunas são explícitas:** a planilha não possui data/valor de aquisição, data de colocação em uso, patrimônio/série para a maioria dos registros. Nada foi inventado; os campos aparecem como pendência na ficha. TAGs duplicadas entre laboratórios foram aceitas; a unicidade é por laboratório (documentado).
+
+## Testes
+
+```bash
+npm test
+```
+
+Cobertura:
+
+- domínio: Erro+U, limites, arredondamento, meses/anos bissextos, herança, sinais;
+- serviços: login/timeout, RBAC, CRUD, eventos, aprovações, auditoria, LGPD, backup;
+- persistência: atomicidade, integridade, exportação/importação;
+- base real: contagens, escopo, sinais, PDF de 48 páginas;
+- exportações: BOM CSV, partes OOXML, estrutura PDF, CRC32/ZIP.
+
+Smoke de interface com Chrome headless:
+
+```bash
+node scripts/inspecionar.js http://127.0.0.1:4173/ \
+  --login=tecnico.lasfi@labucs.local --goto="#/equipamentos/1"
+```
+
+## Deploy no GitHub Pages
+
+O workflow `.github/workflows/pages.yml` roda os testes, monta `_site` e publica via GitHub Actions. Passos manuais, caminhos relativos, IndexedDB e checklist: [docs/06-DEPLOY-GITHUB-PAGES.md](docs/06-DEPLOY-GITHUB-PAGES.md).
+
+## Camada visual (Open Design/OpenCode)
+
+A parte visual está sendo desenvolvida separadamente. O núcleo é agnóstico de framework e expõe:
+
+- `criarAplicacao({ baseReal })` → `app`;
+- `app.auth`, `app.meta`, `app.painel`, `app.equipamentos`, `app.eventos`, `app.solicitacoes`, `app.itens`, `app.fornecedores`, `app.laboratorios`, `app.usuarios`, `app.relatorios`, `app.auditoria`, `app.config`, `app.lgpd`;
+- erros tipados com `codigo` e `campos`;
+- DTOs prontos (datas calculadas, sinais, status, permissões).
+
+Contrato completo em [contract/labucs.d.ts](contract/labucs.d.ts) e guia em [docs/04-API-DE-SERVICOS.md](docs/04-API-DE-SERVICOS.md). O console em `ui/` é apenas uma referência funcional; pode ser substituído integralmente.
+
+## Documentação
+
+- [01 — Visão, escopo e decisões](docs/01-VISAO-E-ESCOPO.md)
+- [02 — Modelo de dados](docs/02-MODELO-DE-DADOS.md)
+- [03 — Regras de negócio](docs/03-REGRAS-DE-NEGOCIO.md)
+- [04 — Contrato de serviços](docs/04-API-DE-SERVICOS.md)
+- [05 — Validação e testes](docs/05-VALIDACAO-E-TESTES.md)
+- [06 — Deploy no GitHub Pages](docs/06-DEPLOY-GITHUB-PAGES.md)
+- [07 — Matriz de rastreabilidade](docs/07-MATRIZ-RASTREABILIDADE.md)
+- [Relatório de importação](data/RELATORIO-IMPORTACAO.md)
+
+## Limitações principais
+
+| Limitação | Consequência |
+| --- | --- |
+| Site estático | Sem autenticação real, sem múltiplos usuários simultâneos, sem IP real |
+| Dados no navegador | Sem sincronização entre dispositivos; limpar o site apaga os dados |
+| Base real incompleta | Cadastros parciais; CA estimado precisa ser revisado |
+| `null` × zero | Receita/custos não informados aparecem como indisponíveis |
+| PDF próprio | Sem assinatura digital ou valor legal |
+| RNF06 | Disponibilidade delegada ao GitHub Pages, sem SLA próprio |
+
+## Licença e uso
+
+Trabalho acadêmico da disciplina FBI4010X — UCS Campus CARVI, 2026. Uso restrito a demonstração e avaliação. Não utilizar em produção sem autenticação, banco, backup e conformidade institucionais.
