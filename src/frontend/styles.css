@@ -524,8 +524,8 @@ pre.json { background: #f5f5f5; border: 2px solid var(--ucs-borda); padding: 10p
 .agenda-alternador .aba:last-child { border-right: 0; }
 .agenda-alternador .aba span { display: none; }
 .agenda-alternador .aba-ativa { background: var(--ucs-branco); color: var(--ucs-azul); box-shadow: none; }
-.agenda-calendario { border: 2px solid var(--ucs-borda); background: var(--ucs-branco); margin-bottom: 22px; border-collapse: collapse; width: 100%; overflow-x: auto; display: block; }
-.agenda-calendario table { width: 100%; border-collapse: collapse; }
+.agenda-calendario { border: 2px solid var(--ucs-borda); background: var(--ucs-branco); margin-bottom: 22px; border-collapse: collapse; width: 100%; }
+.agenda-calendario-envolucro { overflow-x: auto; }
 .agenda-calendario caption { text-align: left; font-size: 12px; color: var(--ucs-texto-suave); padding: 6px 0; }
 .agenda-cabecalhos { display: contents; }
 .agenda-cabecalho { padding: 8px 6px; text-align: center; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ucs-cinza); background: var(--ucs-fundo-2); border-right: 1px solid var(--ucs-borda); }

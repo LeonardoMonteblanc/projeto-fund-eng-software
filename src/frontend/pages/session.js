@@ -205,9 +205,9 @@ export function paginaPainel(app) {
           <span class="alerta-lab">${esc(a.laboratorioSigla ?? '')}</span>
         </li>`).join('')}</ul>` : '<p class="vazio">Nenhum alerta no momento.</p>',
         '<a class="link" href="#/equipamentos?sinal=CALIBRACAO_VENCIDA">Ver todos</a>')}
-      ${secao('Situação por laboratório', `<table class="tabela tabela-compacta"><caption class="sr-only">Situação dos equipamentos em cada laboratório</caption><thead><tr><th scope="col">Laboratório</th><th scope="col" class="num">Equipamentos</th><th scope="col" class="num">Ativos</th><th scope="col" class="num">Vencidos</th></tr></thead><tbody>
+      ${secao('Situação por laboratório', `<div class="tabela-envolucro"><table class="tabela tabela-compacta"><caption class="sr-only">Situação dos equipamentos em cada laboratório</caption><thead><tr><th scope="col">Laboratório</th><th scope="col" class="num">Equipamentos</th><th scope="col" class="num">Ativos</th><th scope="col" class="num">Vencidos</th></tr></thead><tbody>
         ${labs.map((l) => `<tr><td>${esc(l.sigla)}</td><td class="num">${l.total}</td><td class="num">${l.ativos}</td><td class="num ${l.vencidas ? 'texto-erro' : ''}">${l.vencidas}</td></tr>`).join('')}
-      </tbody></table>`)}
+      </tbody></table></div>`)} 
     </div>`;
 
   const html = `

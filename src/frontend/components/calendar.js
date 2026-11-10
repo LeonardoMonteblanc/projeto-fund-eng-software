@@ -110,15 +110,17 @@ export function calendarioMensal({ mes, eventos, hoje }) {
 
   const cabecalhos = DIAS.map((dia) => `<th scope="col" abbr="${dia}" class="agenda-cabecalho">${dia}</th>`).join('');
 
-  return `<table class="agenda-calendario" aria-label="Calendário mensal de eventos">
-    <caption class="sr-only">Calendário mensal</caption>
-    <thead>
-      <tr class="agenda-cabecalhos">${cabecalhos}</tr>
-    </thead>
-    <tbody class="agenda-grade">
-      ${rows}
-    </tbody>
-  </table>`;
+  return `<div class="agenda-calendario-envolucro">
+    <table class="agenda-calendario" aria-label="Calendário mensal de eventos">
+      <caption class="sr-only">Calendário mensal</caption>
+      <thead>
+        <tr class="agenda-cabecalhos">${cabecalhos}</tr>
+      </thead>
+      <tbody class="agenda-grade">
+        ${rows}
+      </tbody>
+    </table>
+  </div>`;
 }
 
 /** Rótulo do mês corrente: "Março 2026". */
