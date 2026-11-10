@@ -87,6 +87,10 @@ async function render() {
 
   raiz.innerHTML = layout(pagina.html, caminho, sessao, app);
   document.title = `${tituloDaRota(caminho)} — LabUcs`;
+  // Accessibility: move focus to main content and reset scroll
+  const main = document.getElementById('conteudo');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  requestAnimationFrame(() => { main?.focus?.(); });
   pagina.montar?.();
   paleta ??= registrarPaletaComandos(() => {
     try { return app?.auth.sessao(); } catch { return null; }

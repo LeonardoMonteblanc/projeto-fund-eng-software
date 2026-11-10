@@ -110,8 +110,8 @@ export function calendarioMensal({ mes, eventos, hoje }) {
 
   const cabecalhos = DIAS.map((dia) => `<th scope="col" abbr="${dia}" class="agenda-cabecalho">${dia}</th>`).join('');
 
-  return `<table class="agenda-calendario" role="grid" aria-label="Calendário mensal de eventos">
-    <caption class="ucs-sr-only">Calendário mensal</caption>
+  return `<table class="agenda-calendario" aria-label="Calendário mensal de eventos">
+    <caption class="sr-only">Calendário mensal</caption>
     <thead>
       <tr class="agenda-cabecalhos">${cabecalhos}</tr>
     </thead>

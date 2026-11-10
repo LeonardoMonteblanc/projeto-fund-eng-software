@@ -694,8 +694,8 @@ pre.json { background: #f5f5f5; border: 2px solid var(--ucs-borda); padding: 10p
   .filtros-acoes { flex-direction: column; }
   .filtros-acoes .btn { width: 100%; }
   .agenda-dia { min-height: 58px; }
-  .agenda-evento { display: none; }
-  .agenda-dia-contagem { display: block; }
+  .agenda-evento { font-size: 9px; line-height: 1.2; }
+  .agenda-dia-contagem { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }

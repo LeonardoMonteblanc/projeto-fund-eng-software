@@ -50,7 +50,8 @@ function garantirDialogo() {
   if (dialogo) return dialogo;
   dialogo = document.createElement('dialog');
   dialogo.className = 'modal';
-  dialogo.innerHTML = '<div class="modal-caixa" id="modal-conteudo"></div>';
+  dialogo.setAttribute('aria-modal', 'true');
+  dialogo.innerHTML = '<div class="modal-caixa" id="modal-conteudo" role="document"></div>';
   dialogo.addEventListener('click', (evento) => {
     if (evento.target === dialogo) fecharModal();
   });
@@ -85,7 +86,16 @@ export function confirmar({ titulo, mensagem, textoConfirmar = 'Confirmar', peri
         <button type="button" class="btn btn-secundario" data-fechar>Cancelar</button>
         <button type="button" class="btn ${perigo ? 'btn-perigo' : 'btn-primario'}" id="confirmar-acao">${esc(textoConfirmar)}</button>
       </div>`);
-    caixa.querySelector('[data-fechar]').addEventListener('click', () => { fecharModal(); resolve(false); });
+    const d = dialogo;
+    const resolverCleanup = () => {
+      d.removeEventListener('close', onClose);
+      resolve(false);
+    };
+    const onClose = () => {
+      // resolve false if closed by Esc or backdrop
+      resolverCleanup();
+    };
+    d.addEventListener('close', onClose, { once: true });
     caixa.querySelectorAll('[data-fechar]').forEach((b) => b.addEventListener('click', () => { fecharModal(); resolve(false); }));
     caixa.querySelector('#confirmar-acao').addEventListener('click', () => { fecharModal(); resolve(true); });
   });
@@ -101,12 +111,13 @@ export function toast(mensagem, tipo = 'info', tempo = 4500) {
   if (!containerAvisos) {
     containerAvisos = document.createElement('div');
     containerAvisos.className = 'avisos';
-    containerAvisos.setAttribute('role', 'status');
-    containerAvisos.setAttribute('aria-live', 'polite');
     document.body.appendChild(containerAvisos);
   }
   const div = document.createElement('div');
   div.className = `aviso aviso-${tipo}`;
+  const isErro = tipo === 'erro' || tipo === 'alerta';
+  div.setAttribute('role', isErro ? 'alert' : 'status');
+  div.setAttribute('aria-live', isErro ? 'assertive' : 'polite');
   div.innerHTML = `<span>${esc(mensagem)}</span><button type="button" class="icone" aria-label="Fechar">✕</button>`;
   div.querySelector('button').addEventListener('click', () => div.remove());
   containerAvisos.appendChild(div);
@@ -147,11 +158,14 @@ export function baixarArquivo(nomeArquivo, mime, conteudo) {
 /* Componentes de formulário                                          */
 /* ------------------------------------------------------------------ */
 
+let campoCounter = 0;
+
 export function campo({
   nome, rotulo, tipo = 'text', valor = '', opcoes = [], obrigatorio = false, ajuda = '',
-  placeholder = '', largura = 'half', min, max, passo = 'any', desabilitado = false, linhas = 3
+  placeholder = '', largura = 'half', min, max, passo = 'any', desabilitado = false, linhas = 3, prefixo = ''
 }) {
-  const id = `campo-${nome}`;
+  const baseId = `campo-${prefixo ? prefixo + '-' : ''}${nome}`;
+  const id = `${baseId}-${++campoCounter}`;
   const obrig = obrigatorio ? ' <span class="obrig">*</span>' : '';
   const ajudaHtml = ajuda ? `<small class="ajuda">${esc(ajuda)}</small>` : '';
   const comum = `id="${id}" name="${nome}" ${obrigatorio ? 'required' : ''} ${desabilitado ? 'disabled' : ''} ${min !== undefined ? `min="${esc(min)}"` : ''} ${max !== undefined ? `max="${esc(max)}"` : ''}`;

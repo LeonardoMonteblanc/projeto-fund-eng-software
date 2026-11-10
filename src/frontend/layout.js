@@ -59,7 +59,7 @@ export function layout(conteudo, caminho, sessao, app) {
         <nav class="ucs-nav" aria-label="Módulos do sistema">${navAplicacao(sessao, caminho)}</nav>
         <aside class="ucs-nav-contexto" aria-label="Contexto da sessão">
           <span class="ucs-nav-lab">${esc(laboratorio)}</span>
-          <span class="ucs-nav-sessao">Sessão <b id="sessao-tempo">--:--</b></span>
+          <span class="ucs-nav-sessao">Sessão <b id="sessao-tempo" aria-live="polite" aria-atomic="true">--:--</b></span>
         </aside>
       </div>
     </div>
