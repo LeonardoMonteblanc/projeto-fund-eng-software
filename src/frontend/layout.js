@@ -6,6 +6,7 @@
  */
 
 import { esc, iniciais } from './components/ui.js';
+import { icone } from './components/icons.js';
 
 function navInstitucional() {
   const links = [
@@ -24,7 +25,8 @@ function navAplicacao(sessao, caminho) {
     .map((f) => {
       const rota = f.rota.replace('#', '');
       const ativo = caminho === rota || (rota !== '/painel' && caminho.startsWith(rota));
-      return `<a class="ucs-nav-item ${ativo ? 'ativo' : ''}" href="${esc(f.rota)}">${esc(f.nome)}</a>`;
+      const atual = ativo ? ' aria-current="page"' : '';
+      return `<a class="ucs-nav-item${ativo ? ' ativo' : ''}" href="${esc(f.rota)}"${atual}>${esc(f.nome)}</a>`;
     }).join('');
 }
 
@@ -43,6 +45,9 @@ export function layout(conteudo, caminho, sessao, app) {
           <span>Gestão de Equipamentos Laboratoriais</span>
         </div>
         <nav class="ucs-topo-links" aria-label="Links institucionais">${navInstitucional()}</nav>
+        <button type="button" class="ucs-paleta-disparo" id="abrir-paleta" aria-haspopup="dialog">
+          ${icone('busca', { classe: 'ucs-icone--sm', 'aria-hidden': 'true' })}<span>Buscar</span><kbd aria-hidden="true">Ctrl K</kbd>
+        </button>
         <div class="ucs-topo-user">
           <span class="ucs-user-avatar" aria-hidden="true">${esc(iniciais(usuario.nome))}</span>
           <div><strong>${esc(usuario.nome)}</strong><small>${esc(usuario.perfilRotulo)}</small></div>
@@ -53,10 +58,10 @@ export function layout(conteudo, caminho, sessao, app) {
     <div class="ucs-appnav">
       <div class="ucs-container ucs-appnav-inner">
         <nav class="ucs-nav" aria-label="Módulos do sistema">${navAplicacao(sessao, caminho)}</nav>
-        <div class="ucs-nav-contexto">
+        <aside class="ucs-nav-contexto" aria-label="Contexto da sessão">
           <span class="ucs-nav-lab">${esc(laboratorio)}</span>
           <span class="ucs-nav-sessao">Sessão <b id="sessao-tempo">--:--</b></span>
-        </div>
+        </aside>
       </div>
     </div>
 
@@ -67,12 +72,12 @@ export function layout(conteudo, caminho, sessao, app) {
     <footer class="ucs-footer">
       <div class="ucs-container ucs-footer-grid">
         <div>
-          <h3>Campus-Sede</h3>
+          <h2>Campus-Sede</h2>
           <p>Rua Francisco Getúlio Vargas, 1130<br />CEP 95070-560 — Caxias do Sul</p>
           <a href="https://www.ucs.br/site/institucional/enderecos-das-unidades-universitarias/" target="_blank" rel="noopener">Todos os campi — como chegar</a>
         </div>
         <div>
-          <h3>Central de Atendimento</h3>
+          <h2>Central de Atendimento</h2>
           <p><a href="https://www.ucs.br/site/central-de-atendimento/" target="_blank" rel="noopener">Faça contato</a></p>
           <p><a href="tel:+555432182145">(54) 3218-2145</a><br /><a href="mailto:atendimento@ucs.br">atendimento@ucs.br</a></p>
         </div>
