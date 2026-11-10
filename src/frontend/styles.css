@@ -145,7 +145,7 @@ strong { font-weight: 600; }
 .ucs-assinatura { display: flex; flex-direction: column; padding-left: 18px; border-left: 2px solid rgba(255,255,255,.35); }
 .ucs-assinatura strong { font-size: 20px; letter-spacing: .16em; text-transform: uppercase; color: var(--ucs-branco); }
 .ucs-assinatura span { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #cfd6de; }
-.ucs-topo-links { display: flex; gap: 16px; margin-left: auto; align-items: center; flex-wrap: wrap; }
+.ucs-topo-links { display: none !important; }
 .ucs-topo-links a { color: var(--ucs-branco); font-size: 11px; text-transform: uppercase; font-weight: 400; }
 .ucs-topo-links a:hover { color: var(--ucs-rosa); text-decoration: none; }
 .ucs-paleta-disparo {
@@ -169,11 +169,12 @@ strong { font-weight: 600; }
 .ucs-appnav-inner { display: grid; grid-template-columns: 1fr auto; align-items: stretch; }
 .ucs-nav { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
 .ucs-nav-item {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 10px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 10px;
   color: var(--ucs-branco); font-size: 10.5px; text-transform: uppercase; letter-spacing: .02em;
   border-bottom: 3px solid transparent; border-right: 1px solid rgba(255, 255, 255, .16);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;
   transition: background var(--ucs-transicao), color var(--ucs-transicao);
+  min-height: 44px;
 }
 .ucs-nav-item:hover { background: rgba(255, 255, 255, .12); color: var(--ucs-branco); text-decoration: none; }
 .ucs-nav-item.ativo { background: rgba(255, 255, 255, .18); border-bottom-color: var(--ucs-branco); font-weight: 600; }
@@ -522,7 +523,8 @@ pre.json { background: #f5f5f5; border: 2px solid var(--ucs-borda); padding: 10p
 .agenda-alternador .aba:last-child { border-right: 0; }
 .agenda-alternador .aba span { display: none; }
 .agenda-alternador .aba-ativa { background: var(--ucs-branco); color: var(--ucs-azul); box-shadow: none; }
-.agenda-calendario { border: 2px solid var(--ucs-borda); background: var(--ucs-branco); margin-bottom: 22px; border-collapse: collapse; width: 100%; }
+.agenda-calendario { border: 2px solid var(--ucs-borda); background: var(--ucs-branco); margin-bottom: 22px; border-collapse: collapse; width: 100%; overflow-x: auto; display: block; }
+.agenda-calendario table { width: 100%; border-collapse: collapse; }
 .agenda-calendario caption { text-align: left; font-size: 12px; color: var(--ucs-texto-suave); padding: 6px 0; }
 .agenda-cabecalhos { display: contents; }
 .agenda-cabecalho { padding: 8px 6px; text-align: center; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ucs-cinza); background: var(--ucs-fundo-2); border-right: 1px solid var(--ucs-borda); }

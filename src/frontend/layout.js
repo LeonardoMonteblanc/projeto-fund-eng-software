@@ -44,9 +44,8 @@ export function layout(conteudo, caminho, sessao, app) {
           <strong>LabUcs</strong>
           <span>Gestão de Equipamentos Laboratoriais</span>
         </div>
-        <nav class="ucs-topo-links" aria-label="Links institucionais">${navInstitucional()}</nav>
         <button type="button" class="ucs-paleta-disparo" id="abrir-paleta" aria-haspopup="dialog">
-          ${icone('busca', { classe: 'ucs-icone--sm', 'aria-hidden': 'true' })}<span>Buscar</span><kbd aria-hidden="true">Ctrl K</kbd>
+          ${icone('busca', { classe: 'ucs-icone--sm' })}<span>Buscar</span><kbd aria-hidden="true">Ctrl K</kbd>
         </button>
         <div class="ucs-topo-user">
           <span class="ucs-user-avatar" aria-hidden="true">${esc(iniciais(usuario.nome))}</span>

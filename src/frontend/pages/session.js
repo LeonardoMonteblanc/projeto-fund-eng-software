@@ -66,10 +66,24 @@ export function paginaLogin(app) {
     publica: true,
     montar() {
       const form = document.getElementById('form-login');
-      form.querySelectorAll('.demo-conta').forEach((b) => b.addEventListener('click', () => {
-        form.elements.email.value = b.dataset.email;
+      const demoButtons = form.parentElement.querySelectorAll('.demo-conta');
+      const efectuarLogin = async (email) => {
+        form.elements.email.value = email;
         form.elements.senha.value = 'Senha@123';
-        form.elements.senha.focus();
+        try {
+          await app.auth.login(email, 'Senha@123');
+          window.location.hash = '#/painel';
+          recarregar();
+        } catch (e) {
+          // fallback para o fluxo normal de formulário
+          form.elements.senha.focus();
+        }
+      };
+      demoButtons.forEach((b) => b.addEventListener('click', async () => {
+        const email = b.dataset.email;
+        form.elements.email.value = email;
+        form.elements.senha.value = 'Senha@123';
+        await efectuarLogin(email);
       }));
       form.addEventListener('submit', async (evento) => {
         evento.preventDefault();
