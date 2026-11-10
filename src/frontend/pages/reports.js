@@ -15,6 +15,7 @@ import {
 } from '../components/common.js';
 import { estadoTelas } from '../state.js';
 import { temPermissao, recarregar } from '../session-context.js';
+import { caixaGrafico, graficoCustosPorLaboratorio, graficoCustoReceita } from '../components/charts.js';
 
 export const RELATORIOS = [
   { id: 'inventario', titulo: 'Inventário de ativos', desc: 'RF05 • equipamentos ativos por laboratório', permissao: 'inventario.gerar' },
@@ -55,6 +56,7 @@ export function paginaRelatorios(app, relatorioForcado = null) {
   let tabelaHtml = '';
   let resumo = [];
   let total = 0;
+  let custosLinhas = [];
   try {
     const fnMap = {
       inventario: () => app.relatorios.inventario(f),
@@ -72,11 +74,32 @@ export function paginaRelatorios(app, relatorioForcado = null) {
       const t = fnMap[aberto]();
       total = t.linhas.length;
       resumo = t.resumo;
+      if (aberto === 'custos') custosLinhas = t.linhas;
       tabelaHtml = tabela(t.colunas, t.linhas.slice(0, 200), { vazio: 'Nenhum registro para os filtros.' }) + (t.linhas.length > 200 ? `<p class="subtexto">Prévia limitada a 200 de ${t.linhas.length} linhas. A exportação inclui todas.</p>` : '');
     }
   } catch (e) {
     tabelaHtml = `<p class="vazio">${esc(e.message)}</p>`;
   }
+
+  const graficoCustos = aberto === 'custos' && custosLinhas.length ? `
+    <div class="bento bento-graficos">
+      <div class="bento-4">${caixaGrafico({
+        titulo: 'Custo por laboratório',
+        subtitulo: 'Composição do custo operacional no período filtrado',
+        id: 'grafico-custos-lab',
+        legenda: [
+          { cor: 'azul', rotulo: 'Calibração' },
+          { cor: 'rosa', rotulo: 'Verificação' },
+          { cor: 'alerta', rotulo: 'Preventiva' },
+          { cor: 'erro', rotulo: 'Corretiva' }
+        ]
+      })}</div>
+      <div class="bento-2">${caixaGrafico({
+        titulo: 'Custo × receita',
+        subtitulo: 'Receita atribuída no mesmo período',
+        id: 'grafico-custo-receita'
+      })}</div>
+    </div>` : '';
 
   const html = `
     <div class="pagina-cabecalho"><div><p class="eyebrow">RF05 · RF14 · RF15 · ANEXOS</p><h1>Relatórios</h1>
@@ -95,6 +118,7 @@ export function paginaRelatorios(app, relatorioForcado = null) {
         </div>
       </div>
       ${resumo.length ? `<div class="resumos">${resumo.map((r) => `<div class="resumo-item"><span>${esc(r.rotulo)}</span><strong>${esc(r.valor)}</strong></div>`).join('')}</div>` : ''}
+      ${graficoCustos}
       ${tabelaHtml}
     </div>
   `;
@@ -102,6 +126,10 @@ export function paginaRelatorios(app, relatorioForcado = null) {
   return {
     html,
     montar() {
+      if (custosLinhas.length) {
+        graficoCustosPorLaboratorio('#grafico-custos-lab', custosLinhas).catch((erro) => console.warn('Gráfico de custos indisponível:', erro));
+        graficoCustoReceita('#grafico-custo-receita', custosLinhas).catch((erro) => console.warn('Gráfico de receita indisponível:', erro));
+      }
       document.querySelectorAll('[data-relatorio]').forEach((b) => b.addEventListener('click', () => {
         st.relatorio = b.dataset.relatorio;
         st.filtros = {};

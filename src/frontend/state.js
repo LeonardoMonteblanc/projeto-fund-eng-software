@@ -14,7 +14,7 @@ export const estadoTelas = {
   laboratorios: { busca: '', ativo: '', pagina: 1 },
   usuarios: { busca: '', perfil: '', ativo: '', pagina: 1 },
   auditoria: { busca: '', tabela: '', acao: '', de: '', ate: '', pagina: 1 },
-  agenda: { de: '', ate: '', laboratorioId: '' },
+  agenda: { visao: 'mes', mes: '', de: '', ate: '', laboratorioId: '' },
   relatorios: { relatorio: 'inventario', filtros: {} },
   config: { aba: 'parametros' }
 };

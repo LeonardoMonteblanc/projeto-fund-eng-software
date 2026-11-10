@@ -15,6 +15,8 @@ import {
 } from '../components/common.js';
 import { estadoTelas } from '../state.js';
 import { temPermissao, recarregar } from '../session-context.js';
+import { icone } from '../components/icons.js';
+import { caixaGrafico, graficoEquipamentosPorLaboratorio } from '../components/charts.js';
 
 export function paginaLogin(app) {
   const credito = app.creditarBase();
@@ -96,36 +98,92 @@ export function paginaPainel(app) {
   const resumo = app.painel.resumo({});
   const cards = resumo.cards;
   const alertas = resumo.alertas ?? [];
+  const labs = resumo.porLaboratorio ?? [];
   const nome = sessao.usuario.nome.split(' ')[0];
-  const html = `
-    <div class="pagina-cabecalho">
-      <div><p class="eyebrow">VISÃO GERAL</p><h1>Olá, ${esc(nome)}</h1>
-      <p class="subtitulo">${resumo.escopoLaboratorioId ? 'Dados do seu laboratório' : 'Visão consolidada dos 10 laboratórios'} • atualizado em ${esc(fmtDataHora(resumo.atualizadoEm))}</p></div>
-      <div class="cabecalho-acoes">
-        <a class="btn btn-secundario" href="#/agenda">Agenda</a>
-        ${temPermissao(app, 'eventos.registrar') ? '<a class="btn btn-primario" href="#/eventos/novo">Registrar evento</a>' : ''}
+
+  const totalEquipamentos = labs.reduce((acc, l) => acc + l.total, 0);
+  const totalVencidas = labs.reduce((acc, l) => acc + l.vencidas, 0);
+  const labsEmAlerta = labs.filter((l) => l.vencidas > 0).length;
+
+  const faixaItems = labs.map((l) => `<span class="faixa-item"><b>${esc(l.sigla)}</b><span class="faixa-numeros">${l.total} equipamentos${l.vencidas ? ` · <b class="faixa-alerta">${l.vencidas} vencidas</b>` : ''}</span></span>`).join('');
+
+  const ranking = labs.filter((l) => l.vencidas > 0).slice(0, 8);
+  const maiorVencida = ranking.length ? Math.max(...ranking.map((l) => l.vencidas)) : 1;
+  const cartaoRanking = `
+    <section class="cartao-ranking">
+      <h3 class="grafico-titulo">Ranking de atraso</h3>
+      <p class="subtexto">Calibrações vencidas por laboratório</p>
+      <ol class="ranking-lista">
+        ${ranking.map((l) => `<li class="ranking-item">
+          <span class="ranking-sigla">${esc(l.sigla)}</span>
+          <span class="ranking-trilha"><span class="ranking-barra" style="width:${Math.round((l.vencidas / maiorVencida) * 100)}%"></span></span>
+          <span class="ranking-valor">${l.vencidas}</span>
+        </li>`).join('')}
+      </ol>
+      ${ranking.length ? '' : '<p class="vazio">Nenhuma calibração vencida.</p>'}
+    </section>`;
+
+  const hero = `
+    <section class="painel-hero" data-revelar>
+      <div class="painel-hero-texto">
+        <p class="eyebrow">Visão geral</p>
+        <h1><img class="tipografia-inline" src="./src/frontend/assets/logo-ucs-simbolo.png" alt="" />Olá, <strong>${esc(nome)}</strong></h1>
+        <p class="subtitulo" data-varrer>${resumo.escopoLaboratorioId ? 'Dados do seu laboratório' : 'Visão consolidada dos 10 laboratórios'} — atualizado em ${esc(fmtDataHora(resumo.atualizadoEm))}. Acompanhe calibrações vencidas, custos do mês e a agenda de manutenção em um só lugar.</p>
+        <div class="painel-hero-acoes">
+          <a class="btn btn-primario" href="#/agenda">Ver agenda</a>
+          ${temPermissao(app, 'eventos.registrar') ? '<a class="btn btn-secundario" href="#/eventos/novo">Registrar evento</a>' : ''}
+        </div>
       </div>
-    </div>
+      <aside class="painel-hero-status">
+        <h2>Estado agora</h2>
+        <dl>
+          <dt>Equipamentos no escopo</dt><dd>${totalEquipamentos}</dd>
+          <dt>Calibrações vencidas</dt><dd class="${totalVencidas ? 'texto-erro' : ''}">${totalVencidas}</dd>
+          <dt>Laboratórios em alerta</dt><dd class="${labsEmAlerta ? 'texto-alerta' : ''}">${labsEmAlerta} de ${labs.length}</dd>
+          <dt>Custos do mês</dt><dd>${esc(cards.custosMes)}</dd>
+        </dl>
+      </aside>
+    </section>`;
 
-    <div class="grade-indicadores">
-      ${cartaoIndicador({ rotulo: 'Calibrações vencidas', valor: cards.calibracoesVencidas, detalhe: 'RF17 • sinalizadas', variante: 'erro', href: '#/equipamentos?sinal=CALIBRACAO_VENCIDA' })}
-      ${cartaoIndicador({ rotulo: 'Calibrações a vencer', valor: cards.calibracoesAVencer, detalhe: 'Próximos 30 dias', variante: 'alerta', href: '#/equipamentos?statusCalibracao=A_VENCER' })}
-      ${cartaoIndicador({ rotulo: 'Calibrações reprovadas', valor: cards.calibracoesReprovadas, detalhe: 'Erro + U acima do CA', variante: 'erro', href: '#/equipamentos?sinal=CALIBRACAO_REPROVADA' })}
-      ${cartaoIndicador({ rotulo: 'Manutenções pendentes', valor: cards.manutencoesPendentes, detalhe: 'Preventivas agendadas', variante: 'info', href: '#/eventos?tipo=MANUTENCAO_PREVENTIVA' })}
-      ${cartaoIndicador({ rotulo: 'Equipamentos ativos', valor: cards.equipamentosAtivos, detalhe: `de ${cards.equipamentosAtivos + cards.equipamentosInativos + cards.equipamentosEmManutencao}`, variante: 'ok', href: '#/equipamentos' })}
-      ${cartaoIndicador({ rotulo: 'Em manutenção', valor: cards.equipamentosEmManutencao, detalhe: 'Indisponíveis para uso', variante: 'alerta', href: '#/equipamentos?situacao=EM_MANUTENCAO' })}
-      ${cartaoIndicador({ rotulo: 'Solicitações pendentes', valor: cards.solicitacoesPendentes, detalhe: 'Aguardando aprovação', variante: 'info', href: '#/solicitacoes' })}
-      ${cartaoIndicador({ rotulo: 'Custos do mês', valor: cards.custosMes, detalhe: 'Eventos realizados', variante: 'neutro', href: temPermissao(app, 'indicadores.custos') ? '#/custos' : '#/relatorios' })}
-    </div>
+  const indicadores = `
+    <div class="bento">
+      <div class="bento-4 bento-ocupa-2 bento-grafico">
+        ${caixaGrafico({
+          titulo: 'Equipamentos por laboratório',
+          subtitulo: 'Ativos e calibrações vencidas em cada unidade',
+          id: 'grafico-laboratorios',
+          legenda: [{ cor: 'azul', rotulo: 'Ativos' }, { cor: 'erro', rotulo: 'Vencidos' }]
+        })}
+      </div>
+      <div class="bento-2 bento-ocupa-2">${cartaoRanking}</div>
+      ${cartaoIndicador({ rotulo: 'Calibrações vencidas', valor: cards.calibracoesVencidas, detalhe: 'Sinalizadas em aberto', variante: 'erro', href: '#/equipamentos?sinal=CALIBRACAO_VENCIDA', classe: 'bento-2', empilhar: true })}
+      ${cartaoIndicador({ rotulo: 'Calibrações a vencer', valor: cards.calibracoesAVencer, detalhe: 'Próximos 30 dias', variante: 'alerta', href: '#/equipamentos?statusCalibracao=A_VENCER', classe: 'bento-2', empilhar: true })}
+      ${cartaoIndicador({ rotulo: 'Calibrações reprovadas', valor: cards.calibracoesReprovadas, detalhe: 'Erro + U acima do CA', variante: 'erro', href: '#/equipamentos?sinal=CALIBRACAO_REPROVADA', classe: 'bento-2', empilhar: true })}
+      ${cartaoIndicador({ rotulo: 'Manutenções pendentes', valor: cards.manutencoesPendentes, detalhe: 'Preventivas agendadas', variante: 'info', href: '#/eventos?tipo=MANUTENCAO_PREVENTIVA', classe: 'bento-2', empilhar: true })}
+      ${cartaoIndicador({ rotulo: 'Equipamentos ativos', valor: cards.equipamentosAtivos, detalhe: `de ${totalEquipamentos} no escopo`, variante: 'ok', href: '#/equipamentos', classe: 'bento-2', empilhar: true })}
+      ${cartaoIndicador({ rotulo: 'Em manutenção', valor: cards.equipamentosEmManutencao, detalhe: 'Indisponíveis para uso', variante: 'alerta', href: '#/equipamentos?situacao=EM_MANUTENCAO', classe: 'bento-2', empilhar: true })}
+      ${cartaoIndicador({ rotulo: 'Solicitações pendentes', valor: cards.solicitacoesPendentes, detalhe: 'Aguardando aprovação', variante: 'info', href: '#/solicitacoes', classe: 'bento-2', empilhar: true })}
+      ${cartaoIndicador({ rotulo: 'Custos do mês', valor: cards.custosMes, detalhe: 'Eventos realizados', variante: 'neutro', href: temPermissao(app, 'indicadores.custos') ? '#/custos' : '#/relatorios', classe: 'bento-2', empilhar: true })}
+    </div>`;
 
-    ${cards.equipamentosParciais ? `<div class="aviso-inline aviso-alerta">
-      <strong>${cards.equipamentosParciais} cadastro(s) parcial(is).</strong> A base real não possui patrimônio, série, datas de aquisição/uso e valor em parte dos registros. Complete pelo cadastro do equipamento. <a href="#/equipamentos?completude=PARCIAL">Ver equipamentos</a>
-    </div>` : ''}
+  const faixa = labs.length ? `
+    <div class="faixa" data-faixa aria-label="Resumo por laboratório">
+      <div class="faixa-trilha">${faixaItems}</div>
+    </div>` : '';
 
+  const atalhos = `
+    <div class="acordeao" data-revelar>
+      <a class="acordeao-fatia" href="#/inventario">${icone('caixa')}<strong>Inventário</strong><span>Equipamentos ativos por laboratório, com situação e completude do cadastro.</span></a>
+      <a class="acordeao-fatia" href="#/relatorios">${icone('grafico')}<strong>Relatórios</strong><span>Inventário, histórico e anexos exportáveis em PDF, Excel e CSV.</span></a>
+      <a class="acordeao-fatia" href="#/agenda">${icone('calendario')}<strong>Agenda</strong><span>Calendário mensal das calibrações, verificações e manutenções programadas.</span></a>
+      <a class="acordeao-fatia" href="#/privacidade">${icone('escudo')}<strong>Privacidade</strong><span>Aviso LGPD, tratamento dos dados e saída de emergência.</span></a>
+    </div>`;
+
+  const colunas = `
     <div class="duas-colunas">
       ${secao('Alertas recentes', alertas.length ? `<ul class="lista-alertas">${alertas.map((a) => `
         <li class="alerta alerta-${esc(a.nivel.toLowerCase())}">
-          <div class="alerta-icone">${a.nivel === 'CRITICO' ? '!' : a.nivel === 'ALTO' ? '▲' : a.nivel === 'MEDIO' ? '•' : 'i'}</div>
+          <div class="alerta-icone">${icone(a.nivel === 'CRITICO' ? 'alerta' : a.nivel === 'ALTO' ? 'relogio' : a.nivel === 'MEDIO' ? 'info' : 'ok')}</div>
           <div class="alerta-corpo">
             <a class="alerta-titulo" href="${esc(a.rota)}">${esc(a.titulo)}</a>
             <span class="alerta-desc">${esc(a.descricao)}</span>
@@ -133,17 +191,28 @@ export function paginaPainel(app) {
           <span class="alerta-lab">${esc(a.laboratorioSigla ?? '')}</span>
         </li>`).join('')}</ul>` : '<p class="vazio">Nenhum alerta no momento.</p>',
         '<a class="link" href="#/equipamentos?sinal=CALIBRACAO_VENCIDA">Ver todos</a>')}
-      ${secao('Situação por laboratório', `<table class="tabela tabela-compacta"><thead><tr><th>Laboratório</th><th class="dir">Equipamentos</th><th class="dir">Ativos</th><th class="dir">Vencidos</th></tr></thead><tbody>
-        ${(resumo.porLaboratorio ?? []).map((l) => `<tr><td>${esc(l.sigla)}</td><td class="dir">${l.total}</td><td class="dir">${l.ativos}</td><td class="dir ${l.vencidas ? 'texto-erro' : ''}">${l.vencidas}</td></tr>`).join('')}
+      ${secao('Situação por laboratório', `<table class="tabela tabela-compacta"><caption class="sr-only">Situação dos equipamentos em cada laboratório</caption><thead><tr><th scope="col">Laboratório</th><th scope="col" class="num">Equipamentos</th><th scope="col" class="num">Ativos</th><th scope="col" class="num">Vencidos</th></tr></thead><tbody>
+        ${labs.map((l) => `<tr><td>${esc(l.sigla)}</td><td class="num">${l.total}</td><td class="num">${l.ativos}</td><td class="num ${l.vencidas ? 'texto-erro' : ''}">${l.vencidas}</td></tr>`).join('')}
       </tbody></table>`)}
-    </div>
-
-    <div class="grade-atalhos">
-      <a class="atalho" href="#/inventario"><strong>Inventário</strong><span>Equipamentos ativos por laboratório</span></a>
-      <a class="atalho" href="#/relatorios"><strong>Relatórios</strong><span>Histórico, anexos e exportação</span></a>
-      <a class="atalho" href="#/agenda"><strong>Agenda</strong><span>Eventos programados</span></a>
-      <a class="atalho" href="#/privacidade"><strong>Privacidade</strong><span>Aviso LGPD e seus dados</span></a>
     </div>`;
 
-  return { html, montar() {} };
+  const html = `
+    ${hero}
+    ${cards.equipamentosParciais ? `<div class="aviso-inline aviso-alerta">
+      <span>${icone('alerta')}</span>
+      <span><strong>${cards.equipamentosParciais} cadastro(s) parcial(is).</strong> A base real não possui patrimônio, série, datas de aquisição/uso e valor em parte dos registros. Complete pelo cadastro do equipamento.</span>
+      <a href="#/equipamentos?completude=PARCIAL">Ver equipamentos</a>
+    </div>` : ''}
+    ${indicadores}
+    ${faixa}
+    ${atalhos}
+    ${colunas}
+  `;
+
+  return {
+    html,
+    montar() {
+      graficoEquipamentosPorLaboratorio('#grafico-laboratorios', labs).catch((erro) => console.warn('Gráfico indisponível:', erro));
+    }
+  };
 }

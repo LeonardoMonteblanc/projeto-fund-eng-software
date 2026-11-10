@@ -176,14 +176,16 @@ export function linkEquipamento(id, tag) {
   return `<a class="link" href="#/equipamentos/${id}">${esc(tag)}</a>`;
 }
 
-export function cartaoIndicador({ rotulo, valor, detalhe = '', variante = 'neutro', href = null }) {
+export function cartaoIndicador({ rotulo, valor, detalhe = '', variante = 'neutro', href = null, empilhar = false, classe = '' }) {
   const exibicao = typeof valor === 'number' ? new Intl.NumberFormat('pt-BR').format(valor) : valor;
   const conteudo = `<div class="indicador indicador-${variante}">
     <span class="indicador-rotulo">${esc(rotulo)}</span>
     <strong class="indicador-valor">${esc(exibicao)}</strong>
     ${detalhe ? `<span class="indicador-detalhe">${esc(detalhe)}</span>` : ''}
   </div>`;
-  return href ? `<a class="indicador-link" href="${esc(href)}">${conteudo}</a>` : conteudo;
+  const marca = empilhar ? ' data-empilhar' : '';
+  if (href) return `<a class="indicador-link${classe ? ` ${classe}` : ''}" href="${esc(href)}"${marca}>${conteudo}</a>`;
+  return `<div class="${classe}${classe ? ' ' : ''}indicador-link"${marca}>${conteudo}</div>`;
 }
 
 export function secao(titulo, conteudo, acoes = '') {

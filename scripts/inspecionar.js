@@ -15,6 +15,9 @@ const LOGIN = process.argv.find((a) => a.startsWith('--login='))?.slice('--login
 const SENHA = process.argv.find((a) => a.startsWith('--senha='))?.slice('--senha='.length) ?? 'Senha@123';
 const IR_PARA = process.argv.find((a) => a.startsWith('--goto='))?.slice('--goto='.length) ?? null;
 const EXPRESSAO = process.argv.find((a) => a.startsWith('--eval='))?.slice('--eval='.length) ?? null;
+const AUDITAR = process.argv.includes('--auditar');
+const VIEWPORTS = process.argv.find((a) => a.startsWith('--viewports='))?.slice('--viewports='.length) ?? '1440x1000,834x1112,390x844';
+const ARQUIVO = process.argv.find((a) => a.startsWith('--saida='))?.slice('--saida='.length) ?? '.tmp_console.png';
 const PORTA = 9333;
 
 const perfis = [
@@ -130,12 +133,46 @@ async function principal() {
     console.log('TOASTS:', await ler('JSON.stringify([...document.querySelectorAll(".aviso")].map(a=>a.innerText))'));
   }
 
+  if (AUDITAR) {
+    const fonte = fs.readFileSync(path.resolve('node_modules/axe-core/axe.min.js'), 'utf8');
+    await ler(fonte);
+    await esperar(1200);
+    const resultado = await ler(`axe.run(document, {
+      runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'] },
+      resultTypes: ['violations']
+    }).then(r => JSON.stringify(r.violations.map(v => ({
+      id: v.id,
+      impacto: v.impact,
+      ajuda: v.help,
+      nos: v.nodes.slice(0, 5).map(n => n.target.join(' ')),
+      total: v.nodes.length
+    }))))`);
+    const violacoes = JSON.parse(resultado ?? '[]');
+    console.log('\n=== AUDITORIA AXE-CORE ===');
+    if (!violacoes.length) console.log('Nenhuma violação encontrada.');
+    for (const v of violacoes) {
+      console.log(`[${v.impacto}] ${v.id} — ${v.ajuda} (${v.total} nós)`);
+      for (const no of v.nos) console.log(`    ${no}`);
+    }
+  }
+
   const erros = cdp.eventos.filter((e) => e.method === 'Runtime.exceptionThrown' || e.method === 'Log.entryAdded' || e.method === 'Runtime.consoleAPICalled');
   console.log('\nEVENTOS DE ERRO/CONSOLE:', JSON.stringify(erros.slice(-40), null, 1).slice(0, 6000));
 
-  const screenshot = await cdp.enviar('Page.captureScreenshot', { format: 'png' });
-  fs.writeFileSync(path.resolve('.tmp_console.png'), Buffer.from(screenshot.data, 'base64'));
-  console.log('\nScreenshot: .tmp_console.png');
+  const capturas = VIEWPORTS.split(',').map((v) => {
+    const [largura, altura] = v.trim().split('x').map(Number);
+    return { largura, altura, rotulo: `${largura}x${altura}` };
+  });
+  for (const captura of capturas) {
+    await cdp.enviar('Emulation.setDeviceMetricsOverride', { width: captura.largura, height: captura.altura, deviceScaleFactor: 1, mobile: captura.largura < 600 });
+    await esperar(900);
+    const screenshot = await cdp.enviar('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
+    const destino = capturas.length > 1
+      ? path.resolve(ARQUIVO.replace(/\.png$/, `-${captura.rotulo}.png`))
+      : path.resolve(ARQUIVO);
+    fs.writeFileSync(destino, Buffer.from(screenshot.data, 'base64'));
+    console.log('Screenshot:', destino);
+  }
   ws.close();
 }
 

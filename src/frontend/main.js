@@ -11,10 +11,13 @@ import { layout, mensagemSemPermissao, telaCarregando } from './layout.js';
 import { ROTAS, parseHash, rotaEquipamento, tituloDaRota } from './router.js';
 import { paginaLogin } from './pages/session.js';
 import { paginaEquipamentoDetalhe } from './pages/equipment.js';
+import { registrarPaletaComandos } from './components/palette.js';
+import { iniciarMovimento } from './components/motion.js';
 
 const raiz = document.getElementById('app');
 let app = null;
 let ultimaRenovacao = 0;
+let paleta = null;
 
 async function render() {
   if (!app) return;
@@ -85,6 +88,10 @@ async function render() {
   raiz.innerHTML = layout(pagina.html, caminho, sessao, app);
   document.title = `${tituloDaRota(caminho)} — LabUcs`;
   pagina.montar?.();
+  paleta ??= registrarPaletaComandos(() => {
+    try { return app?.auth.sessao(); } catch { return null; }
+  });
+  iniciarMovimento();
   atualizarTempoSessao();
   document.getElementById('btn-sair')?.addEventListener('click', sair);
 }

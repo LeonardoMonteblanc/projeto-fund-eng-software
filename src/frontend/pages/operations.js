@@ -15,6 +15,7 @@ import {
 } from '../components/common.js';
 import { estadoTelas } from '../state.js';
 import { temPermissao, recarregar } from '../session-context.js';
+import { calendarioMensal, intervaloDoMes, moverMes, navegacaoDoMes } from '../components/calendar.js';
 
 export function paginaEventos(app) {
   const st = estadoTelas.eventos;
@@ -392,21 +393,32 @@ export function abrirFormularioSolicitacao(app, equipamento = null) {
 
 export function paginaAgenda(app) {
   const st = estadoTelas.agenda;
-  const de = st.de || hoje();
-  const ate = st.ate || (() => { const d = new Date(`${hoje()}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + 120); return d.toISOString().slice(0, 10); })();
-  const dados = app.painel.agenda({ de, ate, laboratorioId: st.laboratorioId || undefined });
-  const html = `
-    <div class="pagina-cabecalho">
-      <div><p class="eyebrow">RF13 · RF14</p><h1>Agenda de eventos</h1>
-      <p class="subtitulo">${dados.itens.length} evento(s) entre ${esc(fmtData(de))} e ${esc(fmtData(ate))}</p></div>
-      <div class="cabecalho-acoes">${temPermissao(app, 'eventos.registrar') ? '<a class="btn btn-primario" href="#/eventos/novo">Registrar evento</a>' : ''}</div>
-    </div>
-    ${filtrosBarra(`
-      ${campo({ nome: 'de', rotulo: 'De', tipo: 'date', valor: de, largura: 'half' })}
-      ${campo({ nome: 'ate', rotulo: 'Até', tipo: 'date', valor: ate, largura: 'half' })}
+  const mesAtual = st.mes || hoje().slice(0, 7);
+  const periodo = st.visao === 'mes'
+    ? intervaloDoMes(mesAtual)
+    : { de: st.de || hoje(), ate: st.ate || (() => { const d = new Date(`${hoje()}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + 120); return d.toISOString().slice(0, 10); })() };
+  const dados = app.painel.agenda({ de: periodo.de, ate: periodo.ate, laboratorioId: st.laboratorioId || undefined });
+
+  const alternador = `<div class="agenda-alternador" role="group" aria-label="Modo de visualização">
+    <button type="button" class="aba ${st.visao === 'mes' ? 'aba-ativa' : ''}" data-visao="mes">Calendário</button>
+    <button type="button" class="aba ${st.visao === 'lista' ? 'aba-ativa' : ''}" data-visao="lista">Lista</button>
+  </div>`;
+
+  const filtros = `<form class="filtros" data-form-filtros>
+    <div class="filtros-campos">
+      ${st.visao === 'lista' ? `
+        ${campo({ nome: 'de', rotulo: 'De', tipo: 'date', valor: periodo.de, largura: 'half' })}
+        ${campo({ nome: 'ate', rotulo: 'Até', tipo: 'date', valor: periodo.ate, largura: 'half' })}` : ''}
       ${campo({ nome: 'laboratorioId', rotulo: 'Laboratório', tipo: 'select', valor: st.laboratorioId, opcoes: opcoesLab(app, { incluirTodos: true }), largura: 'half' })}
-    `)}
-    ${tabela([
+    </div>
+    <div class="filtros-acoes">
+      <button type="submit" class="btn btn-primario">Aplicar</button>
+    </div>
+  </form>`;
+
+  const conteudo = st.visao === 'mes'
+    ? `${navegacaoDoMes(mesAtual)}${calendarioMensal({ mes: mesAtual, eventos: dados.itens, hoje: hoje() })}`
+    : tabela([
       { chave: 'dataReferencia', rotulo: 'Data', render: (l) => esc(fmtData(l.dataReferencia)) },
       { chave: 'tipoRotulo', rotulo: 'Tipo', render: (l) => esc(l.tipoRotulo) },
       { chave: 'equipamentoTag', rotulo: 'Equipamento', render: (l) => linkEquipamento(l.equipamentoId, l.equipamentoTag) },
@@ -414,15 +426,50 @@ export function paginaAgenda(app) {
       { chave: 'fornecedorNome', rotulo: 'Fornecedor', render: (l) => esc(l.fornecedorNome ?? '—') },
       { chave: 'situacaoRotulo', rotulo: 'Situação', render: (l) => badgeSituacao(l.situacao, l.situacaoRotulo) },
       { chave: 'descricao', rotulo: 'Descrição', render: (l) => esc(l.descricao ?? '—') }
-    ], dados.itens, { vazio: 'Nenhum evento programado no período.' })}
+    ], dados.itens, { vazio: 'Nenhum evento programado no período.' });
+
+  const html = `
+    <div class="pagina-cabecalho">
+      <div><p class="eyebrow">RF13 · RF14</p><h1>Agenda de eventos</h1>
+      <p class="subtitulo">${dados.itens.length} evento(s) entre ${esc(fmtData(periodo.de))} e ${esc(fmtData(periodo.ate))}</p></div>
+      <div class="cabecalho-acoes">
+        ${alternador}
+        ${temPermissao(app, 'eventos.registrar') ? '<a class="btn btn-primario" href="#/eventos/novo">Registrar evento</a>' : ''}
+      </div>
+    </div>
+    ${filtros}
+    ${conteudo}
   `;
+
   return {
     html,
     montar() {
+      document.querySelectorAll('[data-visao]').forEach((b) => b.addEventListener('click', () => {
+        st.visao = b.dataset.visao;
+        recarregar();
+      }));
+
       const form = document.querySelector('[data-form-filtros]');
       form?.addEventListener('submit', (evento) => {
         evento.preventDefault();
-        st.de = form.elements.de.value; st.ate = form.elements.ate.value; st.laboratorioId = form.elements.laboratorioId?.value ?? '';
+        if (st.visao === 'lista') {
+          st.de = form.elements.de?.value ?? '';
+          st.ate = form.elements.ate?.value ?? '';
+        }
+        st.laboratorioId = form.elements.laboratorioId?.value ?? '';
+        recarregar();
+      });
+
+      document.querySelector('[data-mes-anterior]')?.addEventListener('click', () => {
+        st.mes = moverMes(mesAtual, -1);
+        recarregar();
+      });
+      document.querySelector('[data-mes-proximo]')?.addEventListener('click', () => {
+        st.mes = moverMes(mesAtual, 1);
+        recarregar();
+      });
+      document.querySelector('[data-mes-hoje]')?.addEventListener('click', () => {
+        st.mes = hoje().slice(0, 7);
         recarregar();
       });
     }

@@ -222,18 +222,21 @@ export function marcarErros(form, erro) {
 /* Tabela e paginação                                                 */
 /* ------------------------------------------------------------------ */
 
-export function tabela(colunas, linhas, { vazio = 'Nenhum registro encontrado.', acoes = null } = {}) {
+export function tabela(colunas, linhas, { vazio = 'Nenhum registro encontrado.', acoes = null, legenda = '', rolagem = true } = {}) {
   if (!linhas.length) return `<p class="vazio">${esc(vazio)}</p>`;
-  const head = colunas.map((c) => `<th>${esc(c.rotulo)}</th>`).join('') + (acoes ? '<th class="col-acoes">Ações</th>' : '');
+  const head = colunas.map((c) => `<th scope="col"${c.alinhamento === 'direita' ? ' class="num"' : ''}>${esc(c.rotulo)}</th>`).join('')
+    + (acoes ? '<th scope="col" class="col-acoes">Ações</th>' : '');
   const body = linhas.map((linha) => {
     const tds = colunas.map((c) => {
       const valor = formatarCelula(linha[c.chave], c.tipo);
       const conteudo = c.render ? c.render(linha) : esc(valor);
-      return `<td class="${c.alinhamento === 'direita' ? 'dir' : ''}">${conteudo}</td>`;
+      return `<td${c.alinhamento === 'direita' ? ' class="num"' : ''}>${conteudo}</td>`;
     }).join('');
     return `<tr>${tds}${acoes ? `<td class="col-acoes">${acoes(linha)}</td>` : ''}</tr>`;
   }).join('');
-  return `<div class="tabela-envolucro"><table class="tabela"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+  const caption = legenda ? `<caption>${esc(legenda)}</caption>` : '';
+  const envelope = rolagem ? 'tabela-envolucro' : 'tabela-envolucro tabela-envolucro--livre';
+  return `<div class="${envelope}"><table class="tabela">${caption}<thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
 
 export function paginacao(pagina, aoMudar = 'pagina') {
