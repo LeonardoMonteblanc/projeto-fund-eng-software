@@ -12,7 +12,7 @@ import { ROTAS, parseHash, rotaEquipamento, tituloDaRota } from './router.js';
 import { paginaLogin } from './pages/session.js';
 import { paginaEquipamentoDetalhe } from './pages/equipment.js';
 import { registrarPaletaComandos } from './components/palette.js';
-import { iniciarMovimento } from './components/motion.js';
+import { iniciarMovimento } from './components/motion.js'; // UI enhancements
 
 const raiz = document.getElementById('app');
 let app = null;
