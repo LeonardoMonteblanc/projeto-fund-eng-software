@@ -1,0 +1,215 @@
+/**
+ * Global CSS - Reset + Variáveis Brutalist UCS + Utilitários
+ * Cores institucionais da Universidade de Caxias do Sul
+ */
+
+@layer reset, base, components, utilities;
+
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+  body { min-height: 100vh; background-color: var(--color-bg); color: var(--color-fg); line-height: 1.5; }
+  img, picture, video, canvas, svg { display: block; max-width: 100%; }
+  input, button, textarea, select { font: inherit; color: inherit; }
+  a { color: inherit; text-decoration: none; }
+  table { border-collapse: collapse; border-spacing: 0; }
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: var(--color-bg); border-left: 2px solid var(--color-border); }
+  ::-webkit-scrollbar-thumb { background: var(--color-border-bright); border: 2px solid var(--color-bg); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-fg-muted); }
+  ::-webkit-scrollbar-corner { background: var(--color-bg); }
+  ::selection { background-color: var(--color-accent); color: var(--color-bg); }
+}
+
+@layer base {
+  :root {
+    /* Base - Dark brutalist backgrounds with UCS navy */
+    --color-bg: #1a1a2e;
+    --color-bg-elevated: #22223b;
+    --color-bg-hover: #2a2a4a;
+    --color-bg-light: #F3F3F5;
+
+    /* Borders */
+    --color-border: #3d3d5c;
+    --color-border-bright: #4d4d7a;
+    --color-border-accent: #337ab7;
+    --color-border-ucs: #CECECE;
+
+    /* Foreground */
+    --color-fg: #f0f0f5;
+    --color-fg-muted: #8a8a9a;
+    --color-fg-dim: #6d6d8a;
+    --color-fg-dark: #393A3F;
+
+    /* UCS Brand Colors */
+    --color-accent: #337ab7;
+    --color-accent-dim: #23527c;
+    --color-accent-bg: #1a3a5c;
+    --color-accent-light: #e8f0fa;
+
+    /* Semantic */
+    --color-danger: #c0392b;
+    --color-danger-dim: #962d22;
+    --color-danger-bg: #3a1a1a;
+    --color-warning: #e67e22;
+    --color-warning-dim: #d35400;
+    --color-warning-bg: #3a2a10;
+    --color-info: #337ab7;
+    --color-info-dim: #23527c;
+    --color-info-bg: #1a3a5c;
+    --color-sucesso: #27ae60;
+    --color-sucesso-bg: #1a3a2a;
+
+    /* Status */
+    --color-critico: #c0392b;
+    --color-alto: #e67e22;
+    --color-medio: #337ab7;
+
+    /* Typography */
+    --font-mono: "IBM Plex Mono", "JetBrains Mono", "Fira Code", monospace;
+    --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-size-xs: 0.7rem;
+    --font-size-sm: 0.8rem;
+    --font-size-base: 0.9rem;
+    --font-size-lg: 1rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Spacing & Layout */
+    --spacing-unit: 8px;
+    --border-width: 2px;
+    --border-radius: 0;
+
+    /* Shadows - Brutalist offset shadows */
+    --shadow-sm: 2px 2px 0 0 #000;
+    --shadow-md: 4px 4px 0 0 #000;
+    --shadow-lg: 8px 8px 0 0 #000;
+    --shadow-accent: 4px 4px 0 0 #337ab7;
+
+    /* Transitions */
+    --transition-fast: 80ms ease;
+    --transition-base: 120ms ease;
+    --transition-slow: 200ms ease;
+
+    /* Z-index */
+    --z-dropdown: 100;
+    --z-modal: 200;
+    --z-toast: 300;
+    --z-tooltip: 400;
+  }
+}
+
+@layer utilities {
+  .flex { display: flex; }
+  .inline-flex { display: inline-flex; }
+  .block { display: block; }
+  .grid { display: grid; }
+  .hidden { display: none; }
+  .flex-col { flex-direction: column; }
+  .items-center { align-items: center; }
+  .justify-center { justify-content: center; }
+  .justify-between { justify-content: space-between; }
+  .gap-1 { gap: 8px; }
+  .gap-2 { gap: 16px; }
+  .gap-3 { gap: 24px; }
+  .gap-4 { gap: 32px; }
+  .flex-1 { flex: 1; }
+  .flex-shrink-0 { flex-shrink: 0; }
+  .p-1 { padding: 8px; }
+  .p-2 { padding: 16px; }
+  .p-3 { padding: 24px; }
+  .p-4 { padding: 32px; }
+  .px-2 { padding-left: 16px; padding-right: 16px; }
+  .px-3 { padding-left: 24px; padding-right: 24px; }
+  .py-1 { padding-top: 8px; padding-bottom: 8px; }
+  .py-2 { padding-top: 16px; padding-bottom: 16px; }
+  .m-0 { margin: 0; }
+  .mt-1 { margin-top: 8px; }
+  .mt-2 { margin-top: 16px; }
+  .mt-3 { margin-top: 24px; }
+  .mb-1 { margin-bottom: 8px; }
+  .mb-2 { margin-bottom: 16px; }
+  .mb-3 { margin-bottom: 24px; }
+  .font-mono { font-family: var(--font-mono); }
+  .font-sans { font-family: var(--font-sans); }
+  .text-xs { font-size: 0.7rem; }
+  .text-sm { font-size: 0.8rem; }
+  .text-base { font-size: 0.9rem; }
+  .text-lg { font-size: 1rem; }
+  .text-xl { font-size: 1.25rem; }
+  .text-2xl { font-size: 1.5rem; }
+  .text-3xl { font-size: 2rem; }
+  .font-normal { font-weight: 400; }
+  .font-medium { font-weight: 500; }
+  .font-semibold { font-weight: 600; }
+  .font-bold { font-weight: 700; }
+  .uppercase { text-transform: uppercase; }
+  .tracking-wide { letter-spacing: 0.05em; }
+  .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .text-fg { color: var(--color-fg); }
+  .text-muted { color: var(--color-fg-muted); }
+  .text-dim { color: var(--color-fg-dim); }
+  .text-dark { color: var(--color-fg-dark); }
+  .text-accent { color: var(--color-accent); }
+  .text-danger { color: var(--color-danger); }
+  .text-warning { color: var(--color-warning); }
+  .text-info { color: var(--color-info); }
+  .text-sucesso { color: var(--color-sucesso); }
+  .bg-bg { background-color: var(--color-bg); }
+  .bg-elevated { background-color: var(--color-bg-elevated); }
+  .bg-hover { background-color: var(--color-bg-hover); }
+  .bg-light { background-color: var(--color-bg-light); }
+  .bg-accent { background-color: var(--color-accent); }
+  .bg-accent-light { background-color: var(--color-accent-light); }
+  .bg-danger { background-color: var(--color-danger); }
+  .bg-sucesso { background-color: var(--color-sucesso); }
+  .border { border: 2px solid var(--color-border); }
+  .border-bright { border: 2px solid var(--color-border-bright); }
+  .border-accent { border: 2px solid var(--color-accent); }
+  .border-ucs { border: 2px solid var(--color-border-ucs); }
+  .border-t { border-top: 2px solid var(--color-border); }
+  .border-b { border-bottom: 2px solid var(--color-border); }
+  .rounded-none { border-radius: 0; }
+  .shadow-sm { box-shadow: var(--shadow-sm); }
+  .shadow-md { box-shadow: var(--shadow-md); }
+  .shadow-lg { box-shadow: var(--shadow-lg); }
+  .shadow-accent { box-shadow: var(--shadow-accent); }
+  .transition-fast { transition: all var(--transition-fast); }
+  .transition-base { transition: all var(--transition-base); }
+  .transition-slow { transition: all var(--transition-slow); }
+  .cursor-pointer { cursor: pointer; }
+  .cursor-not-allowed { cursor: not-allowed; }
+  .w-full { width: 100%; }
+  .h-full { height: 100%; }
+  .min-w-0 { min-width: 0; }
+  .overflow-auto { overflow: auto; }
+  .overflow-hidden { overflow: hidden; }
+  .overflow-x-auto { overflow-x: auto; }
+  .relative { position: relative; }
+  .absolute { position: absolute; }
+  .fixed { position: fixed; }
+  .sticky { position: sticky; }
+  .top-0 { top: 0; }
+  .right-0 { right: 0; }
+  .bottom-0 { bottom: 0; }
+  .left-0 { left: 0; }
+  .z-10 { z-index: 10; }
+  .z-50 { z-index: 50; }
+  .z-100 { z-index: 100; }
+}
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+.animate-spin { animation: spin 1s linear infinite; }
+.animate-pulse { animation: pulse 2s ease-in-out infinite; }
+.animate-slide-down { animation: slideDown 120ms ease; }
+
+:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-accent), 0 0 0 4px var(--color-accent-bg); }
+
+@media print { .no-print { display: none !important; } body { background: white !important; color: black !important; } }
