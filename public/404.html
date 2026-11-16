@@ -8,10 +8,11 @@
         var path = window.location.pathname;
         var search = window.location.search;
         var hash = window.location.hash;
-        if (path !== '/' && path !== '/index.html' && path !== '/404.html') {
+        var basePath = '/projeto-fund-eng-software';
+        if (path !== basePath + '/' && path !== basePath + '/index.html' && path !== basePath + '/404.html') {
           sessionStorage.setItem('spa-redirect', path + search + hash);
         }
-        window.location.href = '/' + search + hash;
+        window.location.href = basePath + '/' + search + hash;
       })();
     </script>
   </head>
