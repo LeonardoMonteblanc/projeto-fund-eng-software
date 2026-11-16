@@ -1,6 +1,7 @@
 /**
- * Global CSS - Reset + Variáveis Brutalist UCS + Utilitários
- * Cores institucionais da Universidade de Caxias do Sul
+ * Global CSS - Reset + Variáveis Light Mode UCS + Utilitários
+ * Baseado no site institucional da UCS (https://www.ucs.br/site)
+ * Tema claro com azul institucional UCS
  */
 
 @layer reset, base, components, utilities;
@@ -8,66 +9,73 @@
 @layer reset {
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
-  body { min-height: 100vh; background-color: var(--color-bg); color: var(--color-fg); line-height: 1.5; }
+  body { min-height: 100vh; background-color: var(--color-bg); color: var(--color-fg); line-height: 1.5; font-family: var(--font-sans); }
   img, picture, video, canvas, svg { display: block; max-width: 100%; }
   input, button, textarea, select { font: inherit; color: inherit; }
-  a { color: inherit; text-decoration: none; }
+  a { color: var(--color-accent); text-decoration: none; }
+  a:hover { color: var(--color-accent-dim); text-decoration: underline; }
   table { border-collapse: collapse; border-spacing: 0; }
-  ::-webkit-scrollbar { width: 12px; height: 12px; }
-  ::-webkit-scrollbar-track { background: var(--color-bg); border-left: 2px solid var(--color-border); }
-  ::-webkit-scrollbar-thumb { background: var(--color-border-bright); border: 2px solid var(--color-bg); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--color-bg-section); }
+  ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 0; }
   ::-webkit-scrollbar-thumb:hover { background: var(--color-fg-muted); }
-  ::-webkit-scrollbar-corner { background: var(--color-bg); }
-  ::selection { background-color: var(--color-accent); color: var(--color-bg); }
+  ::-webkit-scrollbar-corner { background: var(--color-bg-section); }
+  ::selection { background-color: var(--color-accent); color: var(--color-fg-on-blue); }
 }
 
 @layer base {
   :root {
-    /* Base - Dark brutalist backgrounds with UCS navy */
-    --color-bg: #1a1a2e;
-    --color-bg-elevated: #22223b;
-    --color-bg-hover: #2a2a4a;
-    --color-bg-light: #F3F3F5;
+    /* Base - Light backgrounds (UCS style) */
+    --color-bg: #FFFFFF;
+    --color-bg-elevated: #FFFFFF;
+    --color-bg-hover: #F3F3F5;
+    --color-bg-section: #F3F3F5;
+    --color-bg-footer: #000000;
+    --color-bg-footer-main: #FFFFFF;
 
     /* Borders */
-    --color-border: #3d3d5c;
-    --color-border-bright: #4d4d7a;
-    --color-border-accent: #337ab7;
-    --color-border-ucs: #CECECE;
+    --color-border: #CECECE;
+    --color-border-bright: #CECECE;
+    --color-border-accent: #337AB7;
+    --color-border-input: #CCCCCC;
 
-    /* Foreground */
-    --color-fg: #f0f0f5;
-    --color-fg-muted: #8a8a9a;
-    --color-fg-dim: #6d6d8a;
-    --color-fg-dark: #393A3F;
+    /* Foreground - Dark text on light */
+    --color-fg: #393A3F;
+    --color-fg-muted: #6D6E71;
+    --color-fg-dim: #808285;
+    --color-fg-light: #58585A;
+    --color-fg-on-dark: #FFFFFF;
+    --color-fg-on-blue: #FFFFFF;
 
     /* UCS Brand Colors */
-    --color-accent: #337ab7;
-    --color-accent-dim: #23527c;
-    --color-accent-bg: #1a3a5c;
-    --color-accent-light: #e8f0fa;
+    --color-accent: #337AB7;
+    --color-accent-dim: #23527C;
+    --color-accent-bg: #E8F0FA;
+    --color-accent-light: #D6E9F8;
 
     /* Semantic */
-    --color-danger: #c0392b;
-    --color-danger-dim: #962d22;
-    --color-danger-bg: #3a1a1a;
-    --color-warning: #e67e22;
-    --color-warning-dim: #d35400;
-    --color-warning-bg: #3a2a10;
-    --color-info: #337ab7;
-    --color-info-dim: #23527c;
-    --color-info-bg: #1a3a5c;
-    --color-sucesso: #27ae60;
-    --color-sucesso-bg: #1a3a2a;
+    --color-danger: #C0392B;
+    --color-danger-dim: #962D22;
+    --color-danger-bg: #FDEDEC;
+    --color-warning: #E67E22;
+    --color-warning-dim: #D35400;
+    --color-warning-bg: #FEF5E7;
+    --color-info: #337AB7;
+    --color-info-dim: #23527C;
+    --color-info-bg: #E8F0FA;
+    --color-sucesso: #27AE60;
+    --color-sucesso-dim: #1E8A49;
+    --color-sucesso-bg: #E8F8EF;
 
     /* Status */
-    --color-critico: #c0392b;
-    --color-alto: #e67e22;
-    --color-medio: #337ab7;
+    --color-critico: #C0392B;
+    --color-alto: #E67E22;
+    --color-medio: #337AB7;
+    --color-pendente: #F39C12;
 
-    /* Typography */
+    /* Typography - UCS uses Roboto */
     --font-mono: "IBM Plex Mono", "JetBrains Mono", "Fira Code", monospace;
-    --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-sans: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --font-size-xs: 0.7rem;
     --font-size-sm: 0.8rem;
     --font-size-base: 0.9rem;
@@ -85,11 +93,11 @@
     --border-width: 2px;
     --border-radius: 0;
 
-    /* Shadows - Brutalist offset shadows */
-    --shadow-sm: 2px 2px 0 0 #000;
-    --shadow-md: 4px 4px 0 0 #000;
-    --shadow-lg: 8px 8px 0 0 #000;
-    --shadow-accent: 4px 4px 0 0 #337ab7;
+    /* Shadows - Subtle for light mode */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+    --shadow-accent: 0 4px 12px rgba(51,122,183,0.3);
 
     /* Transitions */
     --transition-fast: 80ms ease;
@@ -154,7 +162,8 @@
   .text-fg { color: var(--color-fg); }
   .text-muted { color: var(--color-fg-muted); }
   .text-dim { color: var(--color-fg-dim); }
-  .text-dark { color: var(--color-fg-dark); }
+  .text-light { color: var(--color-fg-light); }
+  .text-on-dark { color: var(--color-fg-on-dark); }
   .text-accent { color: var(--color-accent); }
   .text-danger { color: var(--color-danger); }
   .text-warning { color: var(--color-warning); }
@@ -163,15 +172,20 @@
   .bg-bg { background-color: var(--color-bg); }
   .bg-elevated { background-color: var(--color-bg-elevated); }
   .bg-hover { background-color: var(--color-bg-hover); }
-  .bg-light { background-color: var(--color-bg-light); }
+  .bg-section { background-color: var(--color-bg-section); }
+  .bg-footer { background-color: var(--color-bg-footer); }
   .bg-accent { background-color: var(--color-accent); }
-  .bg-accent-light { background-color: var(--color-accent-light); }
+  .bg-accent-bg { background-color: var(--color-accent-bg); }
   .bg-danger { background-color: var(--color-danger); }
+  .bg-danger-bg { background-color: var(--color-danger-bg); }
+  .bg-warning { background-color: var(--color-warning); }
+  .bg-warning-bg { background-color: var(--color-warning-bg); }
   .bg-sucesso { background-color: var(--color-sucesso); }
+  .bg-sucesso-bg { background-color: var(--color-sucesso-bg); }
   .border { border: 2px solid var(--color-border); }
   .border-bright { border: 2px solid var(--color-border-bright); }
   .border-accent { border: 2px solid var(--color-accent); }
-  .border-ucs { border: 2px solid var(--color-border-ucs); }
+  .border-input { border: 2px solid var(--color-border-input); }
   .border-t { border-top: 2px solid var(--color-border); }
   .border-b { border-bottom: 2px solid var(--color-border); }
   .rounded-none { border-radius: 0; }
