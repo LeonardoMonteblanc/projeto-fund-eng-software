@@ -324,9 +324,9 @@ export function EquipamentosPage() {
         </div>
       </div>
 
-      <Card>
+      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
         <CardHeader title="Filtros" />
-        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end' }}>
+        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Input placeholder="Buscar (patrimônio, TAG, nº série, item, lab...)" value={filtroTexto} onChange={e => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
           <Select label="Laboratório" value={filtroLab} onChange={e => setFiltroLab(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, ...labs.map(l => ({ value: l.id, label: `${l.sigla} - ${l.nome}` }))]} fullWidth />
           <Select label="Situação" value={filtroSituacao} onChange={e => setFiltroSituacao(e.target.value)} options={[{ value: 'todas', label: 'Todas' }, ...Object.entries(SITUACOES_EQUIPAMENTO).map(([k, v]) => ({ value: v, label: k }))]} />
@@ -334,11 +334,11 @@ export function EquipamentosPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
         <CardContent style={{ overflow: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-size-sm)' }}>
             <thead>
-              <tr style={{ backgroundColor: 'var(--color-bg-section)', borderBottom: '2px solid var(--color-border)' }}>
+              <tr style={{ backgroundColor: 'var(--color-bg-section)', borderBottom: '1px solid var(--color-border)' }}>
                 {table.getHeaderGroups().map(headerGroup => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map(header => (
@@ -372,7 +372,7 @@ export function EquipamentosPage() {
             </tbody>
           </table>
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: spaceRem(3), flexWrap: 'wrap', gap: spaceRem(2) }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: spaceRem(3), flexWrap: 'wrap', gap: spaceRem(2), borderTop: '1px solid var(--color-border)', marginTop: spaceRem(2) }}>
             <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fgMuted)' }}>
               Mostrando {pagination.pageIndex * pagination.pageSize + 1} a {Math.min((pagination.pageIndex + 1) * pagination.pageSize, totalRegistros)} de {totalRegistros}
             </span>
@@ -385,8 +385,8 @@ export function EquipamentosPage() {
       </Card>
 
       {modalAberto && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: '12px', width: '100%', maxWidth: '700px', maxHeight: '90vh', overflow: 'auto' }} onClick={e => e.stopPropagation()}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: '10px', width: '100%', maxWidth: '700px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>{editando ? 'Editar Equipamento' : 'Novo Equipamento'}</h2>
               <Button variant="ghost" size="sm" onClick={fecharModal}><ChevronDown size={20} /></Button>
@@ -419,8 +419,8 @@ export function EquipamentosPage() {
       )}
 
       {visualizando && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setVisualizando(null)}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: '12px', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflow: 'auto' }} onClick={e => e.stopPropagation()}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setVisualizando(null)}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: '10px', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2) }}>
                 <Box size={24} style={{ color: 'var(--color-accent)' }} />
