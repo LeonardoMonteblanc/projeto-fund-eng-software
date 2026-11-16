@@ -1,32 +1,28 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light" />
-  <meta name="theme-color" content="#1d4975" />
-  <meta name="description" content="LabUcs — gestão de equipamentos laboratoriais da UCS: calibrações, verificações, manutenções, custos e auditoria. POC acadêmica, 100% estática." />
-  <title>LabUcs — Gestão de Equipamentos Laboratoriais | UCS</title>
-  <link rel="stylesheet" href="./src/frontend/styles.css" />
-  <link rel="icon" type="image/png" href="./src/frontend/assets/logo-ucs-simbolo.png" />
-  <link rel="preload" href="./src/frontend/assets/fontes/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-</head>
-<body>
-  <div id="app">
-    <div class="ucs-boot">
-      <img src="./src/frontend/assets/logo-ucs-branco.png" alt="Universidade de Caxias do Sul" />
-      <strong>LabUcs</strong>
-      <p>Carregando…</p>
-      <div class="ucs-boot-barra"><span></span></div>
-      <small>Universidade de Caxias do Sul • POC estática</small>
-    </div>
-  </div>
-  <noscript>
-    <div class="ucs-estado-vazio">
-      <h3>JavaScript é necessário</h3>
-      <p>O LabUcs executa integralmente no navegador e requer JavaScript habilitado.</p>
-    </div>
-  </noscript>
-  <script type="module" src="./src/frontend/main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="description" content="LabUcs — Gestão de equipamentos laboratoriais (Demo POC)" />
+    <title>LabUcs — Gestão de Equipamentos Laboratoriais</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script>
+      (function () {
+        var redirect = sessionStorage.getItem('spa-redirect');
+        if (redirect) {
+          sessionStorage.removeItem('spa-redirect');
+          window.history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
