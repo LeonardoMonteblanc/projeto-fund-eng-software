@@ -3,7 +3,7 @@
  */
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useFuncionalidades } from '@/features/auth/store';
+import { useFuncionalidades, useUser } from '@/features/auth/store';
 import { getDB } from '@/shared/db';
 import type { Equipamento, Item, Categoria, Subcategoria } from '@/shared/domain';
 import { Card, CardHeader, CardContent, StatusBadge, Button, Input, Select, spaceRem } from '@/shared/ui/components';
@@ -51,9 +51,10 @@ const formVazio = (): FormEstado => ({
 });
 
 export function ItensPage() {
+  const user = useUser();
   const funcionalidades = useFuncionalidades();
-  const podeGerenciar = funcionalidades.some((f) => f.acessivel && ['itens.gerenciar', 'itens.consultar'].includes(f.codigo));
-  const podeGerenciarCatalogo = funcionalidades.some((f) => f.acessivel && f.codigo === 'F03');
+  const podeGerenciar = user?.perfil === 'GESTOR_LAB';
+  const podeGerenciarCatalogo = user?.perfil === 'GESTOR_LAB' || user?.perfil === 'GESTOR_GERAL' || user?.perfil === 'ADMIN';
 
   const [itens, setItens] = useState<ItemCompleto[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -363,12 +364,15 @@ export function ItensPage() {
 
           <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
             <CardContent style={{ overflow: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-size-sm)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-size-sm)', tableLayout: 'fixed' }}>
+                <colgroup>
+                  {table.getAllLeafColumns().map(col => <col key={col.id} style={{ width: col.getSize() }} />)}
+                </colgroup>
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id} style={{ backgroundColor: 'var(--color-bg-section)', borderBottom: '1px solid var(--color-border)' }}>
                       {headerGroup.headers.map((header) => (
-                        <th key={header.id} style={{ padding: '10px 12px', textAlign: 'left', fontWeight: 600, color: 'var(--color-fg)', whiteSpace: 'nowrap', cursor: header.column.getCanSort() ? 'pointer' : 'default', userSelect: 'none' }} onClick={header.column.getToggleSortingHandler()}>
+                        <th key={header.id} style={{ padding: '10px 12px', textAlign: 'left', fontWeight: 600, color: 'var(--color-fg)', whiteSpace: 'nowrap', overflow: 'hidden', cursor: header.column.getCanSort() ? 'pointer' : 'default', userSelect: 'none' }} onClick={header.column.getToggleSortingHandler()}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                             {flexRender(header.column.columnDef.header, header.getContext())}
                             {header.column.getIsSorted() === 'asc' && <ChevronDown size={12} style={{ transform: 'rotate(-180deg)' }} />}
@@ -386,7 +390,7 @@ export function ItensPage() {
                     table.getRowModel().rows.map((row) => (
                       <tr key={row.id} style={{ borderBottom: '1px solid var(--color-border)', transition: 'background 0.1s' }}>
                         {row.getVisibleCells().map((cell) => (
-                          <td key={cell.id} style={{ padding: '10px 12px', verticalAlign: 'middle' }}>
+                          <td key={cell.id} style={{ padding: '10px 12px', verticalAlign: 'middle', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                           </td>
                         ))}

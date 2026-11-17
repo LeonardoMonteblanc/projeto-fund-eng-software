@@ -14,8 +14,8 @@ export function Header() {
   const modulos = funcionalidades.filter((f) => f.acessivel && f.rota && f.rota !== '/');
 
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: '64px', padding: `8px ${spaceRem(4)}`, backgroundColor: 'var(--color-bg-elevated)', borderBottom: '1px solid var(--color-border)', gap: spaceRem(3), flexWrap: 'wrap' }}>
-      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), textDecoration: 'none', color: 'var(--color-fg)' }} aria-label="LabUcs - Página inicial">
+    <header style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', minHeight: '64px', padding: `8px ${spaceRem(4)}`, backgroundColor: 'var(--color-bg-elevated)', borderBottom: '1px solid var(--color-border)', gap: spaceRem(3), flexWrap: 'nowrap', overflow: 'hidden' }}>
+      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), textDecoration: 'none', color: 'var(--color-fg)', flexShrink: 0 }} aria-label="LabUcs - Página inicial">
         <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-accent-bg)', border: '1px solid var(--color-accent)', borderRadius: '8px' }}>
           <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="4" fill="var(--color-bg)" stroke="var(--color-accent)" strokeWidth="2"/><path d="M8 16L14 22L24 10" stroke="var(--color-accent)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </div>
@@ -23,7 +23,7 @@ export function Header() {
       </Link>
 
       {autenticado && (
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '2px', flex: 1, minWidth: 0, overflowX: 'auto', whiteSpace: 'nowrap' }} aria-label="Navegação principal">
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '2px', flex: 1, minWidth: 0, overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap', scrollbarWidth: 'thin', paddingBottom: '2px' }} aria-label="Navegação principal">
           <NavLink to="/" end style={({ isActive }) => navStyle(isActive)}>Painel</NavLink>
           {modulos.map((m) => (
             <NavLink key={m.codigo} to={m.rota} title={m.descricao} style={({ isActive }) => navStyle(isActive)}>{m.nome}</NavLink>
@@ -31,7 +31,7 @@ export function Header() {
         </nav>
       )}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginLeft: 'auto' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), flexShrink: 0 }}>
         <ProfileSwitcher />
       </div>
     </header>

@@ -1,11 +1,14 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useFuncionalidades } from '@/features/auth/store';
+import { useFuncionalidades, useUser } from '@/features/auth/store';
 import { getDB, getAll, put, deleteById, putAll } from '@/shared/db';
 import { calcularMetricas, equipamentoAtivo } from '@/shared/metrology';
 import { SITUACOES_EQUIPAMENTO, TIPOS_EVENTO, SITUACOES_EVENTO, type Equipamento, type Evento, type Laboratorio, type Item } from '@/shared/domain';
 import { resumirPorSituacao as resumir } from '@/shared/metrology';
 import { Card, CardHeader, CardContent, Badge, StatusBadge, Button, Input, Select, spaceRem } from '@/shared/ui/components';
 import { formatarDataBR, centavosParaReais, gerarULID, gerarTAG, gerarNumeroSerie, reaisParaCentavos, somarMeses, hojeISO, formatISO } from '@/shared/utils';
+import { baixarCSV } from '@/shared/exportar';
+import { registrarLog } from '@/shared/audit';
+import { getDB as getDBFn } from '@/shared/db';
 import { Search, Plus, Filter, ChevronDown, Download, Upload, Edit, Trash2, Eye, AlertTriangle, AlertCircle, Clock, Box, Tag, ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -44,8 +47,9 @@ const columnHelper = createColumnHelper<EquipamentoCompleto>();
 
 export function EquipamentosPage() {
   const navigate = useNavigate();
+  const user = useUser();
   const funcionalidades = useFuncionalidades();
-  const podeGerenciar = funcionalidades.some(f => f.acessivel && ['equipamentos.gerenciar', 'equipamentos.consultar'].includes(f.codigo));
+  const podeGerenciar = user?.perfil === 'GESTOR_LAB' || user?.perfil === 'GESTOR_GERAL';
 
   const [equipamentos, setEquipamentos] = useState<EquipamentoCompleto[]>([]);
   const [itens, setItens] = useState<Item[]>([]);
@@ -56,7 +60,7 @@ export function EquipamentosPage() {
   const [filtroLab, setFiltroLab] = useState<string>('todos');
   const [filtroSituacao, setFiltroSituacao] = useState<string>('todas');
   const [filtroMetrologia, setFiltroMetrologia] = useState<string>('todas');
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([{ id: 'patrimonio', desc: true }]);
   const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 20 });
   const [modalAberto, setModalAberto] = useState(false);
   const [editando, setEditando] = useState<EquipamentoCompleto | null>(null);
@@ -260,6 +264,27 @@ export function EquipamentosPage() {
   const totalRegistros = dadosFiltrados.length;
   const resumo = resumir(equipamentos as Array<{ situacao: string }>);
 
+  async function exportarCSV() {
+    const linhas = dadosFiltrados.map((eq) => ({
+      'Laboratório': eq.laboratorio?.sigla ?? '',
+      'Patrimônio': eq.patrimonio,
+      'TAG': eq.tag,
+      'Nº Série': eq.numeroSerie,
+      'Item': eq.item?.nome ?? '',
+      'Fabricante': eq.item?.fabricante ?? '',
+      'Modelo': eq.item?.modelo ?? '',
+      'Localização': eq.localizacao,
+      'Situação': eq.situacao,
+      'Situação Metrológica': eq.situacaoMetrologica ?? '',
+      'Próx. Calibração': eq.proximaCalibracao ?? '',
+      'Próx. Verificação': eq.proximaVerificacao ?? '',
+      'Valor Aquisição': eq.valorAquisicaoCentavos ? centavosParaReais(eq.valorAquisicaoCentavos) : '',
+    }));
+    baixarCSV('labucs-equipamentos.csv', linhas);
+    const db = await getDBFn();
+    await registrarLog(db, { tabela: 'equipamentos', registroId: 'exportacao', acao: 'EXPORTAR', dadosNovos: { totalLinhas: linhas.length } });
+  }
+
   async function salvarEquipamento() {
     if (!form.patrimonio || !form.tag || !form.laboratorioId || !form.itemId) return;
     setSalvando(true);
@@ -320,7 +345,7 @@ export function EquipamentosPage() {
         </div>
         <div style={{ display: 'flex', gap: spaceRem(2), flexWrap: 'wrap' }}>
           {podeGerenciar && <Button onClick={() => { setEditando(null); setForm({ patrimonio: '', tag: '', numeroSerie: '', laboratorioId: labs[0]?.id || '', itemId: itens[0]?.id || '', localizacao: '', dataAquisicao: '', dataColocacaoUso: '', valorAquisicaoCentavos: '', caCalibracao: '', caVerificacao: '', periodicidadeCalibracaoMeses: '', periodicidadeVerificacaoMeses: '', periodicidadeManutencaoPreventivaMeses: '', situacao: 'ATIVO' }); setModalAberto(true); }} leftIcon={<Plus size={16} />}>Novo Equipamento</Button>}
-          <Button variant="outline" leftIcon={<Download size={16} />}>Exportar CSV</Button>
+          <Button variant="outline" leftIcon={<Download size={16} />} onClick={exportarCSV}>Exportar CSV</Button>
         </div>
       </div>
 
@@ -336,24 +361,25 @@ export function EquipamentosPage() {
 
       <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
         <CardContent style={{ overflow: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-size-sm)' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-size-sm)', tableLayout: 'fixed' }}>
+            <colgroup>
+              {table.getAllLeafColumns().map(col => <col key={col.id} style={{ width: col.getSize() }} />)}
+            </colgroup>
             <thead>
-              <tr style={{ backgroundColor: 'var(--color-bg-section)', borderBottom: '1px solid var(--color-border)' }}>
-                {table.getHeaderGroups().map(headerGroup => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map(header => (
-                      <th key={header.id} style={{ padding: '10px 12px', textAlign: 'left', fontWeight: 600, color: 'var(--color-fg)', whiteSpace: 'nowrap', cursor: header.column.getCanSort() ? 'pointer' : 'default', userSelect: 'none' }}
-                        onClick={header.column.getToggleSortingHandler()}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          {flexRender(header.column.columnDef.header, header.getContext())}
-                          {header.column.getIsSorted() === 'asc' && <ChevronDown size={12} style={{ transform: 'rotate(-180deg)' }} />}
-                          {header.column.getIsSorted() === 'desc' && <ChevronDown size={12} />}
-                        </div>
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </tr>
+              {table.getHeaderGroups().map(headerGroup => (
+                <tr key={headerGroup.id} style={{ backgroundColor: 'var(--color-bg-section)', borderBottom: '1px solid var(--color-border)' }}>
+                  {headerGroup.headers.map(header => (
+                    <th key={header.id} style={{ padding: '10px 12px', textAlign: 'left', fontWeight: 600, color: 'var(--color-fg)', whiteSpace: 'nowrap', overflow: 'hidden', cursor: header.column.getCanSort() ? 'pointer' : 'default', userSelect: 'none' }}
+                      onClick={header.column.getToggleSortingHandler()}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {header.column.getIsSorted() === 'asc' && <ChevronDown size={12} style={{ transform: 'rotate(-180deg)' }} />}
+                        {header.column.getIsSorted() === 'desc' && <ChevronDown size={12} />}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
             </thead>
             <tbody>
               {table.getRowModel().rows.length === 0 ? (
@@ -362,7 +388,7 @@ export function EquipamentosPage() {
                 table.getRowModel().rows.map(row => (
                   <tr key={row.id} style={{ borderBottom: '1px solid var(--color-border)', transition: 'background 0.1s' }}>
                     {row.getVisibleCells().map(cell => (
-                      <td key={cell.id} style={{ padding: '10px 12px', verticalAlign: 'middle' }}>
+                      <td key={cell.id} style={{ padding: '10px 12px', verticalAlign: 'middle', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>
                     ))}
