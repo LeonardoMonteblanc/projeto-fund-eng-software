@@ -46,7 +46,7 @@ export function ProfileSwitcher() {
       </button>
 
       {aberto && (
-        <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, zIndex: 200, minWidth: '320px', animation: 'slideDown 120ms ease' }}>
+        <div className="dropdown-perfil" style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, zIndex: 200, minWidth: '320px', animation: 'slideDown 120ms ease' }}>
           <div style={{ backgroundColor: 'var(--color-bgElevated)', border: '2px solid var(--color-border)', overflow: 'hidden' }}>
             <div style={{ padding: '12px', borderBottom: '2px solid var(--color-border)', backgroundColor: 'var(--color-bg)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

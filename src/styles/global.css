@@ -268,3 +268,65 @@
 :focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
 
 @media print { .no-print { display: none !important; } body { background: white !important; color: black !important; } }
+
+/* ------------------------------------------------------------------ */
+/* Responsividade mobile (ajustes visuais apenas; nenhuma funcionalidade
+   é alterada — os mesmos componentes e fluxos continuam ativos).      */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+  /* Empilha grades de duas colunas (painel, agenda) */
+  .grade-empilhada { grid-template-columns: 1fr !important; }
+  .grade-empilhada > * { min-width: 0 !important; }
+
+  /* Login: marca e cartão empilhados */
+  .login-grade { grid-template-columns: 1fr !important; gap: 24px !important; }
+
+  /* Formulários em grade de 2 colunas passam a 1 coluna */
+  .grade-formulario { grid-template-columns: 1fr !important; }
+  .grade-formulario > * { grid-column: 1 / -1 !important; }
+
+  /* Faixa de título das páginas */
+  .faixa-pagina { padding: 18px 16px !important; }
+  .faixa-pagina h1 { font-size: 1.4rem !important; }
+
+  /* Topo institucional */
+  .topo-institucional-inner { padding: 8px 12px !important; gap: 10px !important; }
+  .ucs-logo-topo { width: 150px !important; max-width: 40vw !important; }
+  .topo-usuario-info { display: none !important; }
+  .topo-assinatura { padding-left: 10px !important; }
+  .topo-assinatura strong { font-size: 14px !important; }
+
+  /* Navegação azul: itens menores, rolagem horizontal preservada */
+  .appnav-container { display: flex !important; grid-template-columns: none !important; }
+  .appnav-item { min-height: 40px !important; padding: 8px 10px !important; font-size: 10px !important; flex: 0 0 auto !important; }
+
+  /* Conteúdo principal */
+  .conteudo-principal { padding: 16px 12px 32px !important; }
+
+  /* Painel: hero */
+  .painel-hero-responsivo { padding: 20px 16px !important; }
+
+  /* Dropdown de perfil vira folha fixa */
+  .dropdown-perfil { position: fixed !important; top: 8px !important; left: 8px !important; right: 8px !important; min-width: 0 !important; max-height: calc(100vh - 16px) !important; overflow: auto !important; }
+
+  /* Overlays de modal ocupam mais área útil */
+  .overlay-modal { padding: 12px !important; }
+
+  /* Cartões de listagem */
+  .grade-cartoes { grid-template-columns: 1fr !important; }
+
+  /* KPIs */
+  .grade-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+
+  /* Filtros */
+  .filtros-campos-resp { gap: 8px !important; }
+  .filtros-campos-resp > div { min-width: 100% !important; }
+}
+
+@media (max-width: 480px) {
+  .grade-kpis { grid-template-columns: 1fr !important; }
+  .faixa-pagina h1 { font-size: 1.2rem !important; }
+  .ucs-logo-topo { width: 120px !important; }
+  .topo-assinatura span { display: none !important; }
+}

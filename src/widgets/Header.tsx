@@ -29,17 +29,17 @@ export function Header() {
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 100 }}>
       <div style={{ background: 'var(--color-cinza-topo)', color: 'var(--color-fg-on-dark)', borderBottom: '4px solid var(--color-accent)' }}>
-        <div style={{ maxWidth: '1600px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '18px', minHeight: '64px', padding: '8px 24px', flexWrap: 'wrap' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', flex: '0 0 auto' }}>
-            <img src={(import.meta as any).env?.BASE_URL + 'assets/logo-ucs-branco.png'} alt="UCS" style={{ width: '220px', maxWidth: '40vw', height: 'auto', display: 'block' }} />
+        <div className="topo-institucional-inner" style={{ maxWidth: '1600px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '18px', minHeight: '64px', padding: '8px 24px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', flex: '0 0 auto', minWidth: 0 }}>
+            <img className="ucs-logo-topo" src={(import.meta as any).env?.BASE_URL + 'assets/logo-ucs-branco.png'} alt="UCS" style={{ width: '220px', maxWidth: '40vw', height: 'auto', display: 'block' }} />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '18px', borderLeft: '2px solid rgba(255,255,255,0.35)' }}>
+          <div className="topo-assinatura" style={{ display: 'flex', flexDirection: 'column', paddingLeft: '18px', borderLeft: '2px solid rgba(255,255,255,0.35)', minWidth: 0 }}>
             <strong style={{ fontSize: '18px', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#FFFFFF', fontWeight: 600 }}>LabUcs</strong>
             <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#CFD6DE' }}>Gestão de Equipamentos Laboratoriais</span>
           </div>
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
             {autenticado && perfil && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '9px', paddingRight: '16px', borderRight: '2px solid rgba(255,255,255,0.25)', color: '#FFFFFF' }}>
+              <div className="topo-usuario-info" style={{ display: 'flex', alignItems: 'center', gap: '9px', paddingRight: '16px', borderRight: '2px solid rgba(255,255,255,0.25)', color: '#FFFFFF' }}>
                 <div style={{ width: '34px', height: '34px', display: 'grid', placeItems: 'center', background: 'var(--color-accent)', color: '#FFFFFF', fontSize: '12px', fontWeight: 700, flexShrink: 0 }}>
                   {(PERFIL_ROTULO[perfil as keyof typeof PERFIL_ROTULO] ?? '?').charAt(0)}
                 </div>
@@ -56,10 +56,10 @@ export function Header() {
 
       {autenticado && (
         <nav style={{ background: 'var(--color-accent)', borderBottom: '4px solid var(--color-rosa)' }} aria-label="Navegação principal">
-          <div style={{ maxWidth: '1600px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(6, minmax(0, 1fr))', alignItems: 'stretch', overflowX: 'auto' }}>
-            <NavLink to="/" end style={({ isActive }) => navItemStyle(isActive)}>Painel</NavLink>
+          <div className="appnav-container" style={{ maxWidth: '1600px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(6, minmax(0, 1fr))', alignItems: 'stretch', overflowX: 'auto' }}>
+            <NavLink to="/" end className="appnav-item" style={({ isActive }) => navItemStyle(isActive)}>Painel</NavLink>
             {modulos.map((m) => (
-              <NavLink key={m.codigo} to={m.rota} title={m.descricao} style={({ isActive }) => navItemStyle(isActive)}>{m.nome}</NavLink>
+              <NavLink key={m.codigo} to={m.rota} title={m.descricao} className="appnav-item" style={({ isActive }) => navItemStyle(isActive)}>{m.nome}</NavLink>
             ))}
           </div>
         </nav>

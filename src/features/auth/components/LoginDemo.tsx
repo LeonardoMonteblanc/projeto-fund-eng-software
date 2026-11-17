@@ -41,7 +41,7 @@ export function LoginDemo() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: '34px 16px', backgroundColor: 'var(--color-accent)', fontFamily: 'var(--font-sans)' }}>
-      <div style={{ width: 'min(1080px, 100%)', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '38px', alignItems: 'center' }}>
+      <div className="login-grade" style={{ width: 'min(1080px, 100%)', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '38px', alignItems: 'center' }}>
         <div style={{ color: '#FFFFFF', minWidth: 0 }}>
           <div style={{ fontSize: '13px', letterSpacing: '0.22em', fontWeight: 700, textTransform: 'uppercase', color: 'var(--color-rosa)' }}>LabUcs</div>
           <h1 style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(28px, 3.3vw, 42px)', margin: '14px 0', color: '#FFFFFF', maxWidth: '560px', textTransform: 'none', fontWeight: 300, lineHeight: 1.2 }}>Gestão de Equipamentos Laboratoriais</h1>

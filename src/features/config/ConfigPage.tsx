@@ -67,7 +67,7 @@ export function ConfigPage() {
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Parâmetros Gerais" />
         <CardContent>
-          <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
+          <form onSubmit={handleSubmit} className="grade-formulario" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
             <Input label="Nome do Sistema" value={config.nomeSistema} onChange={(e) => setConfig({ ...config, nomeSistema: e.target.value })} fullWidth style={{ gridColumn: '1 / -1' }} />
             <Input label="Dias de Alerta de Vencimento" type="number" min={1} value={config.diasAlertaVencimento} onChange={(e) => setConfig({ ...config, diasAlertaVencimento: Number(e.target.value) || 30 })} fullWidth />
             <Input label="Timeout de Sessão (minutos)" type="number" min={1} value={config.timeoutSessaoMinutos} onChange={(e) => setConfig({ ...config, timeoutSessaoMinutos: Number(e.target.value) || 30 })} fullWidth />

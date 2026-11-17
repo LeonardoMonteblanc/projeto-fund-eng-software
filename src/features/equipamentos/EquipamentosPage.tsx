@@ -410,14 +410,14 @@ export function EquipamentosPage() {
       </Card>
 
       {modalAberto && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
+        <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
           <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '700px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>{editando ? 'Editar Equipamento' : 'Novo Equipamento'}</h2>
               <Button variant="ghost" size="sm" onClick={fecharModal}><ChevronDown size={20} /></Button>
             </div>
             <form onSubmit={e => { e.preventDefault(); salvarEquipamento(); }} style={{ padding: spaceRem(3) }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
+              <div className="grade-formulario" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
                 <Input label="Patrimônio" value={form.patrimonio} onChange={e => setForm({ ...form, patrimonio: e.target.value })} required fullWidth />
                 <Input label="TAG" value={form.tag} onChange={e => setForm({ ...form, tag: e.target.value })} required fullWidth />
                 <Input label="Nº Série" value={form.numeroSerie} onChange={e => setForm({ ...form, numeroSerie: e.target.value })} fullWidth />
@@ -444,7 +444,7 @@ export function EquipamentosPage() {
       )}
 
       {visualizando && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setVisualizando(null)}>
+        <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setVisualizando(null)}>
           <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2) }}>
@@ -457,7 +457,7 @@ export function EquipamentosPage() {
               <Button variant="ghost" size="sm" onClick={() => setVisualizando(null)}><ChevronDown size={20} /></Button>
             </div>
             <div style={{ padding: spaceRem(3) }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
+              <div className="grade-formulario" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
                 <div><strong>Item:</strong> {visualizando.item?.nome}</div>
                 <div><strong>Lab:</strong> {visualizando.laboratorio?.sigla} - {visualizando.laboratorio?.nome}</div>
                 <div><strong>Nº Série:</strong> {visualizando.numeroSerie}</div>

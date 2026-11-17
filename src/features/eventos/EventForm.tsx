@@ -115,7 +115,7 @@ export function EventForm({ editando, equipamentos, itens, fornecedores, usuario
 
   return (
     <form onSubmit={handleSubmit} style={{ padding: spaceRem(3), display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
+      <div className="grade-formulario" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
         <Select label="Tipo de Evento" value={form.tipo} onChange={(e) => aoMudarTipo(e.target.value)} required fullWidth
           options={Object.values(TIPOS_EVENTO).map((t) => ({ value: t, label: TIPO_EVENTO_ROTULO[t] }))} />
         <Select label="Equipamento" value={form.equipamentoId} onChange={(e) => aoMudarEquipamento(e.target.value)} required fullWidth

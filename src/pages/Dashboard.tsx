@@ -61,7 +61,7 @@ export function Dashboard() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      <div style={{ background: 'var(--color-accent)', color: 'var(--color-fg-on-blue)', padding: '30px 32px 26px', marginBottom: '26px', borderLeft: '8px solid var(--color-rosa)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '24px', flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
+      <div className="painel-hero-responsivo" style={{ background: 'var(--color-accent)', color: 'var(--color-fg-on-blue)', padding: '30px 32px 26px', marginBottom: '26px', borderLeft: '8px solid var(--color-rosa)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '24px', flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'relative', zIndex: 1, minWidth: 0 }}>
           <div style={{ fontSize: '10px', letterSpacing: '0.16em', fontWeight: 700, color: 'var(--color-rosa)', textTransform: 'uppercase', marginBottom: '4px' }}>LabUcs • Visão consolidada</div>
           <h1 style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1.9rem, 3.1vw, 2.7rem)', fontWeight: 300, color: '#FFFFFF', margin: '6px 0 0', lineHeight: 1.1, letterSpacing: '-0.02em', textTransform: 'none' }}>Painel de <strong style={{ fontWeight: 600 }}>Controle</strong></h1>
@@ -73,7 +73,7 @@ export function Dashboard() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', marginBottom: '20px' }}>
+      <div className="grade-kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', marginBottom: '20px' }}>
         <KPICard titulo="Total de Equipamentos" valor={kpis.totalEquipamentos.toLocaleString('pt-BR')} subtitulo={`${kpis.ativos} ativos • ${kpis.totalEquipamentos - kpis.ativos} inativos/manutenção`} cor="accent" />
         <KPICard titulo="Alertas Críticos" valor={kpis.alertasCriticos} subtitulo="Não conformes (calibração vencida/reprovada)" cor="danger" />
         <KPICard titulo="Alertas de Atenção" valor={kpis.alertasAltos} subtitulo="Próximos do vencimento ou periodicidade zero" cor="warning" />
@@ -82,7 +82,7 @@ export function Dashboard() {
         <KPICard titulo="Receita Mensal (Labs)" valor={centavosParaReais(kpis.receitaMes)} subtitulo="Soma das receitas dos laboratórios" cor="success" />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) minmax(0, 1fr)', gap: '16px' }}>
+      <div className="grade-empilhada" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) minmax(0, 1fr)', gap: '16px' }}>
         <div style={{ backgroundColor: 'var(--color-bg-elevated)', border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', minHeight: '400px' }}>
           <CardHeader title="Alertas Recentes" subtitle={`${alertasRecent.length} sinalizações ativas`} action={<Button variant="ghost" size="sm" leftIcon={<ChevronRightIcon size={14} />}>Ver todos</Button>} />
           <CardContent style={{ flex: 1, overflow: 'auto', padding: '16px' }}>

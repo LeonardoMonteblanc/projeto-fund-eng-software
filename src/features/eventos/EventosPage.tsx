@@ -379,7 +379,7 @@ export function EventosPage() {
       </Card>
 
       {modalAberto && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => { setModalAberto(false); setEditando(null); }}>
+        <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => { setModalAberto(false); setEditando(null); }}>
           <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '860px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>{editando ? 'Editar Evento' : 'Novo Evento'}</h2>
@@ -400,7 +400,7 @@ export function EventosPage() {
       )}
 
       {visualizando && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setVisualizando(null)}>
+        <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setVisualizando(null)}>
           <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '820px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2) }}>
@@ -413,7 +413,7 @@ export function EventosPage() {
               <Button variant="ghost" size="sm" onClick={() => setVisualizando(null)}><ChevronDown size={20} /></Button>
             </div>
             <div style={{ padding: spaceRem(3) }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
+              <div className="grade-formulario" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
                 <div><strong>Equipamento:</strong> {visualizando.equipamento?.tag} ({visualizando.equipamento?.patrimonio})</div>
                 <div><strong>Item:</strong> {visualizando.item?.nome ?? '—'}</div>
                 <div><strong>Lab:</strong> {visualizando.laboratorio?.sigla ?? '—'} - {visualizando.laboratorio?.nome ?? '—'}</div>

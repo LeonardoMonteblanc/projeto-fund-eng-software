@@ -44,7 +44,7 @@ export function CardFooter({ children }: { children: ReactNode }) { return <div 
  */
 export function PageHeader({ titulo, subtitulo, eyebrow, acoes, chips }: { titulo: string; subtitulo?: string; eyebrow?: string; acoes?: ReactNode; chips?: ReactNode }) {
   return (
-    <div style={{ background: 'var(--color-accent)', color: 'var(--color-fg-on-blue)', padding: '22px 24px', marginBottom: '22px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '18px', flexWrap: 'wrap', borderLeft: '8px solid var(--color-rosa)' }}>
+    <div className="faixa-pagina" style={{ background: 'var(--color-accent)', color: 'var(--color-fg-on-blue)', padding: '22px 24px', marginBottom: '22px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '18px', flexWrap: 'wrap', borderLeft: '8px solid var(--color-rosa)' }}>
       <div style={{ minWidth: 0 }}>
         {eyebrow && <div style={{ fontSize: '10px', letterSpacing: '0.16em', fontWeight: 700, color: 'var(--color-rosa-claro)', marginBottom: '4px', textTransform: 'uppercase' }}>{eyebrow}</div>}
         <h1 style={{ color: 'var(--color-fg-on-blue)', fontSize: 'var(--font-size-3xl)', fontWeight: 600, letterSpacing: '-0.012em', margin: '2px 0 0', textTransform: 'uppercase', lineHeight: 1.2 }}>{titulo}</h1>

@@ -28,7 +28,7 @@ export function SolicitacoesPage() {
   const global = ehGlobal(user);
   const funcionalidades = useFuncionalidades();
   const podeCriar = funcionalidades.some((f) => f.acessivel && f.codigo === 'F05');
-  const podeAprovar = podeCriar && user?.perfil === 'GESTOR_LAB';
+  const podeAprovar = podeCriar && (user?.perfil === 'GESTOR_LAB' || user?.perfil === 'GESTOR_GERAL');
 
   const [solicitacoes, setSolicitacoes] = useState<SolicitacaoCompleta[]>([]);
   const [equipamentos, setEquipamentos] = useState<any[]>([]);
@@ -39,6 +39,8 @@ export function SolicitacoesPage() {
   const [filtroTipo, setFiltroTipo] = useState<string>('todos');
   const [modalAberto, setModalAberto] = useState(false);
   const [salvando, setSalvando] = useState(false);
+  const [rejeitando, setRejeitando] = useState<SolicitacaoCompleta | null>(null);
+  const [justificativaRejeicao, setJustificativaRejeicao] = useState('');
   const [form, setForm] = useState({ equipamentoId: '', tipoEvento: 'CALIBRACAO', justificativa: '', dataDesejada: '' });
 
   const carregarDados = useCallback(async () => {
@@ -99,9 +101,7 @@ export function SolicitacoesPage() {
     }
   }, [form, user, carregarDados]);
 
-  const avaliar = useCallback(async (sol: SolicitacaoCompleta, decisao: 'APROVADA' | 'REJEITADA') => {
-    const justificativaAvaliacao = decisao === 'REJEITADA' ? (prompt('Justificativa da rejeição:') ?? '') : undefined;
-    if (decisao === 'REJEITADA' && !justificativaAvaliacao) return;
+  const avaliar = useCallback(async (sol: SolicitacaoCompleta, decisao: 'APROVADA' | 'REJEITADA', justificativaAvaliacao?: string) => {
     setSalvando(true);
     try {
       const db = await getDB();
@@ -200,12 +200,12 @@ export function SolicitacoesPage() {
                   </div>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     {s.eventoGeradoId && <Button variant="ghost" size="sm" leftIcon={<FileText size={14} />} title="Evento gerado">Evento gerado</Button>}
-                    {podeAprovar && s.situacao === 'PENDENTE' && (
-                      <>
-                        <Button size="sm" leftIcon={<Check size={14} />} loading={salvando} onClick={() => avaliar(s, 'APROVADA')}>Aprovar</Button>
-                        <Button variant="danger" size="sm" leftIcon={<X size={14} />} loading={salvando} onClick={() => avaliar(s, 'REJEITADA')}>Rejeitar</Button>
-                      </>
-                    )}
+                      {podeAprovar && s.situacao === 'PENDENTE' && (
+                        <>
+                          <Button size="sm" leftIcon={<Check size={14} />} loading={salvando} onClick={() => avaliar(s, 'APROVADA')}>Aprovar</Button>
+                          <Button variant="danger" size="sm" leftIcon={<X size={14} />} loading={salvando} onClick={() => { setRejeitando(s); setJustificativaRejeicao(''); }}>Rejeitar</Button>
+                        </>
+                      )}
                   </div>
                 </div>
               ))}
@@ -215,7 +215,7 @@ export function SolicitacoesPage() {
       </Card>
 
       {modalAberto && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setModalAberto(false)}>
+        <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setModalAberto(false)}>
           <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>Nova Solicitação de Evento</h2>
@@ -236,6 +236,29 @@ export function SolicitacoesPage() {
                 <Button type="submit" loading={salvando}>Enviar Solicitação</Button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {rejeitando && (
+        <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setRejeitando(null)}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '520px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+              <h2 style={{ margin: 0 }}>Rejeitar Solicitação</h2>
+              <Button variant="ghost" size="sm" onClick={() => setRejeitando(null)}><ChevronDown size={20} /></Button>
+            </div>
+            <div style={{ padding: spaceRem(3), display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
+              <p style={{ margin: 0, fontSize: 'var(--font-size-sm)' }}>
+                Solicitação de <strong>{TIPO_EVENTO_ROTULO[rejeitando.tipoEvento as keyof typeof TIPO_EVENTO_ROTULO] ?? rejeitando.tipoEvento}</strong> para <strong>{rejeitando.equipamento?.tag}</strong> ({rejeitando.equipamento?.patrimonio}).
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label htmlFor="rejeicao-justificativa" style={{ fontSize: 'var(--font-size-sm)', fontWeight: 500, color: 'var(--color-fg)' }}>Justificativa da rejeição *</label>
+                <textarea id="rejeicao-justificativa" value={justificativaRejeicao} onChange={(e) => setJustificativaRejeicao(e.target.value)} rows={4} required style={{ width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '1px solid var(--color-border-input)', borderRadius: '4px', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }} />
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+                <Button variant="outline" onClick={() => setRejeitando(null)}>Cancelar</Button>
+                <Button variant="danger" loading={salvando} disabled={!justificativaRejeicao.trim()} onClick={async () => { await avaliar(rejeitando, 'REJEITADA', justificativaRejeicao.trim()); setRejeitando(null); }}>Confirmar Rejeição</Button>
+              </div>
+            </div>
           </div>
         </div>
       )}
