@@ -13,11 +13,11 @@ export function Layout() {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-bg)', fontFamily: 'var(--font-sans)' }}>
       <Header />
-      <main style={{ flex: 1, padding: spaceRem(4), width: '100%', maxWidth: '1600px', margin: '0 auto', boxSizing: 'border-box' }}>
+      <main style={{ flex: 1, padding: '24px 24px 48px', width: '100%', maxWidth: '1600px', margin: '0 auto', boxSizing: 'border-box', minHeight: '55vh' }}>
         <Outlet />
       </main>
-      <footer style={{ padding: spaceRem(3), borderTop: '2px solid var(--color-border)', backgroundColor: 'var(--color-bgElevated)', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fgDim)', margin: 0 }}>
+      <footer style={{ background: 'var(--color-cinza-topo)', color: '#CFD6DE', borderTop: '4px solid var(--color-accent)', padding: '16px 24px', textAlign: 'center' }}>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>
           LabUcs Demo — POC estática · Universidade de Caxias do Sul · FBI4010X
         </p>
       </footer>

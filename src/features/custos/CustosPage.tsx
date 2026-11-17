@@ -10,7 +10,7 @@ import { getDB } from '@/shared/db';
 import { ehGlobal } from '@/features/auth/permissions';
 import { TIPO_EVENTO_ROTULO } from '@/shared/constants';
 import type { Laboratorio } from '@/shared/domain';
-import { Card, CardHeader, CardContent, Badge, Button, Select, Input, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, Badge, Button, Select, Input, spaceRem, PageHeader } from '@/shared/ui/components';
 import { centavosParaReais, formatarDataBR } from '@/shared/utils';
 import { baixarCSV } from '@/shared/exportar';
 import { TrendingUp, Download, Wallet } from 'lucide-react';
@@ -124,18 +124,14 @@ export function CustosPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spaceRem(2) }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginBottom: '4px' }}>
-            <TrendingUp size={28} style={{ color: 'var(--color-accent)' }} />
-            <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Indicadores de Custos</h1>
-          </div>
-          <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)', margin: '4px 0 0' }}>Custos realizados por laboratório e tipo de evento × receita mensal</p>
-        </div>
-        <Button variant="outline" leftIcon={<Download size={16} />} onClick={() => baixarCSV('labucs-indicadores-custos.csv', linhasCSV)}>Exportar CSV</Button>
-      </div>
+      <PageHeader
+        eyebrow="Gestão"
+        titulo="Indicadores de Custos"
+        subtitulo="Custos realizados por laboratório e tipo de evento × receita mensal"
+        acoes={<Button variant="secondary" leftIcon={<Download size={16} />} onClick={() => baixarCSV('labucs-indicadores-custos.csv', linhasCSV)}>Exportar CSV</Button>}
+      />
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Período" />
         <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Select label="Período" value={periodo} onChange={(e) => setPeriodo(e.target.value)} options={[{ value: 'mes', label: 'Este Mês' }, { value: 'trimestre', label: 'Este Trimestre' }, { value: 'ano', label: 'Este Ano' }, { value: 'personalizado', label: 'Personalizado' }]} />
@@ -172,7 +168,7 @@ export function CustosPage() {
         </div>
       </div>
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Custos por Laboratório" subtitle={`Custo realizado vs receita mensal (${linhas.length} laboratórios)`} />
         <CardContent style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(2) }}>
           {linhas.length === 0 && <p style={{ textAlign: 'center', color: 'var(--color-fg-muted)', padding: '40px' }}>Nenhum dado no período selecionado</p>}

@@ -5,7 +5,7 @@
 import { useState, useCallback } from 'react';
 import { getDB, clearDB } from '@/shared/db';
 import { resetDatabase } from '@/shared/seed';
-import { Card, CardHeader, CardContent, Button, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, Button, spaceRem, PageHeader } from '@/shared/ui/components';
 import { registrarLog } from '@/shared/audit';
 import { DatabaseBackup, Download, Upload, RotateCcw } from 'lucide-react';
 import { CHAVE_BACKUPS } from '@/shared/constants';
@@ -107,24 +107,22 @@ export function BackupPage() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3), maxWidth: 860 }}>
-      <div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginBottom: '4px' }}>
-          <DatabaseBackup size={28} style={{ color: 'var(--color-accent)' }} />
-          <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Backup e Dados</h1>
-        </div>
-        <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)', margin: '4px 0 0' }}>Backup automático diário (RNF07), exportação, importação e reinício da demonstração</p>
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3), maxWidth: 980 }}>
+      <PageHeader
+        eyebrow="Administração"
+        titulo="Backup e Dados"
+        subtitulo="Backup automático diário (RNF07), exportação, importação e reinício da demonstração"
+      />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: spaceRem(2) }}>
-        <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
           <CardHeader title="Gerar Backup" subtitle="Exporta todas as tabelas em um arquivo JSON." />
           <CardContent>
             <Button leftIcon={<Download size={16} />} onClick={gerarBackup} loading={trabalhando}>Baixar Backup Completo (JSON)</Button>
           </CardContent>
         </Card>
 
-        <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
           <CardHeader title="Restaurar Backup" subtitle="Substitui os dados atuais por um backup JSON." />
           <CardContent>
             <label style={{ display: 'inline-flex' }}>
@@ -134,7 +132,7 @@ export function BackupPage() {
           </CardContent>
         </Card>
 
-        <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
           <CardHeader title="Reiniciar Demonstração" subtitle="Apaga tudo e regenera a base inicial (seed)." />
           <CardContent>
             <Button variant="danger" leftIcon={<RotateCcw size={16} />} onClick={reiniciarDemo} loading={trabalhando}>Reiniciar Demonstração</Button>
@@ -145,7 +143,7 @@ export function BackupPage() {
       {status && <p style={{ margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-sucesso-bg)', border: '1px solid var(--color-sucesso)', borderRadius: '4px', color: 'var(--color-sucesso)', fontSize: 'var(--font-size-sm)' }}>{status}</p>}
       {erro && <p style={{ margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-danger-bg)', border: '1px solid var(--color-danger)', borderRadius: '4px', color: 'var(--color-danger)', fontSize: 'var(--font-size-sm)' }}>{erro}</p>}
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Histórico de Backups (navegador)" subtitle={`${backupsSalvos.length} backup(s) gerado(s) nesta máquina`} />
         <CardContent>
           {backupsSalvos.length === 0 ? (

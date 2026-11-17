@@ -4,7 +4,7 @@ import { getDB, getAll, put, deleteById, putAll } from '@/shared/db';
 import { calcularMetricas, equipamentoAtivo } from '@/shared/metrology';
 import { SITUACOES_EQUIPAMENTO, TIPOS_EVENTO, SITUACOES_EVENTO, type Equipamento, type Evento, type Laboratorio, type Item } from '@/shared/domain';
 import { resumirPorSituacao as resumir } from '@/shared/metrology';
-import { Card, CardHeader, CardContent, Badge, StatusBadge, Button, Input, Select, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, Badge, StatusBadge, Button, Input, Select, spaceRem, PageHeader } from '@/shared/ui/components';
 import { formatarDataBR, centavosParaReais, gerarULID, gerarTAG, gerarNumeroSerie, reaisParaCentavos, somarMeses, hojeISO, formatISO } from '@/shared/utils';
 import { baixarCSV } from '@/shared/exportar';
 import { registrarLog } from '@/shared/audit';
@@ -338,18 +338,17 @@ export function EquipamentosPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spaceRem(2) }}>
-        <div>
-          <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Equipamentos</h1>
-          <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fgMuted)', margin: '4px 0 0' }}>{totalRegistros} equipamentos • {resumo.ATIVO} ativos • {resumo.INATIVO} inativos • {resumo.EM_MANUTENCAO} em manutenção</p>
-        </div>
-        <div style={{ display: 'flex', gap: spaceRem(2), flexWrap: 'wrap' }}>
+      <PageHeader
+        eyebrow="Operação"
+        titulo="Equipamentos"
+        subtitulo={`${totalRegistros} equipamentos • ${resumo.ATIVO} ativos • ${resumo.INATIVO} inativos • ${resumo.EM_MANUTENCAO} em manutenção`}
+        acoes={<>
           {podeGerenciar && <Button onClick={() => { setEditando(null); setForm({ patrimonio: '', tag: '', numeroSerie: '', laboratorioId: labs[0]?.id || '', itemId: itens[0]?.id || '', localizacao: '', dataAquisicao: '', dataColocacaoUso: '', valorAquisicaoCentavos: '', caCalibracao: '', caVerificacao: '', periodicidadeCalibracaoMeses: '', periodicidadeVerificacaoMeses: '', periodicidadeManutencaoPreventivaMeses: '', situacao: 'ATIVO' }); setModalAberto(true); }} leftIcon={<Plus size={16} />}>Novo Equipamento</Button>}
-          <Button variant="outline" leftIcon={<Download size={16} />} onClick={exportarCSV}>Exportar CSV</Button>
-        </div>
-      </div>
+          <Button variant="secondary" leftIcon={<Download size={16} />} onClick={exportarCSV}>Exportar CSV</Button>
+        </>}
+      />
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
         <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Input placeholder="Buscar (patrimônio, TAG, nº série, item, lab...)" value={filtroTexto} onChange={e => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
@@ -359,7 +358,7 @@ export function EquipamentosPage() {
         </CardContent>
       </Card>
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardContent style={{ overflow: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-size-sm)', tableLayout: 'fixed' }}>
             <colgroup>
@@ -369,7 +368,7 @@ export function EquipamentosPage() {
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id} style={{ backgroundColor: 'var(--color-bg-section)', borderBottom: '1px solid var(--color-border)' }}>
                   {headerGroup.headers.map(header => (
-                    <th key={header.id} style={{ padding: '10px 12px', textAlign: 'left', fontWeight: 600, color: 'var(--color-fg)', whiteSpace: 'nowrap', overflow: 'hidden', cursor: header.column.getCanSort() ? 'pointer' : 'default', userSelect: 'none' }}
+                    <th key={header.id} style={{ padding: '9px 10px', textAlign: 'left', fontWeight: 700, color: 'var(--color-fg-light)', whiteSpace: 'nowrap', overflow: 'hidden', textTransform: 'uppercase', fontSize: '10.5px', letterSpacing: '0.04em', cursor: header.column.getCanSort() ? 'pointer' : 'default', userSelect: 'none' }}
                       onClick={header.column.getToggleSortingHandler()}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         {flexRender(header.column.columnDef.header, header.getContext())}
@@ -412,7 +411,7 @@ export function EquipamentosPage() {
 
       {modalAberto && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: '10px', width: '100%', maxWidth: '700px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={e => e.stopPropagation()}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '700px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>{editando ? 'Editar Equipamento' : 'Novo Equipamento'}</h2>
               <Button variant="ghost" size="sm" onClick={fecharModal}><ChevronDown size={20} /></Button>
@@ -446,7 +445,7 @@ export function EquipamentosPage() {
 
       {visualizando && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setVisualizando(null)}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: '10px', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={e => e.stopPropagation()}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2) }}>
                 <Box size={24} style={{ color: 'var(--color-accent)' }} />

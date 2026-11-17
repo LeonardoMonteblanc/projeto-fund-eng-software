@@ -60,49 +60,50 @@ export function Dashboard() {
   if (carregando) return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', color: 'var(--color-fgMuted)' }}><div style={{ width: '48px', height: '48px', border: '3px solid var(--color-border)', borderTopColor: 'var(--color-accent)', borderRadius: '0', animation: 'spin 1s linear infinite' }} /><p style={{ marginTop: '16px', fontFamily: 'var(--font-mono)' }}>Carregando dashboard...</p></div>;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-        <div>
-          <h1 style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-3xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Painel de Controle</h1>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-sm)', color: 'var(--color-fgMuted)', margin: '8px 0 0 0' }}>Visão consolidada de equipamentos, alertas e indicadores</p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ background: 'var(--color-accent)', color: 'var(--color-fg-on-blue)', padding: '30px 32px 26px', marginBottom: '26px', borderLeft: '8px solid var(--color-rosa)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '24px', flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', zIndex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: '10px', letterSpacing: '0.16em', fontWeight: 700, color: 'var(--color-rosa)', textTransform: 'uppercase', marginBottom: '4px' }}>LabUcs • Visão consolidada</div>
+          <h1 style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1.9rem, 3.1vw, 2.7rem)', fontWeight: 300, color: '#FFFFFF', margin: '6px 0 0', lineHeight: 1.1, letterSpacing: '-0.02em', textTransform: 'none' }}>Painel de <strong style={{ fontWeight: 600 }}>Controle</strong></h1>
+          <p style={{ color: '#DBE4EE', fontSize: '13px', margin: '8px 0 0', maxWidth: '62ch' }}>Visão consolidada de equipamentos, alertas de vencimento e indicadores dos laboratórios</p>
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Button variant="secondary" leftIcon={<DownloadIcon />}>Exportar PDF</Button>
-          <Button variant="primary" leftIcon={<DownloadIcon />}>Exportar Excel</Button>
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <Button style={{ backgroundColor: '#FFFFFF', color: 'var(--color-accent)', borderColor: '#FFFFFF' }} leftIcon={<DownloadIcon />}>Exportar PDF</Button>
+          <Button variant="secondary" style={{ backgroundColor: 'transparent', color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.7)' }} leftIcon={<DownloadIcon />}>Exportar Excel</Button>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
-        <KPICard titulo="Total de Equipamentos" valor={kpis.totalEquipamentos.toLocaleString('pt-BR')} subtitulo={`${kpis.ativos} ativos • ${kpis.totalEquipamentos - kpis.ativos} inativos/manutenção`} icone={<BoxIcon />} cor="accent" />
-        <KPICard titulo="Alertas Críticos" valor={kpis.alertasCriticos} subtitulo="Não conformes (calibração vencida/reprovada)" icone={<AlertCircleIcon />} cor="danger" />
-        <KPICard titulo="Alertas de Atenção" valor={kpis.alertasAltos} subtitulo="Próximos do vencimento ou periodicidade zero" icone={<AlertTriangleIcon />} cor="warning" />
-        <KPICard titulo="Próximos Vencimentos (30d)" valor={kpis.proximosVencimentos} subtitulo="Calibrações/verificações a vencer" icone={<ClockIcon />} cor="info" />
-        <KPICard titulo="Custos (30 dias)" valor={centavosParaReais(kpis.custosMes)} subtitulo="Calibrações, verificações e manutenções" icone={<DollarSignIcon />} cor="accent" />
-        <KPICard titulo="Receita Mensal (Labs)" valor={centavosParaReais(kpis.receitaMes)} subtitulo="Soma das receitas dos laboratórios" icone={<TrendingUpIcon />} cor="info" />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', marginBottom: '20px' }}>
+        <KPICard titulo="Total de Equipamentos" valor={kpis.totalEquipamentos.toLocaleString('pt-BR')} subtitulo={`${kpis.ativos} ativos • ${kpis.totalEquipamentos - kpis.ativos} inativos/manutenção`} cor="accent" />
+        <KPICard titulo="Alertas Críticos" valor={kpis.alertasCriticos} subtitulo="Não conformes (calibração vencida/reprovada)" cor="danger" />
+        <KPICard titulo="Alertas de Atenção" valor={kpis.alertasAltos} subtitulo="Próximos do vencimento ou periodicidade zero" cor="warning" />
+        <KPICard titulo="Próximos Vencimentos (30d)" valor={kpis.proximosVencimentos} subtitulo="Calibrações/verificações a vencer" cor="info" />
+        <KPICard titulo="Custos (30 dias)" valor={centavosParaReais(kpis.custosMes)} subtitulo="Calibrações, verificações e manutenções" cor="danger" />
+        <KPICard titulo="Receita Mensal (Labs)" valor={centavosParaReais(kpis.receitaMes)} subtitulo="Soma das receitas dos laboratórios" cor="success" />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '16px' }}>
-        <div style={{ backgroundColor: 'var(--color-bgElevated)', border: '2px solid var(--color-border)', display: 'flex', flexDirection: 'column', minHeight: '400px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) minmax(0, 1fr)', gap: '16px' }}>
+        <div style={{ backgroundColor: 'var(--color-bg-elevated)', border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', minHeight: '400px' }}>
           <CardHeader title="Alertas Recentes" subtitle={`${alertasRecent.length} sinalizações ativas`} action={<Button variant="ghost" size="sm" leftIcon={<ChevronRightIcon size={14} />}>Ver todos</Button>} />
           <CardContent style={{ flex: 1, overflow: 'auto', padding: '16px' }}>
             {alertasRecent.length === 0 ? (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '48px', color: 'var(--color-fgMuted)', textAlign: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '48px', color: 'var(--color-fg-muted)', textAlign: 'center' }}>
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" style={{ marginBottom: '16px', color: 'var(--color-accent)' }}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-base)', margin: 0 }}>Nenhum alerta ativo</p>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', marginTop: '4px' }}>Todos os equipamentos estão conformes</p>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {alertasRecent.map((alerta: any) => (
-                  <div key={alerta.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', padding: '12px', backgroundColor: 'var(--color-bg)', border: '2px solid var(--color-border)' }}>
+                  <div key={alerta.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '8px 10px', backgroundColor: alerta.tipo === 'CRITICO' ? '#FDF0F0' : alerta.tipo === 'ALTO' ? '#FFF7E8' : '#FAFAFA', border: '2px solid var(--color-border)', borderLeftWidth: '6px', borderLeftColor: alerta.tipo === 'CRITICO' ? 'var(--color-danger)' : alerta.tipo === 'ALTO' ? 'var(--color-warning)' : 'var(--color-accent)' }}>
                     <StatusBadge status={alerta.tipo} size="sm" showDot />
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-sm)', fontWeight: 600, color: 'var(--color-fg)', margin: '0 0 4px 0' }}>{alerta.equipamento}</p>
-                      <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fgMuted)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{alerta.mensagem}</p>
+                      <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12.5px', fontWeight: 700, color: 'var(--color-fg)', margin: '0 0 4px 0' }}>{alerta.equipamento}</p>
+                      <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fg-muted)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{alerta.mensagem}</p>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fgDim)' }}>{alerta.data}</span>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fgDim)' }}>{alerta.lab}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fg-dim)' }}>{alerta.data}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fg-dim)' }}>{alerta.lab}</span>
                     </div>
                   </div>
                 ))}
@@ -111,14 +112,17 @@ export function Dashboard() {
           </CardContent>
         </div>
 
-        <div style={{ backgroundColor: 'var(--color-bgElevated)', border: '2px solid var(--color-border)', display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div style={{ backgroundColor: 'var(--color-bg-elevated)', border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', height: '100%' }}>
           <CardHeader title="Acesso Rápido" subtitle={`${navCards.length} módulos disponíveis`} />
           <CardContent style={{ flex: 1, overflow: 'auto', padding: '16px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '10px' }}>
               {navCards.map((item) => (
-                <Link key={item.titulo} to={item.rota} title={item.descricao} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', padding: '16px', backgroundColor: 'var(--color-bg)', border: '2px solid var(--color-border)', cursor: 'pointer', transition: 'all 120ms ease', textAlign: 'center', textDecoration: 'none', color: 'var(--color-fg)', borderRadius: '8px' }}>
-                  <div style={{ width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-accentBg)', border: '2px solid var(--color-accent)', borderRadius: '8px' }}>{item.icone}</div>
-                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-sm)', fontWeight: 600, color: 'var(--color-fg)' }}>{item.titulo}</span>
+                <Link key={item.titulo} to={item.rota} title={item.descricao} style={{ display: 'flex', flexDirection: 'column', gap: '3px', padding: '13px', backgroundColor: 'var(--color-bg-elevated)', border: '2px solid var(--color-border)', textAlign: 'left', textDecoration: 'none', color: 'var(--color-fg)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '7px', color: 'var(--color-accent)' }}>
+                    {item.icone}
+                    <strong style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 700, color: 'var(--color-accent)', textTransform: 'uppercase' }}>{item.titulo}</strong>
+                  </div>
+                  <span style={{ color: 'var(--color-fg-muted)', fontSize: '11px' }}>{item.descricao}</span>
                 </Link>
               ))}
             </div>
@@ -129,21 +133,20 @@ export function Dashboard() {
   );
 }
 
-function KPICard({ titulo, valor, subtitulo, icone, cor }: { titulo: string; valor: string | number; subtitulo?: string; icone: React.ReactNode; cor: 'accent' | 'danger' | 'warning' | 'info' }) {
-  const cores = { accent: { bg: 'var(--color-accentBg)', border: 'var(--color-accent)', fg: 'var(--color-accent)' }, danger: { bg: 'var(--color-dangerBg)', border: 'var(--color-danger)', fg: 'var(--color-danger)' }, warning: { bg: 'var(--color-warningBg)', border: 'var(--color-warning)', fg: 'var(--color-warning)' }, info: { bg: 'var(--color-infoBg)', border: 'var(--color-info)', fg: 'var(--color-info)' } };
+function KPICard({ titulo, valor, subtitulo, cor }: { titulo: string; valor: string | number; subtitulo?: string; cor: 'accent' | 'danger' | 'warning' | 'info' | 'success' }) {
+  const cores: Record<string, { borda: string; valor: string }> = {
+    accent: { borda: 'var(--color-accent)', valor: 'var(--color-accent)' },
+    danger: { borda: 'var(--color-danger)', valor: 'var(--color-danger)' },
+    warning: { borda: 'var(--color-warning)', valor: 'var(--color-warning)' },
+    info: { borda: 'var(--color-info)', valor: 'var(--color-info)' },
+    success: { borda: 'var(--color-sucesso)', valor: 'var(--color-sucesso)' },
+  };
   const c = cores[cor];
   return (
-    <div style={{ backgroundColor: 'var(--color-bgElevated)', border: '2px solid var(--color-border)', padding: '24px', display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '8px' }}>
-        <div style={{ width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: c.bg, border: `2px solid ${c.border}` }}><span style={{ color: c.fg }}>{icone}</span></div>
-      </div>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <div>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fgMuted)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 4px 0' }}>{titulo}</p>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0, lineHeight: 1.1 }}>{valor}</p>
-        </div>
-        {subtitulo && <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fgMuted)', margin: 0 }}>{subtitulo}</p>}
-      </div>
+    <div style={{ backgroundColor: 'var(--color-bg-elevated)', border: '2px solid var(--color-border)', borderLeft: `5px solid ${c.borda}`, padding: '12px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '2px', height: '100%', boxShadow: 'var(--shadow-sm)', transition: 'border-color var(--transition-base), transform var(--transition-base)' }}>
+      <p style={{ fontFamily: 'var(--font-sans)', fontSize: '10.5px', fontWeight: 700, color: 'var(--color-fg-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', margin: 0 }}>{titulo}</p>
+      <p style={{ fontFamily: 'var(--font-sans)', fontSize: '30px', fontWeight: 600, color: c.valor, margin: 0, lineHeight: 1.1, fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em' }}>{valor}</p>
+      {subtitulo && <p style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--color-fg-muted)', margin: 0 }}>{subtitulo}</p>}
     </div>
   );
 }

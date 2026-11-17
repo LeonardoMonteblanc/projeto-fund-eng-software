@@ -8,7 +8,7 @@ import { getDB } from '@/shared/db';
 import { ehGlobal } from '@/features/auth/permissions';
 import { TIPO_EVENTO_ROTULO, SITUACAO_EVENTO_ROTULO } from '@/shared/constants';
 import type { Laboratorio } from '@/shared/domain';
-import { Card, CardHeader, CardContent, Badge, StatusBadge, Button, Select, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, Badge, StatusBadge, Button, Select, spaceRem, PageHeader } from '@/shared/ui/components';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const DIAS_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -90,17 +90,13 @@ export function AgendaPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spaceRem(2) }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginBottom: '4px' }}>
-            <CalendarIcon size={28} style={{ color: 'var(--color-accent)' }} />
-            <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Agenda</h1>
-          </div>
-          <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)', margin: '4px 0 0' }}>Eventos programados por período, laboratório e tipo</p>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Operação"
+        titulo="Agenda"
+        subtitulo="Eventos programados por período, laboratório e tipo"
+      />
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
         <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           {global && <Select label="Laboratório" value={filtroLab} onChange={(e) => setFiltroLab(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, ...labsVisiveis.map((l) => ({ value: l.id, label: `${l.sigla} — ${l.nome}` }))]} />}
@@ -109,7 +105,7 @@ export function AgendaPage() {
       </Card>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: spaceRem(3), alignItems: 'start' }}>
-        <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
           <CardContent>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: spaceRem(2) }}>
               <Button variant="ghost" size="sm" onClick={() => mudarMes(-1)}><ChevronLeft size={18} /></Button>
@@ -150,7 +146,7 @@ export function AgendaPage() {
           </CardContent>
         </Card>
 
-        <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
           <CardHeader title="Eventos do Dia" subtitle={diaSelecionado ?? 'Selecione um dia no calendário'} />
           <CardContent style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(2), maxHeight: 480, overflow: 'auto' }}>
             {eventosDiaSelecionado.length === 0 && <p style={{ margin: 0, color: 'var(--color-fg-muted)', fontSize: 'var(--font-size-sm)' }}>{diaSelecionado ? 'Nenhum evento neste dia.' : '—'}</p>}

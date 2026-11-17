@@ -1,10 +1,42 @@
 /**
- * Global CSS - Reset + Variáveis Light Mode UCS + Utilitários
- * Baseado no site institucional da UCS (https://www.ucs.br/site)
- * Tema claro com azul institucional UCS
+ * Global CSS - Reset + Variáveis institucionais UCS (identidade visual 10/nov)
+ * Referência: portal ucsvirtual.ucs.br
+ * - Azul da área de Exatas #1d4975 / secundária #cc7e89
+ * - Cinza institucional #343a40, fundos #f2f2f2, bordas 2px #dedede
+ * - Cantos retos, títulos e botões em caixa alta
+ * Tipografia: IBM Plex Sans (auto-hospedada em /fontes/)
  */
 
 @layer reset, base, components, utilities;
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('/fontes/ibm-plex-sans-latin-300-normal.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('/fontes/ibm-plex-sans-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('/fontes/ibm-plex-sans-latin-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('/fontes/ibm-plex-sans-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
 
 @layer reset {
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,57 +57,60 @@
 
 @layer base {
   :root {
-    /* Base - Light backgrounds (UCS style) */
-    --color-bg: #FFFFFF;
+    /* Base - fundos institucionais */
+    --color-bg: #F2F2F2;
     --color-bg-elevated: #FFFFFF;
-    --color-bg-hover: #F3F3F5;
-    --color-bg-section: #F3F3F5;
-    --color-bg-footer: #000000;
+    --color-bg-hover: #F0F4F9;
+    --color-bg-section: #E8E8E8;
+    --color-bg-footer: #343A40;
     --color-bg-footer-main: #FFFFFF;
 
     /* Borders */
-    --color-border: #CECECE;
-    --color-border-bright: #CECECE;
-    --color-border-accent: #337AB7;
-    --color-border-input: #CCCCCC;
+    --color-border: #DEDEDE;
+    --color-border-bright: #DEDEDE;
+    --color-border-accent: #1D4975;
+    --color-border-input: #DEDEDE;
 
-    /* Foreground - Dark text on light */
-    --color-fg: #393A3F;
-    --color-fg-muted: #6D6E71;
-    --color-fg-dim: #808285;
-    --color-fg-light: #58585A;
+    /* Foreground */
+    --color-fg: #221F1F;
+    --color-fg-muted: #555555;
+    --color-fg-dim: #4B5158;
+    --color-fg-light: #343A40;
     --color-fg-on-dark: #FFFFFF;
     --color-fg-on-blue: #FFFFFF;
 
-    /* UCS Brand Colors */
-    --color-accent: #337AB7;
-    --color-accent-dim: #23527C;
-    --color-accent-bg: #E8F0FA;
-    --color-accent-light: #D6E9F8;
+    /* Marca UCS (identidade 10/nov) */
+    --color-accent: #1D4975;
+    --color-accent-dim: #163A5E;
+    --color-accent-bg: #EAF0F6;
+    --color-accent-light: #DBE4EE;
+    --color-rosa: #CC7E89;
+    --color-rosa-claro: #F2C4CB;
+    --color-cinza-topo: #343A40;
 
     /* Semantic */
-    --color-danger: #C0392B;
-    --color-danger-dim: #962D22;
-    --color-danger-bg: #FDEDEC;
-    --color-warning: #E67E22;
-    --color-warning-dim: #D35400;
-    --color-warning-bg: #FEF5E7;
-    --color-info: #337AB7;
-    --color-info-dim: #23527C;
-    --color-info-bg: #E8F0FA;
-    --color-sucesso: #27AE60;
-    --color-sucesso-dim: #1E8A49;
-    --color-sucesso-bg: #E8F8EF;
+    --color-danger: #C13438;
+    --color-danger-dim: #9C2428;
+    --color-danger-bg: #FBECEC;
+    --color-warning: #B36B00;
+    --color-warning-dim: #855000;
+    --color-warning-bg: #FFF4E2;
+    --color-info: #0076B9;
+    --color-info-dim: #0E4B75;
+    --color-info-bg: #E8F2FA;
+    --color-sucesso: #36A551;
+    --color-sucesso-dim: #1C6A38;
+    --color-sucesso-bg: #E8F5EC;
 
     /* Status */
-    --color-critico: #C0392B;
-    --color-alto: #E67E22;
-    --color-medio: #337AB7;
-    --color-pendente: #F39C12;
+    --color-critico: #C13438;
+    --color-alto: #B36B00;
+    --color-medio: #0076B9;
+    --color-pendente: #B36B00;
 
-    /* Typography - UCS uses Roboto */
-    --font-mono: "IBM Plex Mono", "JetBrains Mono", "Fira Code", monospace;
-    --font-sans: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    /* Typography - IBM Plex Sans (institucional) */
+    --font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    --font-sans: "IBM Plex Sans", "Segoe UI", Arial, Helvetica, sans-serif;
     --font-size-xs: 0.7rem;
     --font-size-sm: 0.8rem;
     --font-size-base: 0.9rem;
@@ -88,28 +123,34 @@
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
 
-    /* Spacing & Layout */
+    /* Spacing & Layout - cantos retos, molduras 2px */
     --spacing-unit: 8px;
     --border-width: 2px;
     --border-radius: 0;
 
-    /* Shadows - Subtle for light mode */
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-    --shadow-accent: 0 4px 12px rgba(51,122,183,0.3);
+    /* Shadows - suaves com tinta azul */
+    --shadow-sm: 0 2px 10px rgba(29, 73, 117, 0.06);
+    --shadow-md: 0 2px 10px rgba(29, 73, 117, 0.06);
+    --shadow-lg: 0 4px 16px rgba(29, 73, 117, 0.12);
+    --shadow-accent: 0 2px 10px rgba(29, 73, 117, 0.22);
+    --shadow-dura: 8px 8px 0 rgba(16, 44, 73, 0.12);
 
     /* Transitions */
     --transition-fast: 80ms ease;
-    --transition-base: 120ms ease;
-    --transition-slow: 200ms ease;
+    --transition-base: 140ms cubic-bezier(0.2, 0, 0.38, 0.9);
+    --transition-slow: 320ms cubic-bezier(0.2, 0, 0.38, 0.9);
 
     /* Z-index */
     --z-dropdown: 100;
     --z-modal: 200;
     --z-toast: 300;
     --z-tooltip: 400;
+
+    /* Foco institucional (3px rosa) */
+    --focus-ring: 3px solid #CC7E89;
   }
+
+  h1, h2, h3, h4 { text-transform: uppercase; }
 }
 
 @layer utilities {
@@ -224,6 +265,6 @@
 .animate-pulse { animation: pulse 2s ease-in-out infinite; }
 .animate-slide-down { animation: slideDown 120ms ease; }
 
-:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-accent), 0 0 0 4px var(--color-accent-bg); }
+:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
 
 @media print { .no-print { display: none !important; } body { background: white !important; color: black !important; } }

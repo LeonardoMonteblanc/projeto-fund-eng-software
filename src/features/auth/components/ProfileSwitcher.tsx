@@ -39,10 +39,10 @@ export function ProfileSwitcher() {
 
   return (
     <div style={{ position: 'relative' }} ref={dropdownRef}>
-      <button onClick={() => setAberto(!aberto)} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 12px', backgroundColor: 'var(--color-bgElevated)', border: '2px solid var(--color-border)', cursor: 'pointer', transition: 'all 120ms ease' }} aria-expanded={aberto} aria-haspopup="true">
-        <div style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-accentBg)', border: '2px solid var(--color-accent)' }}><IconAtual size={16} style={{ color: 'var(--color-accent)' }} /></div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}><span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-sm)', fontWeight: 600, color: 'var(--color-fg)' }}>{perfil ? PERFIL_ROTULO[perfil] : 'Demo'}</span>{labAtual && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fgMuted)' }}>{labAtual.sigla}</span>}</div>
-        <ChevronDown size={16} style={{ color: 'var(--color-fgMuted)', transition: 'transform 120ms ease', transform: aberto ? 'rotate(180deg)' : 'rotate(0)' }} />
+      <button onClick={() => setAberto(!aberto)} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '5px 12px', backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.28)', cursor: 'pointer', transition: 'all var(--transition-base)', color: '#FFFFFF' }} aria-expanded={aberto} aria-haspopup="true">
+        <div style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-accent)', border: '1px solid rgba(255,255,255,0.28)' }}><IconAtual size={16} style={{ color: '#FFFFFF' }} /></div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}><span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-sm)', fontWeight: 600, color: '#FFFFFF' }}>{perfil ? PERFIL_ROTULO[perfil] : 'Demo'}</span>{labAtual && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: '#CFD6DE' }}>{labAtual.sigla}</span>}</div>
+        <ChevronDown size={16} style={{ color: '#CFD6DE', transition: 'transform 120ms ease', transform: aberto ? 'rotate(180deg)' : 'rotate(0)' }} />
       </button>
 
       {aberto && (

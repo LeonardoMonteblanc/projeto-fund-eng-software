@@ -6,7 +6,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useFuncionalidades, useUser } from '@/features/auth/store';
 import { getDB } from '@/shared/db';
 import type { Equipamento, Item, Categoria, Subcategoria } from '@/shared/domain';
-import { Card, CardHeader, CardContent, StatusBadge, Button, Input, Select, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, StatusBadge, Button, Input, Select, spaceRem, PageHeader } from '@/shared/ui/components';
 import { gerarULID, agoraISO } from '@/shared/utils';
 import { registrarLog } from '@/shared/audit';
 import { Search, Plus, ChevronDown, Edit, Trash2, Box, Folder, Tag, FolderOpen } from 'lucide-react';
@@ -330,20 +330,16 @@ export function ItensPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spaceRem(2) }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginBottom: '4px' }}>
-            <FolderOpen size={28} style={{ color: 'var(--color-accent)' }} />
-            <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Itens & Catálogo</h1>
-          </div>
-          <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)', margin: '4px 0 0' }}>{itens.length} itens • {categorias.length} categorias • {subcategorias.length} subcategorias</p>
-        </div>
-        <div style={{ display: 'flex', gap: spaceRem(2), flexWrap: 'wrap' }}>
+      <PageHeader
+        eyebrow="Catálogo"
+        titulo="Itens & Catálogo"
+        subtitulo={`${itens.length} itens • ${categorias.length} categorias • ${subcategorias.length} subcategorias`}
+        acoes={<>
           {podeGerenciar && <Button onClick={() => abrirNovo('itens')} leftIcon={<Plus size={16} />}>Novo Item</Button>}
-          {podeGerenciarCatalogo && <Button variant="outline" onClick={() => abrirNovo('categorias')} leftIcon={<Plus size={16} />}>Nova Categoria</Button>}
-          {podeGerenciarCatalogo && <Button variant="outline" onClick={() => abrirNovo('subcategorias')} leftIcon={<Plus size={16} />}>Nova Subcategoria</Button>}
-        </div>
-      </div>
+          {podeGerenciarCatalogo && <Button variant="secondary" onClick={() => abrirNovo('categorias')} leftIcon={<Plus size={16} />}>Nova Categoria</Button>}
+          {podeGerenciarCatalogo && <Button variant="secondary" onClick={() => abrirNovo('subcategorias')} leftIcon={<Plus size={16} />}>Nova Subcategoria</Button>}
+        </>}
+      />
 
       <div style={{ display: 'flex', gap: '4px', borderBottom: '1px solid var(--color-border)', marginBottom: spaceRem(2) }}>
         <button onClick={() => setAbaAtiva('itens')} style={abaStyle(abaAtiva === 'itens')}><Box size={16} /> Itens ({itens.length})</button>
@@ -353,7 +349,7 @@ export function ItensPage() {
 
       {abaAtiva === 'itens' && (
         <>
-          <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+          <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
             <CardHeader title="Filtros" />
             <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
               <Input placeholder="Buscar (nome, fabricante, modelo, categoria...)" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
@@ -362,7 +358,7 @@ export function ItensPage() {
             </CardContent>
           </Card>
 
-          <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+          <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
             <CardContent style={{ overflow: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-size-sm)', tableLayout: 'fixed' }}>
                 <colgroup>
@@ -372,7 +368,7 @@ export function ItensPage() {
                   {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id} style={{ backgroundColor: 'var(--color-bg-section)', borderBottom: '1px solid var(--color-border)' }}>
                       {headerGroup.headers.map((header) => (
-                        <th key={header.id} style={{ padding: '10px 12px', textAlign: 'left', fontWeight: 600, color: 'var(--color-fg)', whiteSpace: 'nowrap', overflow: 'hidden', cursor: header.column.getCanSort() ? 'pointer' : 'default', userSelect: 'none' }} onClick={header.column.getToggleSortingHandler()}>
+                        <th key={header.id} style={{ padding: '9px 10px', textAlign: 'left', fontWeight: 700, color: 'var(--color-fg-light)', whiteSpace: 'nowrap', overflow: 'hidden', textTransform: 'uppercase', fontSize: '10.5px', letterSpacing: '0.04em', cursor: header.column.getCanSort() ? 'pointer' : 'default', userSelect: 'none' }} onClick={header.column.getToggleSortingHandler()}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                             {flexRender(header.column.columnDef.header, header.getContext())}
                             {header.column.getIsSorted() === 'asc' && <ChevronDown size={12} style={{ transform: 'rotate(-180deg)' }} />}
@@ -415,7 +411,7 @@ export function ItensPage() {
       )}
 
       {abaAtiva === 'categorias' && (
-        <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
           <CardHeader title="Categorias" subtitle={`${categorias.length} categorias cadastradas`} />
           <CardContent>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: spaceRem(2) }}>
@@ -441,7 +437,7 @@ export function ItensPage() {
       )}
 
       {abaAtiva === 'subcategorias' && (
-        <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
           <CardHeader title="Subcategorias" subtitle={`${subcategorias.length} subcategorias cadastradas`} />
           <CardContent>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: spaceRem(2) }}>
@@ -466,7 +462,7 @@ export function ItensPage() {
 
       {modalAberto && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: '10px', width: '100%', maxWidth: abaForm === 'itens' ? '720px' : '480px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: abaForm === 'itens' ? '720px' : '480px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>
                 {abaForm === 'itens' ? (editandoId ? 'Editar Item' : 'Novo Item') : abaForm === 'categorias' ? (editandoId ? 'Editar Categoria' : 'Nova Categoria') : (editandoId ? 'Editar Subcategoria' : 'Nova Subcategoria')}

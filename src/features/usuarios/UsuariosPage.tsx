@@ -7,7 +7,7 @@ import { useFuncionalidades } from '@/features/auth/store';
 import { getDB } from '@/shared/db';
 import { PERFIS, PERFIL_ROTULO, PERFIL_DESCRICAO } from '@/shared/constants';
 import type { Usuario, Laboratorio } from '@/shared/domain';
-import { Card, CardHeader, CardContent, StatusBadge, Button, Input, Select, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, StatusBadge, Button, Input, Select, spaceRem, PageHeader } from '@/shared/ui/components';
 import { gerarULID, agoraISO, validarEmail } from '@/shared/utils';
 import { registrarLog } from '@/shared/audit';
 import { Search, Plus, ChevronDown, Edit, Trash2, Users } from 'lucide-react';
@@ -129,18 +129,14 @@ export function UsuariosPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spaceRem(2) }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginBottom: '4px' }}>
-            <Users size={28} style={{ color: 'var(--color-accent)' }} />
-            <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Usuários</h1>
-          </div>
-          <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)', margin: '4px 0 0' }}>{usuarios.length} usuários cadastrados</p>
-        </div>
-        {podeGerenciar && <Button onClick={abrirNovo} leftIcon={<Plus size={16} />}>Novo Usuário</Button>}
-      </div>
+      <PageHeader
+        eyebrow="Administração"
+        titulo="Usuários"
+        subtitulo={`${usuarios.length} usuários cadastrados`}
+        acoes={<>{podeGerenciar && <Button onClick={abrirNovo} leftIcon={<Plus size={16} />}>Novo Usuário</Button>}</>}
+      />
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
         <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Input placeholder="Buscar (nome, e-mail...)" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
@@ -148,7 +144,7 @@ export function UsuariosPage() {
         </CardContent>
       </Card>
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardContent>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: spaceRem(2) }}>
             {dadosFiltrados.map((u) => {
@@ -181,7 +177,7 @@ export function UsuariosPage() {
 
       {modalAberto && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: '10px', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>{editandoId ? 'Editar Usuário' : 'Novo Usuário'}</h2>
               <Button variant="ghost" size="sm" onClick={fecharModal}><ChevronDown size={20} /></Button>

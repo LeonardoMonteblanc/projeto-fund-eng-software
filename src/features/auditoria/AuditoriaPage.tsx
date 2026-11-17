@@ -8,7 +8,7 @@ import { useUser } from '@/features/auth/store';
 import { getDB } from '@/shared/db';
 import { ACAO_LOG_ROTULO, TABELAS_AUDITADAS } from '@/shared/constants';
 import type { LogAuditoria } from '@/shared/domain';
-import { Card, CardHeader, CardContent, Badge, Button, Input, Select, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, Badge, Button, Input, Select, spaceRem, PageHeader } from '@/shared/ui/components';
 import { formatarDataHoraBR } from '@/shared/utils';
 import { ShieldAlert, Search, ChevronDown } from 'lucide-react';
 
@@ -67,17 +67,13 @@ export function AuditoriaPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spaceRem(2) }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginBottom: '4px' }}>
-            <ShieldAlert size={28} style={{ color: 'var(--color-accent)' }} />
-            <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Auditoria</h1>
-          </div>
-          <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)', margin: '4px 0 0' }}>{logs.length} registros no log interno</p>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Conformidade"
+        titulo="Auditoria"
+        subtitulo={`${logs.length} registros no log interno`}
+      />
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
         <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Input placeholder="Buscar (usuário, registro, motivo...)" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
@@ -86,7 +82,7 @@ export function AuditoriaPage() {
         </CardContent>
       </Card>
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardContent style={{ overflow: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-size-xs)' }}>
             <thead>
@@ -122,7 +118,7 @@ export function AuditoriaPage() {
 
       {visualizando && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setVisualizando(null)}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: '10px', width: '100%', maxWidth: '720px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '720px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>Detalhes do Registro</h2>
               <Button variant="ghost" size="sm" onClick={() => setVisualizando(null)}><ChevronDown size={20} /></Button>

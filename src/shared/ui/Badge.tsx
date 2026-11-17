@@ -1,5 +1,6 @@
 /**
- * Badge components - Light mode UCS style.
+ * Badge components - institucional UCS (identidade visual 10/nov).
+ * Chips em caixa alta com raio mínimo de 2px.
  */
 
 import { type ReactNode, type CSSProperties } from 'react';
@@ -7,21 +8,21 @@ import { type ReactNode, type CSSProperties } from 'react';
 export type BadgeVariant = 'default' | 'accent' | 'danger' | 'warning' | 'info' | 'success' | 'outline';
 
 export function Badge({ children, variant = 'default', size = 'md', dot = false }: { children: ReactNode; variant?: BadgeVariant; size?: 'sm' | 'md' | 'lg'; dot?: boolean }) {
-  const variantStyles: Record<string, CSSProperties> = { 
-    default: { backgroundColor: 'var(--color-bg-section)', borderColor: 'var(--color-border)', color: 'var(--color-fg)' }, 
-    accent: { backgroundColor: 'var(--color-accent-bg)', borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }, 
-    danger: { backgroundColor: 'var(--color-danger-bg)', borderColor: 'var(--color-danger)', color: 'var(--color-danger)' }, 
-    warning: { backgroundColor: 'var(--color-warning-bg)', borderColor: 'var(--color-warning)', color: 'var(--color-warning)' }, 
-    info: { backgroundColor: 'var(--color-info-bg)', borderColor: 'var(--color-info)', color: 'var(--color-info)' }, 
-    success: { backgroundColor: 'var(--color-sucesso-bg)', borderColor: 'var(--color-sucesso)', color: 'var(--color-sucesso)' }, 
-    outline: { backgroundColor: 'transparent', borderColor: 'var(--color-border)', color: 'var(--color-fg)' } 
+  const variantStyles: Record<string, CSSProperties> = {
+    default: { backgroundColor: '#EDEDED', borderColor: '#D4D4D4', color: '#4B5158' },
+    accent: { backgroundColor: '#E8F2FA', borderColor: '#A9C9E6', color: '#0E4B75' },
+    danger: { backgroundColor: '#FBECEC', borderColor: '#EEC2C4', color: '#9C2428' },
+    warning: { backgroundColor: '#FFF4E2', borderColor: '#E9C987', color: '#855000' },
+    info: { backgroundColor: '#E8F2FA', borderColor: '#A9C9E6', color: '#0E4B75' },
+    success: { backgroundColor: '#E8F5EC', borderColor: '#B9DFC6', color: '#1C6A38' },
+    outline: { backgroundColor: 'transparent', borderColor: 'var(--color-border)', color: 'var(--color-fg)' },
   };
-  const sizeStyles: Record<string, CSSProperties> = { 
-    sm: { padding: '2px 8px', fontSize: 'var(--font-size-xs)', gap: '4px' }, 
-    md: { padding: '4px 10px', fontSize: 'var(--font-size-sm)', gap: '6px' }, 
-    lg: { padding: '6px 14px', fontSize: 'var(--font-size-base)', gap: '8px' } 
+  const sizeStyles: Record<string, CSSProperties> = {
+    sm: { padding: '2px 7px', fontSize: '10px', gap: '4px' },
+    md: { padding: '2px 7px', fontSize: '10px', gap: '4px' },
+    lg: { padding: '4px 10px', fontSize: '11px', gap: '6px' },
   };
-  return <span style={{ display: 'inline-flex', alignItems: 'center', fontFamily: 'var(--font-sans)', fontWeight: 600, borderWidth: '1px', borderStyle: 'solid', borderRadius: '12px', whiteSpace: 'nowrap', lineHeight: 1, ...variantStyles[variant], ...sizeStyles[size] }}>{dot && <span style={{ width: size === 'sm' ? '6px' : size === 'md' ? '8px' : '10px', height: size === 'sm' ? '6px' : size === 'md' ? '8px' : '10px', borderRadius: '50%', backgroundColor: 'currentColor', flexShrink: 0 }} />}{children}</span>;
+  return <span style={{ display: 'inline-flex', alignItems: 'center', fontFamily: 'var(--font-sans)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.02em', borderWidth: '1px', borderStyle: 'solid', borderRadius: '2px', whiteSpace: 'nowrap', lineHeight: 1.5, ...variantStyles[variant], ...sizeStyles[size] }}>{dot && <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'currentColor', flexShrink: 0 }} />}{children}</span>;
 }
 export function StatusBadge({ status, size = 'md', showDot = true }: { status: string; size?: 'sm' | 'md' | 'lg'; showDot?: boolean }) {
   const statusVariantMap: Record<string, BadgeVariant> = { ATIVO: 'success', INATIVO: 'default', EM_MANUTENCAO: 'warning', AGENDADO: 'info', REALIZADO: 'success', CANCELADO: 'danger', PENDENTE: 'warning', APROVADA: 'success', REJEITADA: 'danger', APROVADO: 'success', REPROVADO: 'danger', CONFORME: 'success', ATENCAO: 'warning', NAO_CONFORME: 'danger', SEM_DADOS: 'default' };

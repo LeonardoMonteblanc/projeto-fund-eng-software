@@ -10,7 +10,7 @@ import { ehGlobal } from '@/features/auth/permissions';
 import { calcularMetricas } from '@/shared/metrology';
 import { SITUACAO_EVENTO_ROTULO, TIPO_EVENTO_ROTULO, STATUS_PRAZO_ROTULO } from '@/shared/constants';
 import type { Laboratorio } from '@/shared/domain';
-import { Card, CardHeader, CardContent, Badge, Button, Input, Select, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, Badge, Button, Input, Select, spaceRem, PageHeader } from '@/shared/ui/components';
 import { formatarDataBR, centavosParaReais, hojeISO } from '@/shared/utils';
 import { baixarCSV, baixarXLSX, baixarPDF } from '@/shared/exportar';
 import { registrarLog } from '@/shared/audit';
@@ -157,20 +157,16 @@ export function RelatoriosPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spaceRem(2) }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginBottom: '4px' }}>
-            <FileBarChart2 size={28} style={{ color: 'var(--color-accent)' }} />
-            <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Relatórios</h1>
-          </div>
-          <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)', margin: '4px 0 0' }}>{global ? 'Visão consolidada de todos os laboratórios' : 'Relatórios do seu laboratório'}</p>
-        </div>
-        <div style={{ display: 'flex', gap: spaceRem(2), flexWrap: 'wrap' }}>
-          <Button variant="outline" leftIcon={<Download size={16} />} onClick={() => exportar('csv')}>Exportar CSV</Button>
-          <Button variant="outline" leftIcon={<Download size={16} />} onClick={() => exportar('xlsx')}>Exportar Excel</Button>
-          <Button variant="outline" leftIcon={<Download size={16} />} onClick={() => exportar('pdf')}>Exportar PDF</Button>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Gestão"
+        titulo="Relatórios"
+        subtitulo={global ? 'Visão consolidada de todos os laboratórios' : 'Relatórios do seu laboratório'}
+        acoes={<>
+          <Button variant="secondary" leftIcon={<Download size={16} />} onClick={() => exportar('csv')}>Exportar CSV</Button>
+          <Button variant="secondary" leftIcon={<Download size={16} />} onClick={() => exportar('xlsx')}>Exportar Excel</Button>
+          <Button variant="secondary" leftIcon={<Download size={16} />} onClick={() => exportar('pdf')}>Exportar PDF</Button>
+        </>}
+      />
 
       <div style={{ display: 'flex', gap: '4px', borderBottom: '1px solid var(--color-border)' }}>
         {TIPOS.map((t) => (
@@ -179,7 +175,7 @@ export function RelatoriosPage() {
       </div>
       <p style={{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)' }}>{TIPOS.find((t) => t.valor === tipo)?.descricao}</p>
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
         <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           {global && <Select label="Laboratório" value={filtroLab} onChange={(e) => setFiltroLab(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, ...labsVisiveis.map((l) => ({ value: l.id, label: `${l.sigla} — ${l.nome}` }))]} />}
@@ -195,7 +191,7 @@ export function RelatoriosPage() {
         </CardContent>
       </Card>
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title={`${TIPOS.find((t) => t.valor === tipo)?.rotulo} — ${totalAtual} registro(s)`} />
         <CardContent style={{ overflow: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-size-xs)' }}>

@@ -3,7 +3,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Card, CardHeader, CardContent, Button, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, Button, spaceRem, PageHeader } from '@/shared/ui/components';
 import { ShieldCheck } from 'lucide-react';
 
 const CHAVE_CONSENTIMENTO = 'labucs.consentimento.lgpd.v1';
@@ -26,16 +26,14 @@ export function PrivacidadePage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3), maxWidth: 860 }}>
-      <div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginBottom: '4px' }}>
-          <ShieldCheck size={28} style={{ color: 'var(--color-accent)' }} />
-          <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Privacidade (LGPD)</h1>
-        </div>
-        <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)', margin: '4px 0 0' }}>Aviso de privacidade da demonstração LabUcs</p>
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3), maxWidth: 980 }}>
+      <PageHeader
+        eyebrow="Conformidade"
+        titulo="Privacidade (LGPD)"
+        subtitulo="Aviso de privacidade da demonstração LabUcs"
+      />
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Aviso de Privacidade" subtitle="Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018)" />
         <CardContent style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(2), fontSize: 'var(--font-size-sm)', color: 'var(--color-fg)', lineHeight: 1.6 }}>
           <p style={{ margin: 0 }}>Esta é uma aplicação de demonstração (POC) do sistema de gestão de equipamentos laboratoriais da Universidade de Caxias do Sul. Os dados apresentados são fictícios e gerados automaticamente para fins acadêmicos da disciplina FBI4010X — Fundamentos de Engenharia de Software.</p>
@@ -46,7 +44,7 @@ export function PrivacidadePage() {
         </CardContent>
       </Card>
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Consentimento" subtitle="Registro local de consentimento para uso dos dados de demonstração" />
         <CardContent style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spaceRem(2) }}>
           <p style={{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)' }}>

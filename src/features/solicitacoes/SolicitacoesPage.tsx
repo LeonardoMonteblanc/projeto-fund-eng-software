@@ -9,7 +9,7 @@ import { getDB } from '@/shared/db';
 import { ehGlobal } from '@/features/auth/permissions';
 import { SITUACOES_SOLICITACAO, SITUACAO_SOLICITACAO_ROTULO, TIPO_EVENTO_ROTULO } from '@/shared/constants';
 import type { Solicitacao, Equipamento, Usuario, Laboratorio } from '@/shared/domain';
-import { Card, CardHeader, CardContent, StatusBadge, Button, Input, Select, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, StatusBadge, Button, Input, Select, spaceRem, PageHeader } from '@/shared/ui/components';
 import { formatarDataBR, formatarDataHoraBR, gerarULID, agoraISO, hojeISO } from '@/shared/utils';
 import { registrarLog } from '@/shared/audit';
 import { Search, Plus, ChevronDown, Check, X, FileText } from 'lucide-react';
@@ -159,18 +159,14 @@ export function SolicitacoesPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spaceRem(2) }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginBottom: '4px' }}>
-            <FileText size={28} style={{ color: 'var(--color-accent)' }} />
-            <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Solicitações</h1>
-          </div>
-          <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)', margin: '4px 0 0' }}>{dadosFiltrados.length} solicitações — {solicitacoes.filter((s) => s.situacao === 'PENDENTE').length} pendentes</p>
-        </div>
-        {podeCriar && <Button onClick={() => setModalAberto(true)} leftIcon={<Plus size={16} />}>Nova Solicitação</Button>}
-      </div>
+      <PageHeader
+        eyebrow="Fluxo de aprovação"
+        titulo="Solicitações"
+        subtitulo={`${dadosFiltrados.length} solicitações — ${solicitacoes.filter((s) => s.situacao === 'PENDENTE').length} pendentes`}
+        acoes={<>{podeCriar && <Button onClick={() => setModalAberto(true)} leftIcon={<Plus size={16} />}>Nova Solicitação</Button>}</>}
+      />
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
         <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Input placeholder="Buscar (TAG, patrimônio, justificativa...)" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
@@ -179,7 +175,7 @@ export function SolicitacoesPage() {
         </CardContent>
       </Card>
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardContent>
           {dadosFiltrados.length === 0 ? (
             <p style={{ textAlign: 'center', color: 'var(--color-fg-muted)', padding: '40px' }}>Nenhuma solicitação encontrada</p>
@@ -220,7 +216,7 @@ export function SolicitacoesPage() {
 
       {modalAberto && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setModalAberto(false)}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: '10px', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>Nova Solicitação de Evento</h2>
               <Button variant="ghost" size="sm" onClick={() => setModalAberto(false)}><ChevronDown size={20} /></Button>

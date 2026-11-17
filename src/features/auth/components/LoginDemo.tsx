@@ -40,55 +40,67 @@ export function LoginDemo() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: spaceRem(4), backgroundColor: 'var(--color-bg)', fontFamily: 'var(--font-sans)' }}>
-      <div style={{ width: '100%', maxWidth: '480px', backgroundColor: 'var(--color-bgElevated)', border: '2px solid var(--color-border)', padding: '32px' }}>
-        <div style={{ textAlign: 'center', paddingBottom: '24px', borderBottom: '2px solid var(--color-border)', marginBottom: '24px' }}>
-          <div style={{ width: '64px', height: '64px', margin: '0 auto 16px', backgroundColor: 'var(--color-accentBg)', border: '2px solid var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Key size={32} style={{ color: 'var(--color-accent)' }} /></div>
-          <h1 style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: '0 0 8px 0' }}>LabUcs Demo</h1>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-sm)', color: 'var(--color-fgMuted)', margin: 0 }}>Selecione o perfil de acesso</p>
+    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: '34px 16px', backgroundColor: 'var(--color-accent)', fontFamily: 'var(--font-sans)' }}>
+      <div style={{ width: 'min(1080px, 100%)', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '38px', alignItems: 'center' }}>
+        <div style={{ color: '#FFFFFF', minWidth: 0 }}>
+          <div style={{ fontSize: '13px', letterSpacing: '0.22em', fontWeight: 700, textTransform: 'uppercase', color: 'var(--color-rosa)' }}>LabUcs</div>
+          <h1 style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(28px, 3.3vw, 42px)', margin: '14px 0', color: '#FFFFFF', maxWidth: '560px', textTransform: 'none', fontWeight: 300, lineHeight: 1.2 }}>Gestão de Equipamentos Laboratoriais</h1>
+          <p style={{ color: '#E3E9F0', maxWidth: '540px', fontSize: '15px' }}>Cadastro de equipamentos, calibrações, verificações, manutenções, solicitações, fornecedores, relatórios e indicadores dos laboratórios da UCS.</p>
+          <ul style={{ margin: '22px 0', padding: 0, listStyle: 'none', display: 'grid', gap: '8px', color: '#FFFFFF', fontSize: '13px' }}>
+            <li style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--color-rosa)', fontWeight: 700 }}>▸</span> Sinalização de vencimentos e não conformidades (RF17)</li>
+            <li style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--color-rosa)', fontWeight: 700 }}>▸</span> Regra de decisão |erro| + U ≤ CA (aceitação simples)</li>
+            <li style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--color-rosa)', fontWeight: 700 }}>▸</span> Auditoria completa e indicadores de custos por laboratório</li>
+          </ul>
+          <p style={{ fontSize: '11px', borderLeft: '4px solid var(--color-rosa)', paddingLeft: '10px', color: '#E3E9F0' }}>Modo demonstração — sem autenticação real (POC acadêmica).</p>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <div>
-            <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-sm)', fontWeight: 600, color: 'var(--color-fg)', marginBottom: '8px' }}>Perfil de Acesso</label>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {PERFIS_ORDEM.map((p) => {
-                const isSelected = perfil === p;
-                const Icon = PERFIL_ICONS[p];
-                return (
-                  <button key={p} type="button" onClick={() => setPerfil(p)} style={{
-                    display: 'flex', alignItems: 'center', gap: '12px', padding: '12px',
-                    backgroundColor: isSelected ? 'var(--color-accentBg)' : 'var(--color-bgElevated)',
-                    border: `2px solid ${isSelected ? 'var(--color-accent)' : 'var(--color-border)'}`,
-                    cursor: 'pointer', textAlign: 'left', width: '100%',
-                  }}>
-                    <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isSelected ? 'var(--color-accent)' : 'var(--color-bg)', border: `2px solid ${isSelected ? 'var(--color-accent)' : 'var(--color-border)'}`, flexShrink: 0 }}>{Icon}</div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-base)', fontWeight: 600, color: 'var(--color-fg)' }}>{PERFIL_LABELS[p]}</div>
-                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fgMuted)', marginTop: '2px' }}>{PERFIL_DESCRICOES[p]}</div>
-                    </div>
-                    {isSelected && <ChevronRight size={20} style={{ color: 'var(--color-accent)' }} />}
-                  </button>
-                );
-              })}
-            </div>
+        <div style={{ backgroundColor: '#FFFFFF', border: '2px solid var(--color-border)', padding: '28px', boxShadow: 'var(--shadow-sm)' }}>
+          <div style={{ borderBottom: '2px solid var(--color-border)', marginBottom: '16px', paddingBottom: '12px' }}>
+            <h2 style={{ margin: '0 0 4px', color: 'var(--color-accent)', textTransform: 'uppercase', fontSize: '17px' }}>Entrar na demonstração</h2>
+            <p style={{ margin: 0, color: 'var(--color-fg-muted)', fontSize: '12.5px' }}>Selecione o perfil de acesso</p>
           </div>
 
-          {exigeLab && (
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
-              <select value={laboratorioId} onChange={(e) => setLaboratorioId(e.target.value)} style={{ width: '100%', fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-base)', color: 'var(--color-fg)', backgroundColor: 'var(--color-bgElevated)', border: '2px solid var(--color-border)', padding: '8px 12px' }}>
-                <option value="">Selecione o laboratório</option>
-                {laboratorios.map((l) => <option key={l.id} value={l.id}>{l.sigla} — {l.nome}</option>)}
-              </select>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {PERFIS_ORDEM.map((p) => {
+                  const isSelected = perfil === p;
+                  const Icon = PERFIL_ICONS[p];
+                  return (
+                    <button key={p} type="button" onClick={() => setPerfil(p)} style={{
+                      display: 'flex', alignItems: 'center', gap: '12px', padding: '10px',
+                      backgroundColor: isSelected ? '#EAF0F6' : '#FAFAFA',
+                      border: `2px solid ${isSelected ? 'var(--color-accent)' : 'var(--color-border)'}`,
+                      cursor: 'pointer', textAlign: 'left', width: '100%',
+                    }}>
+                      <div style={{ width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isSelected ? 'var(--color-accent)' : '#FFFFFF', border: `2px solid ${isSelected ? 'var(--color-accent)' : 'var(--color-border)'}`, flexShrink: 0, color: isSelected ? '#FFFFFF' : 'var(--color-fg-muted)' }}>{Icon}</div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontFamily: 'var(--font-sans)', fontSize: '12.5px', fontWeight: 700, color: 'var(--color-fg)', textTransform: 'uppercase', letterSpacing: '0.02em' }}>{PERFIL_LABELS[p]}</div>
+                        <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--color-fg-muted)', marginTop: '2px' }}>{PERFIL_DESCRICOES[p]}</div>
+                      </div>
+                      {isSelected && <ChevronRight size={20} style={{ color: 'var(--color-accent)' }} />}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          )}
 
-          {erro && <div style={{ padding: '12px', backgroundColor: 'var(--color-dangerBg)', border: '2px solid var(--color-danger)', color: 'var(--color-danger)', fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-sm)' }}>{erro}</div>}
+            {exigeLab && (
+              <div>
+                <select value={laboratorioId} onChange={(e) => setLaboratorioId(e.target.value)} style={{ width: '100%', fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--color-fg)', backgroundColor: '#FFFFFF', border: '2px solid var(--color-border)', padding: '8px 10px', minHeight: '40px' }}>
+                  <option value="">Selecione o laboratório</option>
+                  {laboratorios.map((l) => <option key={l.id} value={l.id}>{l.sigla} — {l.nome}</option>)}
+                </select>
+              </div>
+            )}
 
-          <Button type="submit" variant="primary" size="lg" fullWidth loading={carregando} leftIcon={<Key size={18} />}>Entrar como {PERFIL_LABELS[perfil]}</Button>
-        </form>
+            {erro && <div style={{ padding: '11px 14px', backgroundColor: 'var(--color-danger-bg)', border: '2px solid var(--color-danger)', color: 'var(--color-danger)', fontFamily: 'var(--font-sans)', fontSize: '12.5px', borderLeftWidth: '6px' }}>{erro}</div>}
 
-        <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '2px solid var(--color-border)', textAlign: 'center' }}><p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fgMuted)', margin: 0 }}>Modo demonstração — sem autenticação real</p></div>
+            <Button type="submit" variant="primary" size="lg" fullWidth loading={carregando} leftIcon={<Key size={18} />}>Entrar como {PERFIL_LABELS[perfil]}</Button>
+          </form>
+
+          <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '2px solid var(--color-border)', textAlign: 'center' }}><p style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--color-fg-muted)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Universidade de Caxias do Sul • FBI4010X</p></div>
+        </div>
       </div>
     </div>
   );

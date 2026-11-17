@@ -5,7 +5,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getDB } from '@/shared/db';
 import type { Config } from '@/shared/domain';
-import { Card, CardHeader, CardContent, Button, Input, Select, spaceRem } from '@/shared/ui/components';
+import { Card, CardHeader, CardContent, Button, Input, Select, spaceRem, PageHeader } from '@/shared/ui/components';
 import { agoraISO } from '@/shared/utils';
 import { registrarLog } from '@/shared/audit';
 import { Settings } from 'lucide-react';
@@ -57,16 +57,14 @@ export function ConfigPage() {
   if (!config) return <p style={{ color: 'var(--color-fg-muted)' }}>Configuração não encontrada.</p>;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3), maxWidth: 760 }}>
-      <div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2), marginBottom: '4px' }}>
-          <Settings size={28} style={{ color: 'var(--color-accent)' }} />
-          <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 700, color: 'var(--color-fg)', margin: 0 }}>Configurações</h1>
-        </div>
-        <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)', margin: '4px 0 0' }}>Parâmetros globais do sistema (restrito ao Administrador)</p>
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(3), maxWidth: 980 }}>
+      <PageHeader
+        eyebrow="Administração"
+        titulo="Configurações"
+        subtitulo="Parâmetros globais do sistema (restrito ao Administrador)"
+      />
 
-      <Card style={{ border: '1px solid var(--color-border)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Parâmetros Gerais" />
         <CardContent>
           <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
