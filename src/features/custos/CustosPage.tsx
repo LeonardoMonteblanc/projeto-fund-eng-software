@@ -133,7 +133,7 @@ export function CustosPage() {
 
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Período" />
-        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
+        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '2px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Select label="Período" value={periodo} onChange={(e) => setPeriodo(e.target.value)} options={[{ value: 'mes', label: 'Este Mês' }, { value: 'trimestre', label: 'Este Trimestre' }, { value: 'ano', label: 'Este Ano' }, { value: 'personalizado', label: 'Personalizado' }]} />
           {periodo === 'personalizado' && (
             <>
@@ -146,23 +146,23 @@ export function CustosPage() {
       </Card>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: spaceRem(2) }}>
-        <div style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+        <div style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
           <p style={{ margin: 0, fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fg-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Custo Total no Período</p>
           <p style={{ margin: '8px 0 0', fontSize: 'var(--font-size-2xl)', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-danger)' }}>{centavosParaReais(totais.total)}</p>
         </div>
-        <div style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+        <div style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
           <p style={{ margin: 0, fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fg-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Calibrações</p>
           <p style={{ margin: '8px 0 0', fontSize: 'var(--font-size-2xl)', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-accent)' }}>{centavosParaReais(totais.calibracao)}</p>
         </div>
-        <div style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+        <div style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
           <p style={{ margin: 0, fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fg-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Verificações</p>
           <p style={{ margin: '8px 0 0', fontSize: 'var(--font-size-2xl)', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-accent)' }}>{centavosParaReais(totais.verificacao)}</p>
         </div>
-        <div style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+        <div style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
           <p style={{ margin: 0, fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fg-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Manutenções (Prev. + Corr.)</p>
           <p style={{ margin: '8px 0 0', fontSize: 'var(--font-size-2xl)', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-accent)' }}>{centavosParaReais(totais.manutencaoPreventiva + totais.manutencaoCorretiva)}</p>
         </div>
-        <div style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+        <div style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
           <p style={{ margin: 0, fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fg-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Receita Mensal (soma dos labs)</p>
           <p style={{ margin: '8px 0 0', fontSize: 'var(--font-size-2xl)', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-sucesso)' }}>{centavosParaReais(totais.receita)}</p>
         </div>
@@ -173,7 +173,7 @@ export function CustosPage() {
         <CardContent style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(2) }}>
           {linhas.length === 0 && <p style={{ textAlign: 'center', color: 'var(--color-fg-muted)', padding: '40px' }}>Nenhum dado no período selecionado</p>}
           {linhas.map((l) => (
-            <div key={l.laboratorioId} style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+            <div key={l.laboratorioId} style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
                 <div>
                   <strong style={{ fontSize: 'var(--font-size-sm)' }}>{l.sigla}</strong>
@@ -185,8 +185,8 @@ export function CustosPage() {
                   {l.percentual !== null && <Badge variant={l.percentual > 20 ? 'danger' : l.percentual > 10 ? 'warning' : 'success'} size="sm">{l.percentual}% da receita</Badge>}
                 </div>
               </div>
-              <div style={{ height: '14px', backgroundColor: 'var(--color-bg-section)', borderRadius: '7px', overflow: 'hidden', position: 'relative' }}>
-                <div style={{ height: '100%', width: `${Math.max(1, Math.round((l.total / maxTotal) * 100))}%`, backgroundColor: 'var(--color-accent)', borderRadius: '7px' }} />
+              <div style={{ height: '14px', backgroundColor: 'var(--color-bg-section)', borderRadius: '0', overflow: 'hidden', position: 'relative' }}>
+                <div style={{ height: '100%', width: `${Math.max(1, Math.round((l.total / maxTotal) * 100))}%`, backgroundColor: 'var(--color-accent)', borderRadius: '0' }} />
               </div>
               <div style={{ display: 'flex', gap: '16px', marginTop: '8px', fontSize: 'var(--font-size-xs)', color: 'var(--color-fg-muted)' }}>
                 <span>Calibração: {centavosParaReais(l.calibracao)}</span>

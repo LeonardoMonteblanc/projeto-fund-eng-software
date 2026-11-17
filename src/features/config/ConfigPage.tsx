@@ -76,8 +76,8 @@ export function ConfigPage() {
             <Input label="Bloqueio de Login (segundos)" type="number" min={1} value={config.bloqueioLoginSegundos} onChange={(e) => setConfig({ ...config, bloqueioLoginSegundos: Number(e.target.value) || 120 })} fullWidth />
             <Select label="Moeda" value={config.moeda} onChange={(e) => setConfig({ ...config, moeda: e.target.value })} options={[{ value: 'BRL', label: 'BRL — Real Brasileiro' }, { value: 'USD', label: 'USD — Dólar' }, { value: 'EUR', label: 'EUR — Euro' }]} fullWidth />
             <Select label="Auto-aprovação de Solicitações" value={config.permitirAutoAprovacao ? 'true' : 'false'} onChange={(e) => setConfig({ ...config, permitirAutoAprovacao: e.target.value === 'true' })} options={[{ value: 'false', label: 'Desativada (recomendado)' }, { value: 'true', label: 'Ativada' }]} fullWidth hint="Permite que solicitações sejam aprovadas automaticamente pelo sistema." />
-            {salvo && <p style={{ gridColumn: '1 / -1', margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-sucesso-bg)', border: '1px solid var(--color-sucesso)', borderRadius: '4px', color: 'var(--color-sucesso)', fontSize: 'var(--font-size-sm)' }}>Parâmetros salvos com sucesso.</p>}
-            <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+            {salvo && <p style={{ gridColumn: '1 / -1', margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-sucesso-bg)', border: '1px solid var(--color-sucesso)', borderRadius: '0', color: 'var(--color-sucesso)', fontSize: 'var(--font-size-sm)' }}>Parâmetros salvos com sucesso.</p>}
+            <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
               <Button type="submit" loading={salvando}>Salvar Parâmetros</Button>
             </div>
           </form>

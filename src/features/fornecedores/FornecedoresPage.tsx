@@ -128,7 +128,7 @@ export function FornecedoresPage() {
 
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
-        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
+        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '2px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Input placeholder="Buscar (razão social, CNPJ, e-mail...)" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
           <Select label="Situação" value={filtroSituacao} onChange={(e) => setFiltroSituacao(e.target.value)} options={[{ value: 'todas', label: 'Todas' }, { value: 'ATIVO', label: 'Ativo' }, { value: 'INATIVO', label: 'Inativo' }]} />
         </CardContent>
@@ -141,7 +141,7 @@ export function FornecedoresPage() {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: spaceRem(2) }}>
               {dadosFiltrados.map((f) => (
-                <div key={f.id} style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+                <div key={f.id} style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                     <h4 style={{ margin: 0, fontSize: 'var(--font-size-base)', fontWeight: 600 }}>{f.razaoSocial}</h4>
                     <StatusBadge status={f.situacao} size="sm" />
@@ -164,10 +164,10 @@ export function FornecedoresPage() {
 
       {modalAberto && (
         <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: 'var(--shadow-md)' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '2px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>{editandoId ? 'Editar Fornecedor' : 'Novo Fornecedor'}</h2>
-              <Button variant="ghost" size="sm" onClick={fecharModal}><ChevronDown size={20} /></Button>
+              <Button variant="ghost" size="sm" onClick={fecharModal}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Fechar"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></Button>
             </div>
             <form onSubmit={handleSubmit} style={{ padding: spaceRem(3), display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
               <Input label="Razão Social" value={form.razaoSocial} onChange={(e) => setForm({ ...form, razaoSocial: e.target.value })} required fullWidth />
@@ -176,11 +176,11 @@ export function FornecedoresPage() {
               <Input label="E-mail" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} fullWidth />
               <Select label="Situação" value={form.situacao} onChange={(e) => setForm({ ...form, situacao: e.target.value as 'ATIVO' | 'INATIVO' })} options={[{ value: 'ATIVO', label: 'Ativo' }, { value: 'INATIVO', label: 'Inativo' }]} fullWidth />
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label htmlFor="fornecedor-observacoes" style={{ fontSize: 'var(--font-size-sm)', fontWeight: 500, color: 'var(--color-fg)' }}>Observações</label>
-                <textarea id="fornecedor-observacoes" value={form.observacoes} onChange={(e) => setForm({ ...form, observacoes: e.target.value })} rows={3} style={{ width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '1px solid var(--color-border-input)', borderRadius: '4px', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }} />
+                <label htmlFor="fornecedor-observacoes" style={{ fontSize: '10.5px', fontWeight: 700, color: 'var(--color-fg-light)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>Observações</label>
+                <textarea id="fornecedor-observacoes" value={form.observacoes} onChange={(e) => setForm({ ...form, observacoes: e.target.value })} rows={3} style={{ width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '2px solid var(--color-border-input)', borderRadius: '0', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }} />
               </div>
-              {erro && <p style={{ margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-danger-bg)', border: '1px solid var(--color-danger)', borderRadius: '4px', color: 'var(--color-danger)', fontSize: 'var(--font-size-sm)' }}>{erro}</p>}
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+              {erro && <p style={{ margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-danger-bg)', border: '1px solid var(--color-danger)', borderRadius: '0', color: 'var(--color-danger)', fontSize: 'var(--font-size-sm)' }}>{erro}</p>}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
                 <Button variant="outline" onClick={fecharModal}>Cancelar</Button>
                 <Button type="submit" loading={salvando}>{editandoId ? 'Salvar Alterações' : 'Cadastrar Fornecedor'}</Button>
               </div>

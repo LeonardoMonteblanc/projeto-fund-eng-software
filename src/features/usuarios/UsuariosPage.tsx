@@ -138,7 +138,7 @@ export function UsuariosPage() {
 
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
-        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
+        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '2px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Input placeholder="Buscar (nome, e-mail...)" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
           <Select label="Perfil" value={filtroPerfil} onChange={(e) => setFiltroPerfil(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, ...Object.values(PERFIS).map((p) => ({ value: p, label: PERFIL_ROTULO[p as keyof typeof PERFIL_ROTULO] }))]} />
         </CardContent>
@@ -150,7 +150,7 @@ export function UsuariosPage() {
             {dadosFiltrados.map((u) => {
               const lab = labs.find((l) => l.id === u.laboratorioId);
               return (
-                <div key={u.id} style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+                <div key={u.id} style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                     <h4 style={{ margin: 0, fontSize: 'var(--font-size-base)', fontWeight: 600 }}>{u.nome}</h4>
                     <StatusBadge status={u.ativo ? 'ATIVO' : 'INATIVO'} size="sm" />
@@ -177,10 +177,10 @@ export function UsuariosPage() {
 
       {modalAberto && (
         <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: 'var(--shadow-md)' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '2px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>{editandoId ? 'Editar Usuário' : 'Novo Usuário'}</h2>
-              <Button variant="ghost" size="sm" onClick={fecharModal}><ChevronDown size={20} /></Button>
+              <Button variant="ghost" size="sm" onClick={fecharModal}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Fechar"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></Button>
             </div>
             <form onSubmit={handleSubmit} style={{ padding: spaceRem(3), display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
               <Input label="Nome" value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} required fullWidth />
@@ -192,8 +192,8 @@ export function UsuariosPage() {
                   options={labs.map((l) => ({ value: l.id, label: `${l.sigla} — ${l.nome}` }))} />
               )}
               <Select label="Situação" value={form.ativo ? 'true' : 'false'} onChange={(e) => setForm({ ...form, ativo: e.target.value === 'true' })} options={[{ value: 'true', label: 'Ativo' }, { value: 'false', label: 'Inativo' }]} fullWidth />
-              {erro && <p style={{ margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-danger-bg)', border: '1px solid var(--color-danger)', borderRadius: '4px', color: 'var(--color-danger)', fontSize: 'var(--font-size-sm)' }}>{erro}</p>}
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+              {erro && <p style={{ margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-danger-bg)', border: '1px solid var(--color-danger)', borderRadius: '0', color: 'var(--color-danger)', fontSize: 'var(--font-size-sm)' }}>{erro}</p>}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
                 <Button variant="outline" onClick={fecharModal}>Cancelar</Button>
                 <Button type="submit" loading={salvando}>{editandoId ? 'Salvar Alterações' : 'Cadastrar Usuário'}</Button>
               </div>

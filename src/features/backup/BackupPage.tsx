@@ -140,8 +140,8 @@ export function BackupPage() {
         </Card>
       </div>
 
-      {status && <p style={{ margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-sucesso-bg)', border: '1px solid var(--color-sucesso)', borderRadius: '4px', color: 'var(--color-sucesso)', fontSize: 'var(--font-size-sm)' }}>{status}</p>}
-      {erro && <p style={{ margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-danger-bg)', border: '1px solid var(--color-danger)', borderRadius: '4px', color: 'var(--color-danger)', fontSize: 'var(--font-size-sm)' }}>{erro}</p>}
+      {status && <p style={{ margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-sucesso-bg)', border: '1px solid var(--color-sucesso)', borderRadius: '0', color: 'var(--color-sucesso)', fontSize: 'var(--font-size-sm)' }}>{status}</p>}
+      {erro && <p style={{ margin: 0, padding: '10px 12px', backgroundColor: 'var(--color-danger-bg)', border: '1px solid var(--color-danger)', borderRadius: '0', color: 'var(--color-danger)', fontSize: 'var(--font-size-sm)' }}>{erro}</p>}
 
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Histórico de Backups (navegador)" subtitle={`${backupsSalvos.length} backup(s) gerado(s) nesta máquina`} />

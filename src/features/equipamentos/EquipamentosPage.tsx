@@ -187,7 +187,7 @@ export function EquipamentosPage() {
     }),
     columnHelper.accessor('item.nome', {
       header: 'Item / Modelo',
-      cell: info => <div><span style={{ fontWeight: 500 }}>{info.getValue()}</span><br/><span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-fgMuted)' }}>{info.row.original.item?.fabricante} {info.row.original.item?.modelo}</span></div>,
+      cell: info => <div><span style={{ fontWeight: 500 }}>{info.getValue()}</span><br/><span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-fg-muted)' }}>{info.row.original.item?.fabricante} {info.row.original.item?.modelo}</span></div>,
       size: 200,
     }),
     columnHelper.accessor('laboratorio.sigla', {
@@ -215,7 +215,7 @@ export function EquipamentosPage() {
       header: 'Próx. Calibração',
       cell: info => {
         const data = info.getValue();
-        if (!data) return <span style={{ color: 'var(--color-fgMuted)' }}>—</span>;
+        if (!data) return <span style={{ color: 'var(--color-fg-muted)' }}>—</span>;
         const dias = info.row.original.diasParaVencimentoCalibracao;
         const isVencido = dias !== null && dias < 0;
         const isProximo = dias !== null && dias >= 0 && dias <= 30;
@@ -227,7 +227,7 @@ export function EquipamentosPage() {
       header: 'Próx. Verificação',
       cell: info => {
         const data = info.getValue();
-        if (!data) return <span style={{ color: 'var(--color-fgMuted)' }}>—</span>;
+        if (!data) return <span style={{ color: 'var(--color-fg-muted)' }}>—</span>;
         const dias = info.row.original.diasParaVencimentoVerificacao;
         const isVencido = dias !== null && dias < 0;
         const isProximo = dias !== null && dias >= 0 && dias <= 30;
@@ -350,7 +350,7 @@ export function EquipamentosPage() {
 
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
-        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
+        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '2px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Input placeholder="Buscar (patrimônio, TAG, nº série, item, lab...)" value={filtroTexto} onChange={e => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
           <Select label="Laboratório" value={filtroLab} onChange={e => setFiltroLab(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, ...labs.map(l => ({ value: l.id, label: `${l.sigla} - ${l.nome}` }))]} fullWidth />
           <Select label="Situação" value={filtroSituacao} onChange={e => setFiltroSituacao(e.target.value)} options={[{ value: 'todas', label: 'Todas' }, ...Object.entries(SITUACOES_EQUIPAMENTO).map(([k, v]) => ({ value: v, label: k }))]} />
@@ -382,7 +382,7 @@ export function EquipamentosPage() {
             </thead>
             <tbody>
               {table.getRowModel().rows.length === 0 ? (
-                <tr><td colSpan={columns.length} style={{ padding: '40px', textAlign: 'center', color: 'var(--color-fgMuted)' }}>Nenhum equipamento encontrado</td></tr>
+                <tr><td colSpan={columns.length} style={{ padding: '40px', textAlign: 'center', color: 'var(--color-fg-muted)' }}>Nenhum equipamento encontrado</td></tr>
               ) : (
                 table.getRowModel().rows.map(row => (
                   <tr key={row.id} style={{ borderBottom: '1px solid var(--color-border)', transition: 'background 0.1s' }}>
@@ -397,8 +397,8 @@ export function EquipamentosPage() {
             </tbody>
           </table>
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: spaceRem(3), flexWrap: 'wrap', gap: spaceRem(2), borderTop: '1px solid var(--color-border)', marginTop: spaceRem(2) }}>
-            <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fgMuted)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: spaceRem(3), flexWrap: 'wrap', gap: spaceRem(2), borderTop: '2px solid var(--color-border)', marginTop: spaceRem(2) }}>
+            <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)' }}>
               Mostrando {pagination.pageIndex * pagination.pageSize + 1} a {Math.min((pagination.pageIndex + 1) * pagination.pageSize, totalRegistros)} de {totalRegistros}
             </span>
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -411,10 +411,10 @@ export function EquipamentosPage() {
 
       {modalAberto && (
         <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '700px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={e => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '700px', maxHeight: '90vh', overflow: 'auto', boxShadow: 'var(--shadow-md)' }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '2px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>{editando ? 'Editar Equipamento' : 'Novo Equipamento'}</h2>
-              <Button variant="ghost" size="sm" onClick={fecharModal}><ChevronDown size={20} /></Button>
+              <Button variant="ghost" size="sm" onClick={fecharModal}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Fechar"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></Button>
             </div>
             <form onSubmit={e => { e.preventDefault(); salvarEquipamento(); }} style={{ padding: spaceRem(3) }}>
               <div className="grade-formulario" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
@@ -434,7 +434,7 @@ export function EquipamentosPage() {
                 <Input label="Periodicidade Manutenção (meses)" value={form.periodicidadeManutencaoPreventivaMeses} onChange={e => setForm({ ...form, periodicidadeManutencaoPreventivaMeses: e.target.value })} fullWidth />
                 <Select label="Situação" value={form.situacao} onChange={e => setForm({ ...form, situacao: e.target.value })} options={Object.entries(SITUACOES_EQUIPAMENTO).map(([k, v]) => ({ value: v, label: k }))} fullWidth />
               </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), marginTop: spaceRem(3), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), marginTop: spaceRem(3), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
                 <Button variant="outline" onClick={fecharModal}>Cancelar</Button>
                 <Button type="submit" loading={salvando}>{editando ? 'Salvar Alterações' : 'Criar Equipamento'}</Button>
               </div>
@@ -445,16 +445,16 @@ export function EquipamentosPage() {
 
       {visualizando && (
         <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setVisualizando(null)}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={e => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflow: 'auto', boxShadow: 'var(--shadow-md)' }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '2px solid var(--color-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2) }}>
                 <Box size={24} style={{ color: 'var(--color-accent)' }} />
                 <div>
                   <h2 style={{ margin: 0 }}>{visualizando.tag}</h2>
-                  <p style={{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--color-fgMuted)' }}>{visualizando.patrimonio}</p>
+                  <p style={{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)' }}>{visualizando.patrimonio}</p>
                 </div>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => setVisualizando(null)}><ChevronDown size={20} /></Button>
+              <Button variant="ghost" size="sm" onClick={() => setVisualizando(null)}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Fechar"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></Button>
             </div>
             <div style={{ padding: spaceRem(3) }}>
               <div className="grade-formulario" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
@@ -470,11 +470,11 @@ export function EquipamentosPage() {
                 <div><strong>Data Aquisição:</strong> {visualizando.dataAquisicao ? formatarDataBR(visualizando.dataAquisicao) : '—'}</div>
               </div>
               {visualizando.sinalizacoes && visualizando.sinalizacoes.length > 0 && (
-                <div style={{ marginTop: spaceRem(3), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+                <div style={{ marginTop: spaceRem(3), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
                   <h4 style={{ margin: '0 0 12px 0' }}>Sinalizações</h4>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {visualizando.sinalizacoes.map((s: any, i: number) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', padding: '10px', background: 'var(--color-bg)', border: '1px solid var(--color-border)', borderRadius: '8px' }}>
+                      <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', padding: '10px', background: 'var(--color-bg)', border: '2px solid var(--color-border)', borderRadius: '0' }}>
                         <Badge variant={s.severidade === 'CRITICO' ? 'danger' : s.severidade === 'ALTO' ? 'warning' : 'info'} size="sm" dot>{s.severidade}</Badge>
                         <span style={{ flex: 1, fontSize: 'var(--font-size-sm)' }}>{s.detalhe}</span>
                       </div>
@@ -482,7 +482,7 @@ export function EquipamentosPage() {
                   </div>
                 </div>
               )}
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), marginTop: spaceRem(3), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), marginTop: spaceRem(3), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
                 <Button variant="outline" onClick={() => setVisualizando(null)}>Fechar</Button>
               </div>
             </div>

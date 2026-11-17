@@ -318,7 +318,7 @@ export function EventosPage() {
 
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
-        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
+        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '2px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Input placeholder="Buscar (TAG, patrimônio, nº certificado, fornecedor...)" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
           <Select label="Tipo" value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, ...TIPOS_EVENTO_ORDEM.map((t) => ({ value: t, label: TIPO_EVENTO_ROTULO[t] }))]} />
           <Select label="Situação" value={filtroSituacao} onChange={(e) => setFiltroSituacao(e.target.value)} options={[{ value: 'todas', label: 'Todas' }, ...Object.values(SITUACOES_EVENTO).map((s) => ({ value: s, label: SITUACAO_EVENTO_ROTULO[s as keyof typeof SITUACAO_EVENTO_ROTULO] }))]} />
@@ -366,7 +366,7 @@ export function EventosPage() {
             </tbody>
           </table>
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: spaceRem(3), flexWrap: 'wrap', gap: spaceRem(2), borderTop: '1px solid var(--color-border)', marginTop: spaceRem(2) }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: spaceRem(3), flexWrap: 'wrap', gap: spaceRem(2), borderTop: '2px solid var(--color-border)', marginTop: spaceRem(2) }}>
             <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)' }}>
               Mostrando {pagination.pageIndex * pagination.pageSize + 1} a {Math.min((pagination.pageIndex + 1) * pagination.pageSize, totalRegistros)} de {totalRegistros}
             </span>
@@ -380,8 +380,8 @@ export function EventosPage() {
 
       {modalAberto && (
         <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => { setModalAberto(false); setEditando(null); }}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '860px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '860px', maxHeight: '90vh', overflow: 'auto', boxShadow: 'var(--shadow-md)' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '2px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>{editando ? 'Editar Evento' : 'Novo Evento'}</h2>
               <Button variant="ghost" size="sm" onClick={() => { setModalAberto(false); setEditando(null); }}><ChevronDown size={20} /></Button>
             </div>
@@ -401,8 +401,8 @@ export function EventosPage() {
 
       {visualizando && (
         <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setVisualizando(null)}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '820px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '820px', maxHeight: '90vh', overflow: 'auto', boxShadow: 'var(--shadow-md)' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '2px solid var(--color-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spaceRem(2) }}>
                 {TIPOS_EVENTO_ICONS[visualizando.tipo as keyof typeof TIPOS_EVENTO_ICONS]}
                 <div>
@@ -410,7 +410,7 @@ export function EventosPage() {
                   <p style={{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)' }}>{visualizando.equipamento?.tag} ({visualizando.equipamento?.patrimonio})</p>
                 </div>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => setVisualizando(null)}><ChevronDown size={20} /></Button>
+              <Button variant="ghost" size="sm" onClick={() => setVisualizando(null)}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Fechar"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></Button>
             </div>
             <div style={{ padding: spaceRem(3) }}>
               <div className="grade-formulario" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: spaceRem(3) }}>
@@ -434,7 +434,7 @@ export function EventosPage() {
                 {visualizando.descricao && <div style={{ gridColumn: '1 / -1' }}><strong>Descrição:</strong> {visualizando.descricao}</div>}
                 {visualizando.observacoes && <div style={{ gridColumn: '1 / -1' }}><strong>Observações:</strong> {visualizando.observacoes}</div>}
               </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), marginTop: spaceRem(3), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), marginTop: spaceRem(3), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
                 <Button variant="outline" onClick={() => setVisualizando(null)}>Fechar</Button>
               </div>
             </div>

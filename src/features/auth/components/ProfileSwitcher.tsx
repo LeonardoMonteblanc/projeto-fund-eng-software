@@ -47,17 +47,17 @@ export function ProfileSwitcher() {
 
       {aberto && (
         <div className="dropdown-perfil" style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, zIndex: 200, minWidth: '320px', animation: 'slideDown 120ms ease' }}>
-          <div style={{ backgroundColor: 'var(--color-bgElevated)', border: '2px solid var(--color-border)', overflow: 'hidden' }}>
+          <div style={{ backgroundColor: 'var(--color-bg-elevated)', border: '2px solid var(--color-border)', overflow: 'hidden' }}>
             <div style={{ padding: '12px', borderBottom: '2px solid var(--color-border)', backgroundColor: 'var(--color-bg)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-accentBg)', border: '2px solid var(--color-accent)' }}><IconAtual size={20} style={{ color: 'var(--color-accent)' }} /></div>
-                <div><div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-base)', fontWeight: 600, color: 'var(--color-fg)' }}>{user?.nome}</div><div style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fgMuted)' }}>{perfil ? PERFIL_ROTULO[perfil] : 'Demo'}{labAtual && ` • ${labAtual.sigla}`}</div></div>
+                <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-accent-bg)', border: '2px solid var(--color-accent)' }}><IconAtual size={20} style={{ color: 'var(--color-accent)' }} /></div>
+                <div><div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-base)', fontWeight: 600, color: 'var(--color-fg)' }}>{user?.nome}</div><div style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fg-muted)' }}>{perfil ? PERFIL_ROTULO[perfil] : 'Demo'}{labAtual && ` • ${labAtual.sigla}`}</div></div>
               </div>
-              <button onClick={() => setAberto(false)} style={{ background: 'none', border: 'none', padding: '4px', cursor: 'pointer', color: 'var(--color-fgMuted)' }} aria-label="Fechar"><X size={18} /></button>
+              <button onClick={() => setAberto(false)} style={{ background: 'none', border: 'none', padding: '4px', cursor: 'pointer', color: 'var(--color-fg-muted)' }} aria-label="Fechar"><X size={18} /></button>
             </div>
 
             <div style={{ padding: '8px' }}>
-              <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fgMuted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Trocar Perfil</div>
+              <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fg-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Trocar Perfil</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {(['ADMIN', 'GESTOR_GERAL', 'GESTOR_LAB', 'TECNICO'] as const).map((p) => {
                   const Icon = ({ ADMIN: Shield, GESTOR_GERAL: Building2, GESTOR_LAB: User, TECNICO: Wrench })[p];
@@ -66,12 +66,12 @@ export function ProfileSwitcher() {
                   return (
                     <button key={p} type="button" onClick={() => { setNovoPerfil(p); if (!precisaLab) handleTrocar(); }} disabled={carregando} style={{
                       display: 'flex', alignItems: 'center', gap: '12px', padding: '12px',
-                      backgroundColor: isSelected ? 'var(--color-accentBg)' : 'var(--color-bgElevated)',
+                      backgroundColor: isSelected ? 'var(--color-accent-bg)' : 'var(--color-bg-elevated)',
                       border: `2px solid ${isSelected ? 'var(--color-accent)' : 'var(--color-border)'}`,
                       cursor: precisaLab ? 'pointer' : 'pointer', textAlign: 'left', width: '100%',
                     }}>
-                      <div style={{ width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isSelected ? 'var(--color-accent)' : 'var(--color-bg)', border: `2px solid ${isSelected ? 'var(--color-accent)' : 'var(--color-border)'}`, flexShrink: 0 }}><Icon size={18} style={{ color: isSelected ? 'var(--color-bg)' : 'var(--color-fgMuted)' }} /></div>
-                      <div style={{ flex: 1 }}><div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-sm)', fontWeight: 600, color: 'var(--color-fg)' }}>{PERFIL_ROTULO[p]}</div><div style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fgMuted)' }}>{PERFIL_DESCRICAO[p]}</div></div>
+                      <div style={{ width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isSelected ? 'var(--color-accent)' : 'var(--color-bg)', border: `2px solid ${isSelected ? 'var(--color-accent)' : 'var(--color-border)'}`, flexShrink: 0 }}><Icon size={18} style={{ color: isSelected ? 'var(--color-bg)' : 'var(--color-fg-muted)' }} /></div>
+                      <div style={{ flex: 1 }}><div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-sm)', fontWeight: 600, color: 'var(--color-fg)' }}>{PERFIL_ROTULO[p]}</div><div style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-xs)', color: 'var(--color-fg-muted)' }}>{PERFIL_DESCRICAO[p]}</div></div>
                       {isSelected && <ChevronDown size={16} style={{ color: 'var(--color-accent)' }} />}
                     </button>
                   );
@@ -80,8 +80,8 @@ export function ProfileSwitcher() {
 
               {exigeLab(novoPerfil) && laboratorios.length > 0 && (
                 <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '2px solid var(--color-border)' }}>
-                  <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fgMuted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Laboratório para {PERFIL_ROTULO[novoPerfil]}</label>
-                  <select value={novoLabId} onChange={(e) => setNovoLabId(e.target.value)} style={{ width: '100%', fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-sm)', color: 'var(--color-fg)', backgroundColor: 'var(--color-bgElevated)', border: '2px solid var(--color-border)', padding: '8px' }}>
+                  <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fg-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Laboratório para {PERFIL_ROTULO[novoPerfil]}</label>
+                  <select value={novoLabId} onChange={(e) => setNovoLabId(e.target.value)} style={{ width: '100%', fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-sm)', color: 'var(--color-fg)', backgroundColor: 'var(--color-bg-elevated)', border: '2px solid var(--color-border)', padding: '8px' }}>
                     <option value="">Selecione...</option>
                     {laboratorios.map((l: any) => <option key={l.id} value={l.id}>{l.sigla} — {l.nome}</option>)}
                   </select>

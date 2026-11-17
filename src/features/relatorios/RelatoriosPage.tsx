@@ -150,7 +150,7 @@ export function RelatoriosPage() {
     padding: '8px 16px', background: ativa ? 'var(--color-accent-bg)' : 'transparent',
     border: 'none', borderBottom: ativa ? '2px solid var(--color-accent)' : '2px solid transparent',
     color: ativa ? 'var(--color-accent)' : 'var(--color-fg-muted)', fontWeight: 600,
-    fontSize: 'var(--font-size-sm)', cursor: 'pointer', transition: 'all 120ms ease',
+    fontSize: 'var(--font-size-sm)', cursor: 'pointer', transition: 'all var(--transition-base)',
   });
 
   const totalAtual = tipo === 'inventario' ? linhasInventario.length : tipo === 'situacao' ? linhasSituacao.length : linhasHistorico.length;
@@ -177,7 +177,7 @@ export function RelatoriosPage() {
 
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
-        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
+        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '2px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           {global && <Select label="Laboratório" value={filtroLab} onChange={(e) => setFiltroLab(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, ...labsVisiveis.map((l) => ({ value: l.id, label: `${l.sigla} — ${l.nome}` }))]} />}
           {tipo === 'situacao' && <Select label="Situação" value={filtroSituacao} onChange={(e) => setFiltroSituacao(e.target.value)} options={[{ value: 'todas', label: 'Todas' }, { value: 'ATIVO', label: 'Ativo' }, { value: 'INATIVO', label: 'Inativo' }, { value: 'EM_MANUTENCAO', label: 'Em manutenção' }]} />}
           {tipo === 'historico' && (
@@ -198,7 +198,7 @@ export function RelatoriosPage() {
             <thead>
               <tr style={{ backgroundColor: 'var(--color-bg-section)', borderBottom: '1px solid var(--color-border)' }}>
                 {totalAtual > 0 && Object.keys((tipo === 'inventario' ? linhasInventario : tipo === 'situacao' ? linhasSituacao : linhasHistorico)[0] ?? {}).map((c) => (
-                  <th key={c} style={{ padding: '8px 10px', textAlign: 'left', fontWeight: 600, whiteSpace: 'nowrap' }}>{c}</th>
+                  <th key={c} style={{ padding: '9px 10px', textAlign: 'left', fontWeight: 700, color: 'var(--color-fg-light)', textTransform: 'uppercase', fontSize: '10.5px', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>{c}</th>
                 ))}
               </tr>
             </thead>

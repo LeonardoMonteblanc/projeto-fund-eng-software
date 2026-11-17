@@ -168,7 +168,7 @@ export function SolicitacoesPage() {
 
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
-        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
+        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '2px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           <Input placeholder="Buscar (TAG, patrimônio, justificativa...)" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
           <Select label="Situação" value={filtroSituacao} onChange={(e) => setFiltroSituacao(e.target.value)} options={[{ value: 'todas', label: 'Todas' }, ...Object.values(SITUACOES_SOLICITACAO).map((s) => ({ value: s, label: SITUACAO_SOLICITACAO_ROTULO[s] }))]} />
           <Select label="Tipo de Evento" value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, ...TIPOS_SOLICITAVEIS.map((t) => ({ value: t, label: TIPO_EVENTO_ROTULO[t] }))]} />
@@ -182,7 +182,7 @@ export function SolicitacoesPage() {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(2) }}>
               {dadosFiltrados.map((s) => (
-                <div key={s.id} style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: spaceRem(2) }}>
+                <div key={s.id} style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: spaceRem(2) }}>
                   <div style={{ flex: 1, minWidth: 240 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                       <StatusBadge status={s.situacao} size="sm" />
@@ -216,10 +216,10 @@ export function SolicitacoesPage() {
 
       {modalAberto && (
         <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setModalAberto(false)}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflow: 'auto', boxShadow: 'var(--shadow-md)' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '2px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>Nova Solicitação de Evento</h2>
-              <Button variant="ghost" size="sm" onClick={() => setModalAberto(false)}><ChevronDown size={20} /></Button>
+              <Button variant="ghost" size="sm" onClick={() => setModalAberto(false)}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Fechar"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></Button>
             </div>
             <form onSubmit={handleSubmit} style={{ padding: spaceRem(3), display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
               <Select label="Equipamento" value={form.equipamentoId} onChange={(e) => setForm({ ...form, equipamentoId: e.target.value })} required fullWidth
@@ -228,10 +228,10 @@ export function SolicitacoesPage() {
                 options={TIPOS_SOLICITAVEIS.map((t) => ({ value: t, label: TIPO_EVENTO_ROTULO[t] }))} />
               <Input label="Data Desejada" type="date" value={form.dataDesejada} onChange={(e) => setForm({ ...form, dataDesejada: e.target.value })} fullWidth />
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label htmlFor="solicitacao-justificativa" style={{ fontSize: 'var(--font-size-sm)', fontWeight: 500, color: 'var(--color-fg)' }}>Justificativa *</label>
-                <textarea id="solicitacao-justificativa" value={form.justificativa} onChange={(e) => setForm({ ...form, justificativa: e.target.value })} rows={4} required style={{ width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '1px solid var(--color-border-input)', borderRadius: '4px', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }} />
+                <label htmlFor="solicitacao-justificativa" style={{ fontSize: '10.5px', fontWeight: 700, color: 'var(--color-fg-light)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>Justificativa *</label>
+                <textarea id="solicitacao-justificativa" value={form.justificativa} onChange={(e) => setForm({ ...form, justificativa: e.target.value })} rows={4} required style={{ width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '2px solid var(--color-border-input)', borderRadius: '0', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }} />
               </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
                 <Button variant="outline" onClick={() => setModalAberto(false)}>Cancelar</Button>
                 <Button type="submit" loading={salvando}>Enviar Solicitação</Button>
               </div>
@@ -241,20 +241,20 @@ export function SolicitacoesPage() {
       )}
       {rejeitando && (
         <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setRejeitando(null)}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '520px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '520px', maxHeight: '90vh', overflow: 'auto', boxShadow: 'var(--shadow-md)' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '2px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>Rejeitar Solicitação</h2>
-              <Button variant="ghost" size="sm" onClick={() => setRejeitando(null)}><ChevronDown size={20} /></Button>
+              <Button variant="ghost" size="sm" onClick={() => setRejeitando(null)}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Fechar"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></Button>
             </div>
             <div style={{ padding: spaceRem(3), display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
               <p style={{ margin: 0, fontSize: 'var(--font-size-sm)' }}>
                 Solicitação de <strong>{TIPO_EVENTO_ROTULO[rejeitando.tipoEvento as keyof typeof TIPO_EVENTO_ROTULO] ?? rejeitando.tipoEvento}</strong> para <strong>{rejeitando.equipamento?.tag}</strong> ({rejeitando.equipamento?.patrimonio}).
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label htmlFor="rejeicao-justificativa" style={{ fontSize: 'var(--font-size-sm)', fontWeight: 500, color: 'var(--color-fg)' }}>Justificativa da rejeição *</label>
-                <textarea id="rejeicao-justificativa" value={justificativaRejeicao} onChange={(e) => setJustificativaRejeicao(e.target.value)} rows={4} required style={{ width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '1px solid var(--color-border-input)', borderRadius: '4px', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }} />
+                <label htmlFor="rejeicao-justificativa" style={{ fontSize: '10.5px', fontWeight: 700, color: 'var(--color-fg-light)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>Justificativa da rejeição *</label>
+                <textarea id="rejeicao-justificativa" value={justificativaRejeicao} onChange={(e) => setJustificativaRejeicao(e.target.value)} rows={4} required style={{ width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '2px solid var(--color-border-input)', borderRadius: '0', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }} />
               </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
                 <Button variant="outline" onClick={() => setRejeitando(null)}>Cancelar</Button>
                 <Button variant="danger" loading={salvando} disabled={!justificativaRejeicao.trim()} onClick={async () => { await avaliar(rejeitando, 'REJEITADA', justificativaRejeicao.trim()); setRejeitando(null); }}>Confirmar Rejeição</Button>
               </div>

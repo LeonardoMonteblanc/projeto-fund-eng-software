@@ -134,7 +134,7 @@ export function InventarioPage() {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: spaceRem(2) }}>
         {labsVisiveis.map((l) => (
-          <div key={l.id} style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+          <div key={l.id} style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
             <p style={{ margin: 0, fontSize: 'var(--font-size-sm)', fontWeight: 600, color: 'var(--color-fg-muted)' }}>{l.sigla}</p>
             <p style={{ margin: '4px 0 0', fontSize: 'var(--font-size-2xl)', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-accent)' }}>{totalPorLab[l.id] ?? 0}</p>
             <p style={{ margin: 0, fontSize: 'var(--font-size-xs)', color: 'var(--color-fg-dim)' }}>equipamentos ativos</p>
@@ -144,7 +144,7 @@ export function InventarioPage() {
 
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title={`Inventário ${ano} — ${linhas.length} registro(s)`} />
-        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
+        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '2px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           {global && <Select label="Laboratório" value={filtroLab} onChange={(e) => setFiltroLab(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, ...labsVisiveis.map((l) => ({ value: l.id, label: `${l.sigla} — ${l.nome}` }))]} />}
           <Input placeholder="Buscar (TAG, patrimônio, item...)" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} style={{ minWidth: 260 }} />
           <Input label="Ano de Referência" type="number" value={ano} onChange={(e) => setAno(e.target.value)} />
@@ -154,7 +154,7 @@ export function InventarioPage() {
             <thead>
               <tr style={{ backgroundColor: 'var(--color-bg-section)', borderBottom: '1px solid var(--color-border)' }}>
                 {['Laboratório', 'Patrimônio', 'TAG', 'Nº Série', 'Item', 'Localização', 'Próx. Calibração', 'Divergências', 'Ações'].map((c) => (
-                  <th key={c} style={{ padding: '8px 10px', textAlign: 'left', fontWeight: 600, whiteSpace: 'nowrap' }}>{c}</th>
+                  <th key={c} style={{ padding: '9px 10px', textAlign: 'left', fontWeight: 700, color: 'var(--color-fg-light)', textTransform: 'uppercase', fontSize: '10.5px', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>{c}</th>
                 ))}
               </tr>
             </thead>
@@ -190,8 +190,8 @@ export function InventarioPage() {
 
       {modalDivergencia && (
         <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={() => setModalDivergencia(null)}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '520px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: '520px', maxHeight: '90vh', overflow: 'auto', boxShadow: 'var(--shadow-md)' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '2px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>Registrar Divergência</h2>
               <Button variant="ghost" size="sm" onClick={() => setModalDivergencia(null)}><AlertTriangle size={18} /></Button>
             </div>
@@ -200,10 +200,10 @@ export function InventarioPage() {
                 Equipamento: <strong>{modalDivergencia.tag}</strong> ({modalDivergencia.patrimonio}) — {modalDivergencia.item?.nome}
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label htmlFor="divergencia-descricao" style={{ fontSize: 'var(--font-size-sm)', fontWeight: 500, color: 'var(--color-fg)' }}>Descrição da divergência *</label>
-                <textarea id="divergencia-descricao" value={descricaoDivergencia} onChange={(e) => setDescricaoDivergencia(e.target.value)} rows={4} style={{ width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '1px solid var(--color-border-input)', borderRadius: '4px', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }} />
+                <label htmlFor="divergencia-descricao" style={{ fontSize: '10.5px', fontWeight: 700, color: 'var(--color-fg-light)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>Descrição da divergência *</label>
+                <textarea id="divergencia-descricao" value={descricaoDivergencia} onChange={(e) => setDescricaoDivergencia(e.target.value)} rows={4} style={{ width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '2px solid var(--color-border-input)', borderRadius: '0', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }} />
               </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
                 <Button variant="outline" onClick={() => setModalDivergencia(null)}>Cancelar</Button>
                 <Button onClick={registrarDivergencia} loading={salvando} disabled={!descricaoDivergencia.trim()}>Registrar Divergência</Button>
               </div>

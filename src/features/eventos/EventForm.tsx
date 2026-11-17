@@ -111,7 +111,7 @@ export function EventForm({ editando, equipamentos, itens, fornecedores, usuario
     });
   }
 
-  const inputStyle: React.CSSProperties = { width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '1px solid var(--color-border-input)', borderRadius: '4px', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none' };
+  const inputStyle: React.CSSProperties = { width: '100%', padding: '10px 12px', fontSize: 'var(--font-size-base)', border: '2px solid var(--color-border-input)', borderRadius: '0', background: 'var(--color-bg)', color: 'var(--color-fg)', outline: 'none' };
 
   return (
     <form onSubmit={handleSubmit} style={{ padding: spaceRem(3), display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
@@ -157,13 +157,13 @@ export function EventForm({ editando, equipamentos, itens, fornecedores, usuario
 
         <Input label="Descrição" value={form.descricao} onChange={(e) => atualizar('descricao', e.target.value)} fullWidth style={{ gridColumn: '1 / -1' }} />
         <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label htmlFor="evento-observacoes" style={{ fontSize: 'var(--font-size-sm)', fontWeight: 500, color: 'var(--color-fg)' }}>Observações</label>
+          <label htmlFor="evento-observacoes" style={{ fontSize: '10.5px', fontWeight: 700, color: 'var(--color-fg-light)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>Observações</label>
           <textarea id="evento-observacoes" value={form.observacoes} onChange={(e) => atualizar('observacoes', e.target.value)} rows={3} style={inputStyle} />
         </div>
       </div>
 
       {calculo && (
-        <div style={{ padding: spaceRem(2), backgroundColor: 'var(--color-accent-bg)', border: '1px solid var(--color-accent)', borderRadius: '8px' }}>
+        <div style={{ padding: spaceRem(2), backgroundColor: 'var(--color-accent-bg)', border: '2px solid var(--color-accent)', borderRadius: '0' }}>
           <p style={{ margin: 0, fontSize: 'var(--font-size-sm)', fontWeight: 600, color: 'var(--color-accent)' }}>Cálculo da regra de decisão (aceitação simples)</p>
           <p style={{ margin: '8px 0 0', fontSize: 'var(--font-size-xs)', color: 'var(--color-fg)', fontFamily: 'var(--font-mono)' }}>
             |Erro| + U = {calculo.erroAbsoluto} + {form.incerteza ? Number(form.incerteza) : 0} = {calculo.erroMaisU} {calculo.ca !== null ? `≤ CA ${calculo.ca} → ${calculo.resultado === 'APROVADO' ? 'Aprovado' : 'Reprovado'}` : '(informe o CA para avaliar)'}
@@ -177,7 +177,7 @@ export function EventForm({ editando, equipamentos, itens, fornecedores, usuario
         </p>
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
         <Button variant="outline" onClick={onCancel}>Cancelar</Button>
         <Button type="submit" loading={salvando}>{editando ? 'Salvar Alterações' : 'Registrar Evento'}</Button>
       </div>

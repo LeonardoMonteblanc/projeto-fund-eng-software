@@ -8,6 +8,7 @@ import { useFuncionalidades } from '@/features/auth/store';
 import { getDB, getAll } from '@/shared/db';
 import { Card, CardHeader, CardContent, Badge, StatusBadge, Button, spaceRem } from '@/shared/ui/components';
 import { formatarDataBR, centavosParaReais } from '@/shared/utils';
+import { baixarPDF, baixarXLSX } from '@/shared/exportar';
 import { calcularMetricas, equipamentoAtivo, resumirPorSituacao, maiorSeveridade } from '@/shared/metrology';
 import { SITUACOES_EQUIPAMENTO, TIPOS_EVENTO, SITUACOES_EVENTO, type Equipamento, type Evento, type Laboratorio } from '@/shared/domain';
 
@@ -57,7 +58,26 @@ export function Dashboard() {
 
   const navCards = (funcionalidades ?? []).filter((f: any) => f.acessivel && f.rota && f.rota !== '/').map((f: any) => ({ titulo: f.nome, rota: f.rota, descricao: f.descricao, icone: <ModuloIcone codigo={f.codigo} /> }));
 
-  if (carregando) return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', color: 'var(--color-fgMuted)' }}><div style={{ width: '48px', height: '48px', border: '3px solid var(--color-border)', borderTopColor: 'var(--color-accent)', borderRadius: '0', animation: 'spin 1s linear infinite' }} /><p style={{ marginTop: '16px', fontFamily: 'var(--font-mono)' }}>Carregando dashboard...</p></div>;
+  const linhasExportacao = [
+    { 'Indicador': 'Total de Equipamentos', 'Valor': kpis.totalEquipamentos },
+    { 'Indicador': 'Ativos', 'Valor': kpis.ativos },
+    { 'Indicador': 'Alertas Críticos', 'Valor': kpis.alertasCriticos },
+    { 'Indicador': 'Alertas de Atenção', 'Valor': kpis.alertasAltos },
+    { 'Indicador': 'Próximos Vencimentos (30d)', 'Valor': kpis.proximosVencimentos },
+    { 'Indicador': 'Custos (30 dias)', 'Valor': centavosParaReais(kpis.custosMes) },
+    { 'Indicador': 'Receita Mensal (Labs)', 'Valor': centavosParaReais(kpis.receitaMes) },
+    ...alertasRecent.map((a: any) => ({ 'Indicador': `Alerta ${a.tipo} — ${a.equipamento}`, 'Valor': a.mensagem })),
+  ];
+
+  async function exportarExcel() {
+    await baixarXLSX('labucs-painel.xlsx', linhasExportacao, 'Painel');
+  }
+
+  async function exportarPDF() {
+    await baixarPDF('labucs-painel.pdf', 'LabUcs — Painel de Controle', `Gerado em ${new Date().toLocaleString('pt-BR')}`, linhasExportacao);
+  }
+
+  if (carregando) return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', color: 'var(--color-fg-muted)' }}><div style={{ width: '48px', height: '48px', border: '3px solid var(--color-border)', borderTopColor: 'var(--color-accent)', borderRadius: '0', animation: 'spin 1s linear infinite' }} /><p style={{ marginTop: '16px', fontFamily: 'var(--font-mono)' }}>Carregando dashboard...</p></div>;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -68,12 +88,12 @@ export function Dashboard() {
           <p style={{ color: '#DBE4EE', fontSize: '13px', margin: '8px 0 0', maxWidth: '62ch' }}>Visão consolidada de equipamentos, alertas de vencimento e indicadores dos laboratórios</p>
         </div>
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <Button style={{ backgroundColor: '#FFFFFF', color: 'var(--color-accent)', borderColor: '#FFFFFF' }} leftIcon={<DownloadIcon />}>Exportar PDF</Button>
-          <Button variant="secondary" style={{ backgroundColor: 'transparent', color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.7)' }} leftIcon={<DownloadIcon />}>Exportar Excel</Button>
+          <Button style={{ backgroundColor: '#FFFFFF', color: 'var(--color-accent)', borderColor: '#FFFFFF' }} leftIcon={<DownloadIcon />} onClick={exportarPDF}>Exportar PDF</Button>
+          <Button variant="secondary" style={{ backgroundColor: 'transparent', color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.7)' }} leftIcon={<DownloadIcon />} onClick={exportarExcel}>Exportar Excel</Button>
         </div>
       </div>
 
-      <div className="grade-kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', marginBottom: '20px' }}>
+      <div className="grade-kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '12px', marginBottom: '20px' }}>
         <KPICard titulo="Total de Equipamentos" valor={kpis.totalEquipamentos.toLocaleString('pt-BR')} subtitulo={`${kpis.ativos} ativos • ${kpis.totalEquipamentos - kpis.ativos} inativos/manutenção`} cor="accent" />
         <KPICard titulo="Alertas Críticos" valor={kpis.alertasCriticos} subtitulo="Não conformes (calibração vencida/reprovada)" cor="danger" />
         <KPICard titulo="Alertas de Atenção" valor={kpis.alertasAltos} subtitulo="Próximos do vencimento ou periodicidade zero" cor="warning" />
@@ -84,7 +104,7 @@ export function Dashboard() {
 
       <div className="grade-empilhada" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) minmax(0, 1fr)', gap: '16px' }}>
         <div style={{ backgroundColor: 'var(--color-bg-elevated)', border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', minHeight: '400px' }}>
-          <CardHeader title="Alertas Recentes" subtitle={`${alertasRecent.length} sinalizações ativas`} action={<Button variant="ghost" size="sm" leftIcon={<ChevronRightIcon size={14} />}>Ver todos</Button>} />
+          <CardHeader title="Alertas Recentes" subtitle={`${alertasRecent.length} sinalizações ativas`} action={<Link to="/equipamentos"><Button variant="ghost" size="sm" leftIcon={<ChevronRightIcon size={14} />}>Ver todos</Button></Link>} />
           <CardContent style={{ flex: 1, overflow: 'auto', padding: '16px' }}>
             {alertasRecent.length === 0 ? (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '48px', color: 'var(--color-fg-muted)', textAlign: 'center' }}>

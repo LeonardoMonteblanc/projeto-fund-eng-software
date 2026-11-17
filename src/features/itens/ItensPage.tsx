@@ -325,7 +325,7 @@ export function ItensPage() {
     background: ativa ? 'var(--color-accent-bg)' : 'transparent',
     border: 'none', borderBottom: ativa ? '2px solid var(--color-accent)' : '2px solid transparent',
     color: ativa ? 'var(--color-accent)' : 'var(--color-fg-muted)',
-    fontWeight: 600, fontSize: 'var(--font-size-sm)', cursor: 'pointer', transition: 'all 120ms ease',
+    fontWeight: 600, fontSize: 'var(--font-size-sm)', cursor: 'pointer', transition: 'all var(--transition-base)',
   });
 
   return (
@@ -351,7 +351,7 @@ export function ItensPage() {
         <>
           <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
             <CardHeader title="Filtros" />
-            <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
+            <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '2px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
               <Input placeholder="Buscar (nome, fabricante, modelo, categoria...)" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} leftIcon={<Search size={16} />} style={{ minWidth: 280 }} />
               <Select label="Categoria" value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)} options={[{ value: 'todas', label: 'Todas' }, ...categorias.map((c) => ({ value: c.id, label: c.nome }))]} />
               <Select label="Status" value={filtroAtivo} onChange={(e) => setFiltroAtivo(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, { value: 'ativos', label: 'Ativos' }, { value: 'inativos', label: 'Inativos' }]} />
@@ -396,7 +396,7 @@ export function ItensPage() {
                 </tbody>
               </table>
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: spaceRem(3), flexWrap: 'wrap', gap: spaceRem(2), borderTop: '1px solid var(--color-border)', marginTop: spaceRem(2) }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: spaceRem(3), flexWrap: 'wrap', gap: spaceRem(2), borderTop: '2px solid var(--color-border)', marginTop: spaceRem(2) }}>
                 <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-fg-muted)' }}>
                   Mostrando {pagination.pageIndex * pagination.pageSize + 1} a {Math.min((pagination.pageIndex + 1) * pagination.pageSize, totalRegistros)} de {totalRegistros}
                 </span>
@@ -416,7 +416,7 @@ export function ItensPage() {
           <CardContent>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: spaceRem(2) }}>
               {categorias.map((cat) => (
-                <div key={cat.id} style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+                <div key={cat.id} style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                     <h4 style={{ margin: 0, fontSize: 'var(--font-size-base)', fontWeight: 600 }}>{cat.nome}</h4>
                     <StatusBadge status={cat.ativo ? 'ATIVO' : 'INATIVO'} size="sm" />
@@ -442,7 +442,7 @@ export function ItensPage() {
           <CardContent>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: spaceRem(2) }}>
               {subcategorias.map((sub) => (
-                <div key={sub.id} style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+                <div key={sub.id} style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                     <h4 style={{ margin: 0, fontSize: 'var(--font-size-base)', fontWeight: 600 }}>{sub.nome}</h4>
                     <StatusBadge status={sub.ativo ? 'ATIVO' : 'INATIVO'} size="sm" />
@@ -462,12 +462,12 @@ export function ItensPage() {
 
       {modalAberto && (
         <div className="overlay-modal" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: spaceRem(3) }} onClick={fecharModal}>
-          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: abaForm === 'itens' ? '720px' : '480px', maxHeight: '90vh', overflow: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ background: 'var(--color-bg-elevated)', border: '2px solid var(--color-accent)', borderRadius: '0', width: '100%', maxWidth: abaForm === 'itens' ? '720px' : '480px', maxHeight: '90vh', overflow: 'auto', boxShadow: 'var(--shadow-md)' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: spaceRem(3), borderBottom: '2px solid var(--color-border)' }}>
               <h2 style={{ margin: 0 }}>
                 {abaForm === 'itens' ? (editandoId ? 'Editar Item' : 'Novo Item') : abaForm === 'categorias' ? (editandoId ? 'Editar Categoria' : 'Nova Categoria') : (editandoId ? 'Editar Subcategoria' : 'Nova Subcategoria')}
               </h2>
-              <Button variant="ghost" size="sm" onClick={fecharModal}><ChevronDown size={20} /></Button>
+              <Button variant="ghost" size="sm" onClick={fecharModal}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Fechar"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></Button>
             </div>
             <form onSubmit={handleSubmit} style={{ padding: spaceRem(3), display: 'flex', flexDirection: 'column', gap: spaceRem(3) }}>
               {abaForm === 'categorias' && (
@@ -503,7 +503,7 @@ export function ItensPage() {
                   <Select label="Status" value={form.ativo ? 'true' : 'false'} onChange={(e) => setForm({ ...form, ativo: e.target.value === 'true' })} options={[{ value: 'true', label: 'Ativo' }, { value: 'false', label: 'Inativo' }]} fullWidth />
                 </div>
               )}
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: spaceRem(2), paddingTop: spaceRem(3), borderTop: '2px solid var(--color-border)' }}>
                 <Button variant="outline" onClick={fecharModal}>Cancelar</Button>
                 <Button type="submit" loading={salvando}>{editandoId ? 'Salvar Alterações' : 'Criar'}</Button>
               </div>

@@ -98,7 +98,7 @@ export function AgendaPage() {
 
       <Card style={{ border: '2px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <CardHeader title="Filtros" />
-        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
+        <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: spaceRem(3), alignItems: 'flex-end', borderBottom: '2px solid var(--color-border)', paddingBottom: spaceRem(2), marginBottom: spaceRem(2) }}>
           {global && <Select label="Laboratório" value={filtroLab} onChange={(e) => setFiltroLab(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, ...labsVisiveis.map((l) => ({ value: l.id, label: `${l.sigla} — ${l.nome}` }))]} />}
           <Select label="Tipo de Evento" value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} options={[{ value: 'todos', label: 'Todos' }, { value: 'CALIBRACAO', label: 'Calibração' }, { value: 'VERIFICACAO', label: 'Verificação' }, { value: 'MANUTENCAO_PREVENTIVA', label: 'Manutenção Preventiva' }, { value: 'MANUTENCAO_CORRETIVA', label: 'Manutenção Corretiva' }, { value: 'DIVERGENCIA_INVENTARIO', label: 'Divergência de Inventário' }]} />
         </CardContent>
@@ -119,19 +119,19 @@ export function AgendaPage() {
                 <div key={d} style={{ padding: '6px', textAlign: 'center', fontSize: 'var(--font-size-xs)', fontWeight: 600, color: 'var(--color-fg-muted)' }}>{d}</div>
               ))}
               {diasDoMes.map((data, i) => {
-                if (!data) return <div key={i} style={{ minHeight: 76, backgroundColor: 'var(--color-bg-section)', borderRadius: '6px' }} />;
+                if (!data) return <div key={i} style={{ minHeight: 76, backgroundColor: 'var(--color-bg-section)', borderRadius: '0' }} />;
                 const evs = eventosPorDia[data] ?? [];
                 const selecionado = diaSelecionado === data;
                 return (
                   <button key={i} onClick={() => setDiaSelecionado(selecionado ? null : data)} style={{
-                    minHeight: 76, padding: '4px', border: selecionado ? '2px solid var(--color-accent)' : '1px solid var(--color-border)',
-                    borderRadius: '6px', background: selecionado ? 'var(--color-accent-bg)' : 'var(--color-bg)', cursor: 'pointer',
+                    minHeight: 76, padding: '4px', border: selecionado ? '2px solid var(--color-accent)' : '2px solid var(--color-border)',
+                    borderRadius: '0', background: selecionado ? 'var(--color-accent-bg)' : 'var(--color-bg)', cursor: 'pointer',
                     display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: '2px', textAlign: 'left', overflow: 'hidden',
                   }}>
                     <span style={{ fontSize: 'var(--font-size-xs)', fontWeight: 600 }}>{Number(data.split('-')[2])}</span>
                     {evs.slice(0, 2).map((ev) => (
                       <span key={ev.id} title={TIPO_EVENTO_ROTULO[ev.tipo as keyof typeof TIPO_EVENTO_ROTULO] ?? ev.tipo} style={{
-                        fontSize: '9px', padding: '1px 4px', borderRadius: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                        fontSize: '9px', padding: '1px 4px', borderRadius: '0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                         backgroundColor: ev.situacao === 'REALIZADO' ? 'var(--color-sucesso-bg)' : 'var(--color-info-bg)',
                         color: ev.situacao === 'REALIZADO' ? 'var(--color-sucesso)' : 'var(--color-info)',
                       }}>
@@ -151,7 +151,7 @@ export function AgendaPage() {
           <CardContent style={{ display: 'flex', flexDirection: 'column', gap: spaceRem(2), maxHeight: 480, overflow: 'auto' }}>
             {eventosDiaSelecionado.length === 0 && <p style={{ margin: 0, color: 'var(--color-fg-muted)', fontSize: 'var(--font-size-sm)' }}>{diaSelecionado ? 'Nenhum evento neste dia.' : '—'}</p>}
             {eventosDiaSelecionado.map((ev) => (
-              <div key={ev.id} style={{ padding: spaceRem(2), border: '1px solid var(--color-border)', borderRadius: '8px', background: 'var(--color-bg)' }}>
+              <div key={ev.id} style={{ padding: spaceRem(2), border: '2px solid var(--color-border)', borderRadius: '0', background: 'var(--color-bg)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '4px' }}>
                   <Badge variant="accent" size="sm">{TIPO_EVENTO_ROTULO[ev.tipo as keyof typeof TIPO_EVENTO_ROTULO] ?? ev.tipo}</Badge>
                   <StatusBadge status={ev.situacao} size="sm" />
