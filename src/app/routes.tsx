@@ -9,41 +9,52 @@ import { Dashboard } from '@/pages/Dashboard';
 import { NotFound } from '@/pages/NotFound';
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
 import { EquipamentosPage } from '@/features/equipamentos/EquipamentosPage';
+import { ItensPage } from '@/features/itens/ItensPage';
+import { EventosPage } from '@/features/eventos/EventosPage';
+import { SolicitacoesPage } from '@/features/solicitacoes/SolicitacoesPage';
+import { FornecedoresPage } from '@/features/fornecedores/FornecedoresPage';
+import { LaboratoriosPage } from '@/features/laboratorios/LaboratoriosPage';
+import { UsuariosPage } from '@/features/usuarios/UsuariosPage';
+import { RelatoriosPage } from '@/features/relatorios/RelatoriosPage';
+import { CustosPage } from '@/features/custos/CustosPage';
+import { AuditoriaPage } from '@/features/auditoria/AuditoriaPage';
+import { ConfigPage } from '@/features/config/ConfigPage';
+import { BackupPage } from '@/features/backup/BackupPage';
+import { InventarioPage } from '@/features/relatorios/InventarioPage';
+import { AgendaPage } from '@/features/agenda/AgendaPage';
+import { PrivacidadePage } from '@/features/privacidade/PrivacidadePage';
 
-const router = createBrowserRouter([
-  { path: '/login', element: <LoginDemo /> },
-  {
-    path: '/',
-    element: <Layout />,
-    children: [
-      { path: '/', element: <ProtectedRoute recurso="painel" acao="read"><Dashboard /></ProtectedRoute> },
-      { path: 'equipamentos', element: <ProtectedRoute recurso="equipments" acao="read"><EquipamentosPage /></ProtectedRoute> },
-      { path: 'itens', element: <ProtectedRoute recurso="items" acao="read"><EmConstrucao titulo="Itens e Catálogo" /></ProtectedRoute> },
-      { path: 'eventos', element: <ProtectedRoute recurso="calibrations" acao="read"><EmConstrucao titulo="Eventos" /></ProtectedRoute> },
-      { path: 'solicitacoes', element: <ProtectedRoute recurso="requests" acao="read"><EmConstrucao titulo="Solicitações" /></ProtectedRoute> },
-      { path: 'fornecedores', element: <ProtectedRoute recurso="suppliers" acao="read"><EmConstrucao titulo="Fornecedores" /></ProtectedRoute> },
-      { path: 'laboratorios', element: <ProtectedRoute recurso="labs" acao="read"><EmConstrucao titulo="Laboratórios" /></ProtectedRoute> },
-      { path: 'usuarios', element: <ProtectedRoute recurso="users" acao="read"><EmConstrucao titulo="Usuários" /></ProtectedRoute> },
-      { path: 'relatorios', element: <ProtectedRoute recurso="reports" acao="read"><EmConstrucao titulo="Relatórios" /></ProtectedRoute> },
-      { path: 'custos', element: <ProtectedRoute recurso="reports" acao="read"><EmConstrucao titulo="Indicadores de Custos" /></ProtectedRoute> },
-      { path: 'auditoria', element: <ProtectedRoute recurso="audit" acao="read"><EmConstrucao titulo="Auditoria" /></ProtectedRoute> },
-      { path: 'config', element: <ProtectedRoute recurso="config" acao="read"><EmConstrucao titulo="Configurações" /></ProtectedRoute> },
-      { path: 'backup', element: <ProtectedRoute recurso="config" acao="read"><EmConstrucao titulo="Backup e Dados" /></ProtectedRoute> },
-      { path: 'inventario', element: <ProtectedRoute recurso="reports" acao="read"><EmConstrucao titulo="Inventário" /></ProtectedRoute> },
-      { path: 'agenda', element: <ProtectedRoute recurso="calibrations" acao="read"><EmConstrucao titulo="Agenda" /></ProtectedRoute> },
-      { path: 'privacidade', element: <ProtectedRoute recurso="painel" acao="read"><EmConstrucao titulo="Privacidade (LGPD)" /></ProtectedRoute> },
-      { path: '*', element: <NotFound /> },
-    ],
-  },
-]);
+const basename = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '/';
 
-function EmConstrucao({ titulo }: { titulo: string }) {
-  return <div style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px', textAlign: 'center', color: 'var(--color-fgMuted)' }}>
-    <div style={{ width: '80px', height: '80px', margin: '0 auto 16px', backgroundColor: 'var(--color-accentBg)', border: '2px solid var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 14v4"/><path d="M12 10h.01"/></svg></div>
-    <h2 style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--font-size-xl)', fontWeight: 700, color: 'var(--color-fg)', margin: '0 0 8px 0' }}>{titulo}</h2>
-    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--font-size-sm)', margin: 0 }}>Módulo em desenvolvimento</p>
-  </div>;
-}
+const router = createBrowserRouter(
+  [
+    { path: '/login', element: <LoginDemo /> },
+    {
+      path: '/',
+      element: <Layout />,
+      children: [
+        { path: '/', element: <ProtectedRoute recurso="painel" acao="read"><Dashboard /></ProtectedRoute> },
+        { path: 'equipamentos', element: <ProtectedRoute recurso="equipments" acao="read"><EquipamentosPage /></ProtectedRoute> },
+        { path: 'itens', element: <ProtectedRoute recurso="items" acao="read"><ItensPage /></ProtectedRoute> },
+        { path: 'eventos', element: <ProtectedRoute recurso="calibrations" acao="read"><EventosPage /></ProtectedRoute> },
+        { path: 'solicitacoes', element: <ProtectedRoute recurso="requests" acao="read"><SolicitacoesPage /></ProtectedRoute> },
+        { path: 'fornecedores', element: <ProtectedRoute recurso="suppliers" acao="read"><FornecedoresPage /></ProtectedRoute> },
+        { path: 'laboratorios', element: <ProtectedRoute recurso="labs" acao="read"><LaboratoriosPage /></ProtectedRoute> },
+        { path: 'usuarios', element: <ProtectedRoute recurso="users" acao="read"><UsuariosPage /></ProtectedRoute> },
+        { path: 'relatorios', element: <ProtectedRoute recurso="reports" acao="read"><RelatoriosPage /></ProtectedRoute> },
+        { path: 'custos', element: <ProtectedRoute recurso="reports" acao="read"><CustosPage /></ProtectedRoute> },
+        { path: 'auditoria', element: <ProtectedRoute recurso="audit" acao="read"><AuditoriaPage /></ProtectedRoute> },
+        { path: 'config', element: <ProtectedRoute recurso="config" acao="read"><ConfigPage /></ProtectedRoute> },
+        { path: 'backup', element: <ProtectedRoute recurso="config" acao="read"><BackupPage /></ProtectedRoute> },
+        { path: 'inventario', element: <ProtectedRoute recurso="reports" acao="read"><InventarioPage /></ProtectedRoute> },
+        { path: 'agenda', element: <ProtectedRoute recurso="calibrations" acao="read"><AgendaPage /></ProtectedRoute> },
+        { path: 'privacidade', element: <ProtectedRoute recurso="painel" acao="read"><PrivacidadePage /></ProtectedRoute> },
+        { path: '*', element: <NotFound /> },
+      ],
+    },
+  ],
+  { basename },
+);
 
 export { router };
 

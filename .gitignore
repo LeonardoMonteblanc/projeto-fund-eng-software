@@ -21,3 +21,8 @@ checkpdf.py
 _*.json
 _*.txt
 screenshot*.png
+
+# Build
+dist/
+playwright-report/
+smoke-*.cjs

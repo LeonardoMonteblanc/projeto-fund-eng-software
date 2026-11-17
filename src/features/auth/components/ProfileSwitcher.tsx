@@ -23,7 +23,7 @@ export function ProfileSwitcher() {
   const [carregando, setCarregando] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { async function load() { try { const db = await getDB(); const labs = await db.getAllFromIndex('labs', 'by-ativo', 'true'); setLaboratorios(labs.map((l: any) => ({ id: l.id, sigla: l.sigla, nome: l.nome }))); } catch (e) { console.error(e); } } load(); }, []);
+  useEffect(() => { async function load() { try { const db = await getDB(); const labs = await db.getAll('labs'); setLaboratorios(labs.filter((l: any) => l.ativo).map((l: any) => ({ id: l.id, sigla: l.sigla, nome: l.nome }))); } catch (e) { console.error(e); } } load(); }, []);
 
   useEffect(() => { function handleClickOutside(e: MouseEvent) { if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setAberto(false); } if (aberto) { document.addEventListener('mousedown', handleClickOutside); } return () => document.removeEventListener('mousedown', handleClickOutside); }, [aberto]);
 

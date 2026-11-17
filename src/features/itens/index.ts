@@ -1,0 +1,1 @@
+export { ItensPage } from './ItensPage';
